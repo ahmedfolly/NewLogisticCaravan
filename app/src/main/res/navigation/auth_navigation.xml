@@ -1,6 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/auth_navigation.xml">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/auth_navigation.xml"
+    app:startDestination="@id/mainAuthFragment">
 
+    <fragment
+        android:id="@+id/mainAuthFragment"
+        android:label="fragment_main_auth"
+        android:name="com.example.logisticcavan.auth.presentation.MainAuthFragment"
+
+        tools:layout="@layout/fragment_main_auth" >
+        <action
+            android:id="@+id/action_mainAuthFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_mainAuthFragment_to_chooseFragment"
+            app:destination="@id/chooseFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/signUpFragment"
+        tools:layout="@layout/fragment_sign_up"
+        android:name="com.example.logisticcavan.auth.presentation.SignUpFragment"
+        android:label="SignUpFragment" >
+        <action
+            android:id="@+id/action_signUpFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.logisticcavan.auth.presentation.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment_to_chooseFragment"
+            app:destination="@id/chooseFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_restorPasswordFragment"
+            app:destination="@id/restorPasswordFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/chooseFragment"
+        android:name="com.example.logisticcavan.ChooseFragment"
+        android:label="fragment_choose"
+        tools:layout="@layout/fragment_choose" >
+        <action
+            android:id="@+id/action_chooseFragment_to_signUpFragment"
+            app:destination="@id/signUpFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/restorPasswordFragment"
+        android:name="com.example.logisticcavan.RestorPasswordFragment"
+        android:label="fragment_restor_password"
+        tools:layout="@layout/fragment_restor_password" />
 </navigation>
