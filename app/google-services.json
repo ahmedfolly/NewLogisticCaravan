@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1068983669099",
+    "project_id": "logisticcavan",
+    "storage_bucket": "logisticcavan.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1068983669099:android:78f20eeb531514b9c8bc2e",
+        "android_client_info": {
+          "package_name": "com.example.logisticcavan"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBAordOtCjfpzf99R-j7VfMho48bgc3Tes"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
