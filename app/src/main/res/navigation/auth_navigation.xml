@@ -41,7 +41,7 @@
     </fragment>
     <fragment
         android:id="@+id/chooseFragment"
-        android:name="com.example.logisticcavan.ChooseFragment"
+        android:name="com.example.logisticcavan.auth.presentation.ChooseFragment"
         android:label="fragment_choose"
         tools:layout="@layout/fragment_choose" >
         <action
@@ -50,7 +50,7 @@
     </fragment>
     <fragment
         android:id="@+id/restorPasswordFragment"
-        android:name="com.example.logisticcavan.RestorPasswordFragment"
+        android:name="com.example.logisticcavan.auth.presentation.RestorPasswordFragment"
         android:label="fragment_restor_password"
         tools:layout="@layout/fragment_restor_password" />
 </navigation>

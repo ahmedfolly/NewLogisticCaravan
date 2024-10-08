@@ -21,7 +21,10 @@ import com.example.logisticcavan.databinding.FragmentSignUpBinding;
 public class SignUpFragment extends Fragment {
 
 
+
     private FragmentSignUpBinding binding;
+
+
     private NavController navController;
 
 
@@ -29,6 +32,7 @@ public class SignUpFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_sign_up, container, false);
         return binding.getRoot();
 
@@ -45,7 +49,7 @@ public class SignUpFragment extends Fragment {
 
         binding.signIn.setOnClickListener(view -> {
             navController.navigate(R.id.action_signUpFragment_to_loginFragment);
-            //
+
         });
 
         binding.signUp.setOnClickListener(view -> {

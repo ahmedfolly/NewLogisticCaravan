@@ -1,4 +1,4 @@
-package com.example.logisticcavan;
+package com.example.logisticcavan.common;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,6 +7,7 @@ import android.os.Handler;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.logisticcavan.R;
 import com.example.logisticcavan.auth.presentation.AuthActivity;
 
 public class SplashActivity extends AppCompatActivity {
