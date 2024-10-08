@@ -45,6 +45,7 @@ public class SignUpFragment extends Fragment {
 
         binding.signIn.setOnClickListener(view -> {
             navController.navigate(R.id.action_signUpFragment_to_loginFragment);
+            //
         });
 
         binding.signUp.setOnClickListener(view -> {
