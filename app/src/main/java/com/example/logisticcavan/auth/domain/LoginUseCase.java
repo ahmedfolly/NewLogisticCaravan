@@ -1,5 +1,9 @@
 package com.example.logisticcavan.auth.domain;
 
+import com.google.firebase.auth.AuthResult;
+
+import java.util.concurrent.CompletableFuture;
+
 public class LoginUseCase  {
 
     private AuthRepository authRepository;
@@ -9,7 +13,7 @@ public class LoginUseCase  {
     }
 
 
-    public void login(RegistrationData registrationData){
-        authRepository.logIn(registrationData);
+    public CompletableFuture<AuthResult> login(RegistrationData registrationData){
+         return  authRepository.logIn(registrationData);
     }
 }

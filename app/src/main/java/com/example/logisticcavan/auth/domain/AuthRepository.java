@@ -1,7 +1,10 @@
 package com.example.logisticcavan.auth.domain;
 
+import java.util.concurrent.CompletableFuture;
+import com.google.firebase.auth.AuthResult;
+
 public interface AuthRepository {
 
-     void logIn(RegistrationData registrationData);
-     void signUp(RegistrationData registrationData);
+     CompletableFuture<AuthResult>  logIn(RegistrationData registrationData);
+     CompletableFuture<AuthResult>  signUp(RegistrationData registrationData);
 }

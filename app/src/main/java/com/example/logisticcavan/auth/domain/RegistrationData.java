@@ -11,7 +11,7 @@ final public class RegistrationData {
         this.password = password;
     }
 
-    final public String getEmail() {
+     public String getEmail() {
         return email;
     }
 
