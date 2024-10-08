@@ -51,9 +51,4 @@ public class LoginFragment extends Fragment {
             navController.navigate(R.id.action_loginFragment_to_chooseFragment);
         });
     }
-
-
-
-    ----------___________-
-
 }
