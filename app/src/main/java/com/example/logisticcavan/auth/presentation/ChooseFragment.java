@@ -1,4 +1,4 @@
-package com.example.logisticcavan;
+package com.example.logisticcavan.auth.presentation;
 
 import android.os.Bundle;
 
@@ -13,8 +13,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.logisticcavan.R;
 import com.example.logisticcavan.databinding.FragmentChooseBinding;
-import com.example.logisticcavan.databinding.FragmentLoginBinding;
 
 
 public class ChooseFragment extends Fragment {
