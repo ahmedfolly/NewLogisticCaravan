@@ -23,8 +23,6 @@ public class LoginFragment extends Fragment {
     private FragmentLoginBinding binding;
     private NavController navController;
 
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

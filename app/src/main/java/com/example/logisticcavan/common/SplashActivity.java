@@ -11,7 +11,6 @@ import com.example.logisticcavan.R;
 import com.example.logisticcavan.auth.presentation.AuthActivity;
 
 public class SplashActivity extends AppCompatActivity {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,12 +21,8 @@ public class SplashActivity extends AppCompatActivity {
                         , 2000L);
 
     }
-
-
     public void isLogged() {
-
         Intent intent = new Intent(SplashActivity.this, AuthActivity.class);
         startActivity(intent);
-
     }
 }

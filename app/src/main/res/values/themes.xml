@@ -5,5 +5,22 @@
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 
+    <style name="Widget.CustomBottomNavigationView" parent="Widget.Material3.BottomNavigationView">
+        <item name="itemActiveIndicatorStyle">@style/CustomBottomNavIndicator</item>
+        <item name="itemIconTint">#FFFFFF</item>
+        <item name="menu">@menu/nav_menu</item>
+    </style>
+
+    <!-- Custom style for the active indicator -->
+    <style name="CustomBottomNavIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+        <item name="android:color">#1AFFFFFF</item> <!-- Set the color of the active indicator -->
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearance.CustomActiveIndicator</item>
+    </style>
+
+    <!-- Custom shape appearance for the active indicator -->
+    <style name="ShapeAppearance.CustomActiveIndicator" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item> <!-- Make it a circle or adjust as needed -->
+    </style>
     <style name="Theme.LogisticCavan" parent="Base.Theme.LogisticCavan" />
 </resources>

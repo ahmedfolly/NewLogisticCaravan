@@ -37,12 +37,12 @@ android {
 }
 
 dependencies {
-
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
     implementation(libs.navigation.fragment)
+    implementation(libs.firebase.firestore)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
@@ -55,4 +55,6 @@ dependencies {
     implementation(libs.hilt.android)
     annotationProcessor (libs.hilt.compiler)
 
+    //rxjava
+    implementation(libs.rxjava.android)
 }
