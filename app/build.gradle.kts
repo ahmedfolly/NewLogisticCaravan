@@ -57,4 +57,7 @@ dependencies {
 
     //rxjava
     implementation(libs.rxjava.android)
+
+    //glide
+    implementation(libs.glide)
 }

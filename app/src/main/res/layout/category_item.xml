@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:background="@drawable/category_unselected_background"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:id="@+id/category_container"
+    >
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:textColor="@color/primary_color"
+        android:textSize="15sp"
+        android:id="@+id/category_id"
+        android:padding="16dp"/>
+</FrameLayout>

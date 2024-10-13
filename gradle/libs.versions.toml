@@ -15,9 +15,7 @@ googleGmsGoogleServices = "4.4.2"
 firebaseAuth = "23.0.0"
 rxjava = "3.1.5"
 firebaseFirestore = "25.1.0"
-
-
-
+glide_version = "4.16.0"
 
 [libraries]
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
@@ -34,6 +32,7 @@ navigation-fragment = { group = "androidx.navigation", name = "navigation-fragme
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version.ref = "firebaseAuth" }
 rxjava-android={module ="io.reactivex.rxjava3:rxjava",version.ref = "rxjava"}
 firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore", version.ref = "firebaseFirestore" }
+glide = {module = "com.github.bumptech.glide:glide",version.ref = "glide_version"}
 
 
 
