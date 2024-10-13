@@ -1,5 +1,6 @@
 package com.example.logisticcavan.products.getproducts.presentation;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.logisticcavan.ProductWithRestaurant;
+import com.example.logisticcavan.restaurants.domain.ProductWithRestaurant;
 import com.example.logisticcavan.R;
 import com.example.logisticcavan.products.getproducts.domain.Product;
 import com.example.logisticcavan.restaurants.domain.Restaurant;
@@ -34,30 +35,30 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
         return new ProductsVH(productsView);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ProductsAdapter.ProductsVH holder, int position) {
         Product product = productsWithRestaurants.get(position).getProduct();
         Restaurant restaurant = productsWithRestaurants.get(position).getRestaurant();
-
-        Glide.with(holder.itemView)
-                .load(product.getProductImageLink())
-                .override(800, 800)
-                .into(holder.productImage);
-        holder.foodName.setText(product.getProductName());
-        holder.productPrice.setText("" + (int) product.getProductPrice() + " US");
-        holder.restaurantName.setText(restaurant.getRestaurantName());
+        if (product != null && restaurant != null){
+            Glide.with(holder.itemView)
+                    .load(product.getProductImageLink())
+                    .override(800, 800)
+                    .into(holder.productImage);
+            holder.foodName.setText(product.getProductName());
+            holder.productPrice.setText((int) product.getProductPrice() + " US");
+            holder.restaurantName.setText(restaurant.getRestaurantName());
+        }
     }
 
     @Override
     public int getItemCount() {
         return productsWithRestaurants.size();
     }
-
-    public class ProductsVH extends RecyclerView.ViewHolder {
+    public static class ProductsVH extends RecyclerView.ViewHolder {
         ImageView productImage;
         TextView foodName;
         TextView productPrice, restaurantName;
-
         public ProductsVH(@NonNull View itemView) {
             super(itemView);
             productImage = itemView.findViewById(R.id.food_image_id);

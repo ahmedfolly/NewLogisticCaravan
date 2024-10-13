@@ -1,7 +1,6 @@
-package com.example.logisticcavan;
+package com.example.logisticcavan.restaurants.domain;
 
 import com.example.logisticcavan.products.getproducts.domain.Product;
-import com.example.logisticcavan.restaurants.domain.Restaurant;
 
 public class ProductWithRestaurant {
     private Product product;

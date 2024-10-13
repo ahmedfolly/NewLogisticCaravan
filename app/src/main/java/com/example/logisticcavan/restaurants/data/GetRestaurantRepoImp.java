@@ -13,11 +13,9 @@ import io.reactivex.rxjava3.core.Single;
 
 public class GetRestaurantRepoImp implements GetRestaurantDataRepo {
     private final FirebaseFirestore firestore;
-
     public GetRestaurantRepoImp(FirebaseFirestore firestore) {
         this.firestore = firestore;
     }
-
     @Override
     public Observable<MyResult<Restaurant>> getRestaurant(String restaurantId) {
         return Observable.create(emitter -> {
