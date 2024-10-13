@@ -1,5 +1,7 @@
 package com.example.logisticcavan;
 
+import android.annotation.SuppressLint;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -31,10 +33,15 @@ import com.example.logisticcavan.products.getproducts.presentation.GetProductsVi
 import com.example.logisticcavan.products.getproducts.presentation.ProductsAdapter;
 import com.example.logisticcavan.restaurants.domain.Restaurant;
 import com.example.logisticcavan.restaurants.presentation.GetRestaurantViewModel;
+import com.google.firebase.firestore.FieldPath;
+import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import dagger.hilt.android.AndroidEntryPoint;
+import io.reactivex.rxjava3.core.Observable;
 
 @AndroidEntryPoint
 public class HomeFragment extends Fragment implements CategoriesAdapter.OnItemSelected {
@@ -50,10 +57,12 @@ public class HomeFragment extends Fragment implements CategoriesAdapter.OnItemSe
     OffersAdapter offersAdapter;
     ProductsAdapter productsAdapter;
 
+    FirebaseFirestore firestore;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        categoriesAdapter = new CategoriesAdapter(CategoriesListLocal.categories,this);
+        categoriesAdapter = new CategoriesAdapter(CategoriesListLocal.categories, this);
         offersViewModel = new ViewModelProvider(this).get(OffersViewModel.class);
         productsViewModel = new ViewModelProvider(this).get(GetProductsViewModel.class);
         restaurantViewModel = new ViewModelProvider(this).get(GetRestaurantViewModel.class);
@@ -72,7 +81,7 @@ public class HomeFragment extends Fragment implements CategoriesAdapter.OnItemSe
         getCategories(view);
         getOffers(view);
         getProducts(view);
-        setupProductsContainer(view,productsAdapter);
+        setupProductsContainer(view, productsAdapter);
     }
 
     private void getCategories(View view) {
@@ -100,48 +109,32 @@ public class HomeFragment extends Fragment implements CategoriesAdapter.OnItemSe
         offersContainer.setLayoutManager(new LinearLayoutManager(view.getContext(), RecyclerView.HORIZONTAL, false));
         offersContainer.setAdapter(adapter);
     }
+
+    @SuppressLint("CheckResult")
     private void getProducts(View view) {
         productsViewModel.fetchProducts();
-        productsViewModel.getProductsLiveData().observe(getViewLifecycleOwner(), result ->
-                result.handle(data -> {
-                    productsAdapter = new ProductsAdapter(data);
-                    setupProductsContainer(view,productsAdapter);
-                    for (Product product :data){
-                        String restaurantId = product.getResId();
-                        restaurantViewModel.fetchRestaurantData(restaurantId);
-                    }
-                    restaurantViewModel.getRestaurant().observe(getViewLifecycleOwner(), restaurantResult -> {
-                        restaurantResult.handle(
-                                restaurant->{
-                                    Log.d("res", "getProducts: "+restaurant.getRestaurantName() + restaurant.getRestaurantId());
-                                    productsAdapter.updateRestaurant(restaurant.getRestaurantId(),restaurant);
-                                    Toast.makeText(getContext(),restaurant.getRestaurantId(),Toast.LENGTH_SHORT).show();
-                                },
-                                error->{
-                                    Log.d("res", "getProducts: "+error.getMessage());
-                                    Toast.makeText(getContext(),error.getMessage(),Toast.LENGTH_SHORT).show();
-                                },
-                                ()->{
-                                }
-                        );
-                    });
-
-                }, error -> {
-                    Log.d("TAG", "onError: " + error.getMessage());
-                }, () -> {
-                    Log.d("TAG", "onLoad: Loading ");
-                }));
+        productsViewModel.getProductsLiveData().observe(getViewLifecycleOwner(), result -> result.handle(productsResult -> {
+            List<String> restaurantsIds = restaurantIds(productsResult);
+            restaurantViewModel.fetchRestaurantsIds(restaurantsIds);
+            restaurantViewModel.getRestaurant().observe(getViewLifecycleOwner(), restaurantResult -> restaurantResult.handle(
+                    restaurants -> {
+                        List<ProductWithRestaurant> productWithRestaurants = productsResult.stream()
+                                .map(product -> {
+                                    Restaurant restaurant = restaurants.stream()
+                                            .filter(r -> r.getRestaurantId().equals(product.getResId()))
+                                            .findFirst()
+                                            .orElse(null);
+                                    return new ProductWithRestaurant(product, restaurant);
+                                }).collect(Collectors.toList());
+                        productsAdapter = new ProductsAdapter(productWithRestaurants);
+                        setupProductsContainer(view, productsAdapter);
+                    },errorOnLoadingRestaurants -> {},() -> {}));}, errorOnLoadingProducts -> {}, () -> {}));
     }
-
-    private void setupProductsContainer(View view,ProductsAdapter adapter){
+    private void setupProductsContainer(View view, ProductsAdapter adapter) {
         productsContainer = view.findViewById(R.id.food_container);
         productsContainer.setHasFixedSize(true);
-        productsContainer.setLayoutManager(new GridLayoutManager(view.getContext(),2));
+        productsContainer.setLayoutManager(new GridLayoutManager(view.getContext(), 2));
         productsContainer.setAdapter(adapter);
-    }
-
-    private void getRestaurant(String resId){
-        restaurantViewModel.fetchRestaurantData(resId);
     }
 
     @Override
@@ -151,24 +144,24 @@ public class HomeFragment extends Fragment implements CategoriesAdapter.OnItemSe
 
     @Override
     public void getCategoryName(String categoryName) {
-        if (!categoryName.equals("All")){
+        if (!categoryName.equals("All")) {
             categoryProductsViewModel.fetchCategoryProducts(categoryName);
-            categoryProductsViewModel.getCategoryProductsLiveData().observe(getViewLifecycleOwner(),result->{
-                result.handle(
-                        data->{
-                            productsAdapter = new ProductsAdapter(data);
-                            setupProductsContainer(this.requireView(),productsAdapter);
-                            for (Product product :data)
-                            {
-                                Log.d("products", "getCategoryName: "+product.getProductName());
-                            }
-                        },
-                        error->{},
-                        ()->{}
-                );
+            categoryProductsViewModel.getCategoryProductsLiveData().observe(getViewLifecycleOwner(), result -> {
+                result.handle(data -> {
+//                    productsAdapter = new ProductsAdapter(data);
+                    setupProductsContainer(this.requireView(), productsAdapter);
+                    for (Product product : data) {
+                        Log.d("products", "getCategoryName: " + product.getProductName());
+                    }
+                }, error -> {
+                }, () -> {
+                });
             });
-        }else{
+        } else {
             getProducts(this.requireView());
         }
+    }
+    List<String> restaurantIds(List<Product> products) {
+        return products.stream().map(Product::getResId).collect(Collectors.toList());
     }
 }
