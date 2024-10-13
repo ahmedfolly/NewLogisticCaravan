@@ -7,6 +7,8 @@ import com.example.logisticcavan.auth.domain.SignUpUseCase;
 import com.example.logisticcavan.auth.presentation.AuthViewModel;
 import com.google.firebase.auth.FirebaseAuth;
 
+import javax.inject.Singleton;
+
 import dagger.Module;
 import dagger.Provides;
 import dagger.hilt.InstallIn;
@@ -18,6 +20,7 @@ public class AuthDi {
 
 
     @Provides
+    @Singleton
     AuthViewModel provideAuthViewModel(
             LoginUseCase loginUseCase,
             SignUpUseCase signUpUseCase) {
@@ -37,6 +40,8 @@ public class AuthDi {
     }
 
     @Provides
+    @Singleton
+
     AuthRepository providesAuthRepository(FirebaseAuth firebaseAuth) {
         return new AuthRepoImp(firebaseAuth);
     }

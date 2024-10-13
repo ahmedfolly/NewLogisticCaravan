@@ -17,15 +17,16 @@ import com.example.logisticcavan.databinding.FragmentMainAuthBinding;
 
 import java.util.Objects;
 
-public class MainAuthFragment extends Fragment {
+import dagger.hilt.android.AndroidEntryPoint;
 
+
+@AndroidEntryPoint
+
+public class MainAuthFragment extends Fragment {
 
     private FragmentMainAuthBinding binding;
     private NavController navController;
 
-    public MainAuthFragment(){
-        
-    }
 
 
     @Override

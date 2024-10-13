@@ -17,11 +17,20 @@ import com.example.logisticcavan.R;
 import com.example.logisticcavan.databinding.FragmentLoginBinding;
 import com.example.logisticcavan.databinding.FragmentMainAuthBinding;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 
 public class LoginFragment extends Fragment {
 
     private FragmentLoginBinding binding;
     private NavController navController;
+    String email,password,confirmPassword;
+
+    @Inject
+    AuthViewModel authViewModel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -49,4 +58,36 @@ public class LoginFragment extends Fragment {
             navController.navigate(R.id.action_loginFragment_to_chooseFragment);
         });
     }
+
+
+    private boolean validateInputs() {
+
+        email = binding.editEmail.getText().toString().trim();
+        password = binding.editPassword.getText().toString().trim();
+
+        // Email validation
+        if (email.isEmpty()) {
+            binding.textInputLayoutEmail.setError("Email is required");
+            return false;
+        } else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            binding.textInputLayoutEmail.setError("Enter a valid email");
+            return false;
+        } else {
+            binding.textInputLayoutEmail.setError(null);
+        }
+
+        // Password validation
+        if (password.isEmpty()) {
+            binding.textInputLayoutPassword.setError("Password is required");
+            return false;
+        } else if (password.length() < 6) {
+            binding.textInputLayoutPassword.setError("Password must be at least 6 characters");
+            return false;
+        } else {
+            binding.textInputLayoutPassword.setError(null);
+        }
+
+        return true;
+    }
+
 }

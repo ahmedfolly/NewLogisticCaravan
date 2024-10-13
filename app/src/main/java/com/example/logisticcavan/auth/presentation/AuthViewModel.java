@@ -20,12 +20,13 @@ public class AuthViewModel  extends ViewModel {
     private LoginUseCase loginUseCase;
     private SignUpUseCase signUpUseCase;
 
+    private String typeUser;
+
     @Inject
     public AuthViewModel(LoginUseCase loginUseCase, SignUpUseCase signUpUseCase) {
         this.loginUseCase = loginUseCase;
         this.signUpUseCase = signUpUseCase;
     }
-
 
 
 
@@ -39,7 +40,11 @@ public class AuthViewModel  extends ViewModel {
     }
 
 
+    public void setTypeUser(String type) {
+        typeUser = type;
+    }
 
-
-
+    public String getTypeUser() {
+        return typeUser;
+    }
 }
