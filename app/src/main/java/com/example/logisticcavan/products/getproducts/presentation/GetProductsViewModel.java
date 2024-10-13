@@ -22,6 +22,7 @@ public class GetProductsViewModel extends ViewModel {
     private final MutableLiveData<MyResult<List<Product>>> _productsLiveData = new MutableLiveData<>();
 
     public LiveData<MyResult<List<Product>>> getProductsLiveData() {
+
         return _productsLiveData;
     }
 
