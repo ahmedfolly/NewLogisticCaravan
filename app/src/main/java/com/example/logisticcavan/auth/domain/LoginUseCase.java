@@ -4,10 +4,13 @@ import com.google.firebase.auth.AuthResult;
 
 import java.util.concurrent.CompletableFuture;
 
+import javax.inject.Inject;
+
 public class LoginUseCase  {
 
     private AuthRepository authRepository;
 
+    @Inject
     public LoginUseCase(AuthRepository authRepository) {
         this.authRepository = authRepository;
     }
