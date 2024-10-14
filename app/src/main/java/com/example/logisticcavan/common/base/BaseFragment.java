@@ -20,6 +20,7 @@ import com.example.logisticcavan.R;
 import com.example.logisticcavan.users.courier.CourierActivity;
 import com.example.logisticcavan.users.customer.MainActivity;
 import com.example.logisticcavan.users.restaurant.RestaurantActivity;
+import com.google.android.material.snackbar.Snackbar;
 
 public class BaseFragment extends Fragment {
 
@@ -67,5 +68,17 @@ public class BaseFragment extends Fragment {
             startActivity(new Intent(getActivity(), RestaurantActivity.class));
         }
 
+    }
+
+    public  void showSuccess(View view, String message) {
+        Snackbar snackbar = Snackbar.make(view, message, Snackbar.LENGTH_LONG);
+        snackbar.getView().setBackgroundColor(view.getResources().getColor(android.R.color.holo_green_light));
+        snackbar.show();
+    }
+
+    public static void showError(View view, String message) {
+        Snackbar snackbar = Snackbar.make(view, message, Snackbar.LENGTH_LONG);
+        snackbar.getView().setBackgroundColor(view.getResources().getColor(android.R.color.holo_red_light));
+        snackbar.show();
     }
 }

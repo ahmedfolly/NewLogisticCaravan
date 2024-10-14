@@ -76,21 +76,39 @@ public class SignUpFragment extends BaseFragment {
     private void resultOfSigning(CompletableFuture<AuthResult> result) {
         result.thenAccept(authResult -> {
 
-//            authViewModel.storeUserInfo(getUserInfo(authResult.getUser().getUid(),name,authViewModel.getTypeUser(),email,""));
-            dismissProgressDialog();
-
-            navigateBasedOnUser(authViewModel.getTypeUser());
+          storeUserInfo(authResult);
 
         }).exceptionally(
-
                 ex -> {
             dismissProgressDialog();
-//                    showError(ex.getMessage());
+            showError(binding.getRoot(),ex.getMessage());
             return null;
         }
         );
     }
 
+    private void storeUserInfo(AuthResult authResult) {
+        String userId =   authResult.getUser().getUid();
+        UserInfo userInfo = getUserInfo(userId,name,authViewModel.getTypeUser(),email,"Token");
+        authViewModel.storeUserInfoLocally(userInfo);
+        CompletableFuture<Void> result = authViewModel.storeUserInfoRemotely(userInfo);
+        resultOfStoring(result);
+    }
+
+    private void resultOfStoring(CompletableFuture<Void> result) {
+       result.thenAccept(aVoid -> {
+
+           dismissProgressDialog();
+           navigateBasedOnUser(authViewModel.getTypeUser());
+
+       }).exceptionally(ex -> {
+           dismissProgressDialog();
+           showError(binding.getRoot(),ex.getMessage());
+           return null;
+       });
+
+
+    }
 
 
     private boolean validateInputs() {

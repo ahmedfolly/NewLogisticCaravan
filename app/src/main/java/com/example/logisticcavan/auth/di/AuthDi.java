@@ -8,6 +8,8 @@ import com.example.logisticcavan.auth.data.RemoteStorageRepository;
 import com.example.logisticcavan.auth.domain.repo.AuthRepository;
 import com.example.logisticcavan.auth.domain.useCase.LoginUseCase;
 import com.example.logisticcavan.auth.domain.useCase.SignUpUseCase;
+import com.example.logisticcavan.auth.domain.useCase.StoreUserInfoLocallyUseCase;
+import com.example.logisticcavan.auth.domain.useCase.StoreUserInfoRemotelyUseCase;
 import com.example.logisticcavan.auth.presentation.AuthViewModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -28,10 +30,15 @@ public class AuthDi {
     @Singleton
     AuthViewModel provideAuthViewModel(
             LoginUseCase loginUseCase,
-            SignUpUseCase signUpUseCase) {
-        return new AuthViewModel(loginUseCase, signUpUseCase);
+            SignUpUseCase signUpUseCase,
+            StoreUserInfoRemotelyUseCase storeUserInfoRemotelyUseCase,
+            StoreUserInfoLocallyUseCase storeUserInfoLocallyUseCase
+
+    ) {
+        return new AuthViewModel(loginUseCase, signUpUseCase, storeUserInfoRemotelyUseCase, storeUserInfoLocallyUseCase);
     }
 
+    //  Use Cases
     @Provides
     LoginUseCase provideLoginUseCase(AuthRepository authRepository
     ) {
@@ -45,6 +52,21 @@ public class AuthDi {
     }
 
     @Provides
+    StoreUserInfoRemotelyUseCase provideStoreUserInfoRemotelyUseCase(RemoteStorageRepository remoteStorageRepository
+    ) {
+        return new StoreUserInfoRemotelyUseCase(remoteStorageRepository);
+    }
+
+    @Provides
+    StoreUserInfoLocallyUseCase provideStoreUserInfoLocallyUseCase(LocalStorageRepository localStorageRepository
+    ) {
+        return new StoreUserInfoLocallyUseCase(localStorageRepository);
+    }
+
+
+
+    // Repositories
+    @Provides
     RemoteStorageRepository provideRemoteStorageRepository(FirebaseFirestore firebaseFirestore) {
         return new RemoteStorageRepository(firebaseFirestore);
     }
@@ -53,8 +75,6 @@ public class AuthDi {
     LocalStorageRepository provideLocalStorageRepository(SharedPreferences sharedPreferences) {
         return new LocalStorageRepository(sharedPreferences);
     }
-
-
 
     @Provides
     @Singleton
