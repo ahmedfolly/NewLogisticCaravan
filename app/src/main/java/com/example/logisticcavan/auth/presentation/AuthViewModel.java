@@ -16,7 +16,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel;
 @HiltViewModel
 public class AuthViewModel  extends ViewModel {
 
-
     private LoginUseCase loginUseCase;
     private SignUpUseCase signUpUseCase;
 
@@ -32,7 +31,9 @@ public class AuthViewModel  extends ViewModel {
 
   public   CompletableFuture<AuthResult> login(String email, String password) {
 
+
      return    loginUseCase.login(new RegistrationData(email,password));
+
     }
 
    public CompletableFuture<AuthResult> signUp(String email, String password){

@@ -52,15 +52,19 @@ public class ChooseFragment extends Fragment {
     private void setUpClickListener() {
 
         binding.customer.setOnClickListener(view -> {
+
             authViewModel.setTypeUser(CUSTOMER);
             Log.e(TAG, authViewModel.getTypeUser());
-
             navController.navigate(R.id.action_chooseFragment_to_signUpFragment);
+
         });
 
+
         binding.courier.setOnClickListener(view -> {
+
             authViewModel.setTypeUser(COURIER);
             navController.navigate(R.id.action_chooseFragment_to_signUpFragment);
+
         });
     }
 

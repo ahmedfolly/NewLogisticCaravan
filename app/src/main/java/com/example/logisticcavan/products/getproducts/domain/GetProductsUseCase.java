@@ -14,7 +14,9 @@ public class GetProductsUseCase {
     }
 
     public Observable<MyResult<List<Product>>> execute() {
+
         return repo.getAllProducts();
+
     }
 
 }
