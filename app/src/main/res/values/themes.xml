@@ -3,12 +3,13 @@
     <style name="Base.Theme.LogisticCavan" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">#B8E55763</item>
+        <item name="fontFamily">@font/afacad_regular</item>
     </style>
-
     <style name="Widget.CustomBottomNavigationView" parent="Widget.Material3.BottomNavigationView">
         <item name="itemActiveIndicatorStyle">@style/CustomBottomNavIndicator</item>
         <item name="itemIconTint">#FFFFFF</item>
-        <item name="menu">@menu/nav_menu</item>
+
     </style>
 
     <!-- Custom style for the active indicator -->
