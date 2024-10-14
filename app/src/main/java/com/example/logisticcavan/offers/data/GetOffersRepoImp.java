@@ -2,15 +2,10 @@ package com.example.logisticcavan.offers.data;
 
 import android.util.Log;
 
-import androidx.annotation.Nullable;
-
-import com.example.logisticcavan.common.MyResult;
+import com.example.logisticcavan.common.utils.MyResult;
 import com.example.logisticcavan.offers.domain.GetOffersRepo;
 import com.example.logisticcavan.offers.domain.Offer;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.List;
 

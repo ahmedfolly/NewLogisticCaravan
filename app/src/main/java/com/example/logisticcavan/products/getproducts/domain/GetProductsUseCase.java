@@ -1,6 +1,6 @@
 package com.example.logisticcavan.products.getproducts.domain;
 
-import com.example.logisticcavan.common.MyResult;
+import com.example.logisticcavan.common.utils.MyResult;
 
 import java.util.List;
 

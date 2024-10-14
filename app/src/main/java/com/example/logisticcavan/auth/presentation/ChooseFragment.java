@@ -1,7 +1,7 @@
 package com.example.logisticcavan.auth.presentation;
 
-import static com.example.logisticcavan.common.Constant.COURIER;
-import static com.example.logisticcavan.common.Constant.CUSTOMER;
+import static com.example.logisticcavan.common.utils.Constant.COURIER;
+import static com.example.logisticcavan.common.utils.Constant.CUSTOMER;
 
 import android.os.Bundle;
 

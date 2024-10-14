@@ -2,9 +2,9 @@ package com.example.logisticcavan.auth.presentation;
 
 import androidx.lifecycle.ViewModel;
 
-import com.example.logisticcavan.auth.domain.LoginUseCase;
-import com.example.logisticcavan.auth.domain.RegistrationData;
-import com.example.logisticcavan.auth.domain.SignUpUseCase;
+import com.example.logisticcavan.auth.domain.useCase.LoginUseCase;
+import com.example.logisticcavan.auth.domain.entity.RegistrationData;
+import com.example.logisticcavan.auth.domain.useCase.SignUpUseCase;
 import com.google.firebase.auth.AuthResult;
 
 import java.util.concurrent.CompletableFuture;
@@ -30,14 +30,11 @@ public class AuthViewModel  extends ViewModel {
 
 
   public   CompletableFuture<AuthResult> login(String email, String password) {
-
-
      return    loginUseCase.login(new RegistrationData(email,password));
-
     }
 
-   public CompletableFuture<AuthResult> signUp(String email, String password){
-      return   signUpUseCase.signUp(new RegistrationData(email,password));
+   public CompletableFuture<AuthResult> signUp(RegistrationData registrationData){
+      return   signUpUseCase.signUp(new RegistrationData(registrationData.getEmail(),registrationData.getPassword()));
     }
 
 

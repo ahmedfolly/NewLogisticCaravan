@@ -1,6 +1,6 @@
 package com.example.logisticcavan.products.getproducts.data;
 
-import com.example.logisticcavan.common.MyResult;
+import com.example.logisticcavan.common.utils.MyResult;
 import com.example.logisticcavan.products.getproducts.domain.GetProductsRepo;
 import com.example.logisticcavan.products.getproducts.domain.Product;
 import com.google.firebase.firestore.FirebaseFirestore;

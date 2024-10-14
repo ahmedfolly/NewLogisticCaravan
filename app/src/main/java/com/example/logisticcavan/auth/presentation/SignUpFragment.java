@@ -5,18 +5,21 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.logisticcavan.R;
-import com.example.logisticcavan.databinding.FragmentChooseBinding;
+import com.example.logisticcavan.auth.domain.entity.RegistrationData;
+import com.example.logisticcavan.auth.domain.entity.UserInfo;
+import com.example.logisticcavan.common.base.BaseFragment;
 import com.example.logisticcavan.databinding.FragmentSignUpBinding;
+import com.google.firebase.auth.AuthResult;
+
+import java.util.concurrent.CompletableFuture;
 
 import javax.inject.Inject;
 
@@ -24,10 +27,10 @@ import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
 
-public class SignUpFragment extends Fragment {
+public class SignUpFragment extends BaseFragment {
     private static final String TAG = "SignUpFragment";
 
-    String email,password,confirmPassword;
+    String name,email,password,confirmPassword;
     @Inject
     AuthViewModel authViewModel;
 
@@ -61,26 +64,60 @@ public class SignUpFragment extends Fragment {
         });
 
         binding.signUp.setOnClickListener(view -> {
-          if (validateInputs()){
-
-          }
+            if (validateInputs()) {
+                showProgressDialog();
+                CompletableFuture<AuthResult> result = authViewModel.signUp(getRegistrationData(email, password));
+                resultOfSigning(result);
+            }
         });
+
     }
+
+    private void resultOfSigning(CompletableFuture<AuthResult> result) {
+        result.thenAccept(authResult -> {
+
+//            authViewModel.storeUserInfo(getUserInfo(authResult.getUser().getUid(),name,authViewModel.getTypeUser(),email,""));
+            dismissProgressDialog();
+
+            navigateBasedOnUser(authViewModel.getTypeUser());
+
+        }).exceptionally(
+
+                ex -> {
+            dismissProgressDialog();
+//                    showError(ex.getMessage());
+            return null;
+        }
+        );
+    }
+
+
 
     private boolean validateInputs() {
 
+         name = binding.editName.getText().toString().trim();
          email = binding.editEmail.getText().toString().trim();
          password = binding.editPassword.getText().toString().trim();
          confirmPassword = binding.editPasswordConfirme.getText().toString().trim();
 
-        // Email validation
-        if (email.isEmpty()) {
-            binding.textInputLayoutEmail.setError("Email is required");
-            return false;
-        } else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            binding.textInputLayoutEmail.setError("Enter a valid email");
+         //Name validation
+        if (name.isEmpty()) {
+            binding.textInputLayoutName.setError("Name is required");
             return false;
         } else {
+            binding.textInputLayoutName.setError(null);
+        }
+
+        // Email validation
+         if (email.isEmpty()) {
+            binding.textInputLayoutEmail.setError("Email is required");
+            return false;
+        }
+        else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            binding.textInputLayoutEmail.setError("Enter a valid email");
+            return false;
+        }
+        else {
             binding.textInputLayoutEmail.setError(null);
         }
 
@@ -106,9 +143,24 @@ public class SignUpFragment extends Fragment {
             binding.textInputLayoutConfirmPassworde.setError(null);
         }
 
+//        getRegistrationData(email,password);
+//        getUserInfo("",name,authViewModel.getTypeUser(),email,"");
 
         return true;
     }
+
+    private UserInfo getUserInfo(String id, String name, String typeUser, String email, String token) {
+        return  new UserInfo(id,name,typeUser,email,token);
+    }
+
+    private RegistrationData getRegistrationData(String email, String password) {
+
+   return new RegistrationData(email ,password) ;
+
+    }
+
+
+
 
 
 

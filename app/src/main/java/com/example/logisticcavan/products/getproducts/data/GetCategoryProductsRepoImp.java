@@ -1,14 +1,9 @@
 package com.example.logisticcavan.products.getproducts.data;
 
-import androidx.annotation.Nullable;
-
-import com.example.logisticcavan.common.MyResult;
+import com.example.logisticcavan.common.utils.MyResult;
 import com.example.logisticcavan.products.getproducts.domain.GetCategoryProductsRepo;
 import com.example.logisticcavan.products.getproducts.domain.Product;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.List;
 

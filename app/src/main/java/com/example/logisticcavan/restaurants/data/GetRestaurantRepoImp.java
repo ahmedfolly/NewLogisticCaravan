@@ -1,6 +1,6 @@
 package com.example.logisticcavan.restaurants.data;
 
-import com.example.logisticcavan.common.MyResult;
+import com.example.logisticcavan.common.utils.MyResult;
 import com.example.logisticcavan.restaurants.domain.GetRestaurantDataRepo;
 import com.example.logisticcavan.restaurants.domain.Restaurant;
 import com.google.firebase.firestore.FieldPath;
@@ -9,7 +9,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.List;
 
 import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.core.Single;
 
 public class GetRestaurantRepoImp implements GetRestaurantDataRepo {
     private final FirebaseFirestore firestore;

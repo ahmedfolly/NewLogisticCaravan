@@ -1,6 +1,8 @@
-package com.example.logisticcavan.auth.domain;
+package com.example.logisticcavan.auth.domain.repo;
 
 import java.util.concurrent.CompletableFuture;
+
+import com.example.logisticcavan.auth.domain.entity.RegistrationData;
 import com.google.firebase.auth.AuthResult;
 
 public interface AuthRepository {

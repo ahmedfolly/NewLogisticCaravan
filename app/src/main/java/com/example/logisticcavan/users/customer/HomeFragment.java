@@ -1,4 +1,4 @@
-package com.example.logisticcavan;
+package com.example.logisticcavan.users.customer;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -13,7 +13,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-import com.example.logisticcavan.common.MyResult;
+
+import com.example.logisticcavan.R;
+import com.example.logisticcavan.common.utils.MyResult;
 import com.example.logisticcavan.common.utils.CategoriesListLocal;
 import com.example.logisticcavan.offers.presentation.OffersAdapter;
 import com.example.logisticcavan.offers.presentation.OffersViewModel;

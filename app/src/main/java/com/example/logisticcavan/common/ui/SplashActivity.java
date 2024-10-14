@@ -1,4 +1,7 @@
-package com.example.logisticcavan.common;
+package com.example.logisticcavan.common.ui;
+
+import static com.example.logisticcavan.common.utils.Constant.COURIER;
+import static com.example.logisticcavan.common.utils.Constant.CUSTOMER;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +12,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.logisticcavan.R;
 import com.example.logisticcavan.auth.presentation.AuthActivity;
+import com.example.logisticcavan.users.courier.CourierActivity;
+import com.example.logisticcavan.users.customer.MainActivity;
+import com.example.logisticcavan.users.restaurant.RestaurantActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -22,7 +28,6 @@ public class SplashActivity extends AppCompatActivity {
 
     @Inject
     FirebaseAuth firebaseAuth;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,14 +44,25 @@ public class SplashActivity extends AppCompatActivity {
 
     public void isLogged() {
         FirebaseUser user = firebaseAuth.getCurrentUser();
+
         if (user != null){
-          System.out.println("not  null");
+            Intent intent = new Intent(SplashActivity.this, AuthActivity.class);
+            startActivity(intent);
+
         }else {
-            System.out.println("null");
             Intent intent = new Intent(SplashActivity.this, AuthActivity.class);
             startActivity(intent);
         }
+    }
 
+    private void navigateBasedOnUser(String typeUser) {
+        if (typeUser.equals(CUSTOMER)) {
+            startActivity(new Intent(SplashActivity.this, MainActivity.class));
+        }else if (typeUser.equals(COURIER)){
+            startActivity(new Intent(SplashActivity.this, CourierActivity.class));
+        }else {
+            startActivity(new Intent(SplashActivity.this, RestaurantActivity.class));
+        }
 
     }
 
