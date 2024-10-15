@@ -1,64 +1,59 @@
 package com.example.logisticcavan;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link FoodDetailFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import com.bumptech.glide.Glide;
+import com.google.android.material.button.MaterialButton;
+
+
 public class FoodDetailFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    FoodDetailFragmentArgs args;
 
     public FoodDetailFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment FoodDetailFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static FoodDetailFragment newInstance(String param1, String param2) {
-        FoodDetailFragment fragment = new FoodDetailFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+        args = FoodDetailFragmentArgs.fromBundle(getArguments());
         return inflater.inflate(R.layout.fragment_food_detail, container, false);
+    }
+
+    @SuppressLint("SetTextI18n")
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        Glide.with(view)
+                .load(args.getProductWithRestaurant().getProduct().getProductImageLink())
+                .override(800, 800)
+                .into((ImageView) view.findViewById(R.id.food_image_detail_id));
+        TextView foodName = view.findViewById(R.id.food_name_detail_id);
+        foodName.setText(args.getProductWithRestaurant().getProduct().getProductName());
+        TextView restaurantName = view.findViewById(R.id.restaurant_name_detail_id);
+        restaurantName.setText(args.getProductWithRestaurant().getRestaurant().getRestaurantName());
+        TextView foodDesc = view.findViewById(R.id.food_description_detail_id);
+        Log.d("TAG", "onViewCreated: "+args.getProductWithRestaurant().getProduct().getFoodDesc());
+        foodDesc.setText(args.getProductWithRestaurant().getProduct().getFoodDesc());
+        MaterialButton visitRestaurantBtn = view.findViewById(R.id.visit_restaurant_btn_id);
+        visitRestaurantBtn.setText("Visit " + args.getProductWithRestaurant().getRestaurant().getRestaurantName());
     }
 }

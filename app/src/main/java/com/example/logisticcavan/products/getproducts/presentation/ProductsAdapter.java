@@ -7,11 +7,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.navigation.NavController;
+import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
+import com.example.logisticcavan.HomeFragmentDirections;
 import com.example.logisticcavan.restaurants.domain.ProductWithRestaurant;
 import com.example.logisticcavan.R;
 import com.example.logisticcavan.products.getproducts.domain.Product;
@@ -51,8 +53,8 @@ public class ProductsAdapter extends ListAdapter<ProductWithRestaurant, Products
         }
         holder.itemView.setOnClickListener(v->{
 
-//            NavDirections action = HomeFragmentDirections.actionHomeFragmentToFoodDetailFragment(getItem(position));
-//            navigationController.navigate(action);
+            NavDirections action = HomeFragmentDirections.actionHomeFragmentToFoodDetailFragment(getItem(position));
+            navigationController.navigate(action);
 //
         });
     }
