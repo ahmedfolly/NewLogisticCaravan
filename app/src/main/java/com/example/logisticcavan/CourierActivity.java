@@ -1,4 +1,4 @@
-package com.example.logisticcavan.users.courier;
+package com.example.logisticcavan;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,7 +6,6 @@ import android.os.Bundle;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.logisticcavan.R;
 import com.example.logisticcavan.auth.presentation.AuthActivity;
 import com.google.firebase.auth.FirebaseAuth;
 
