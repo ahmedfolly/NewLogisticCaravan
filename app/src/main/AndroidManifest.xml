@@ -34,7 +34,7 @@
             android:name=".auth.presentation.AuthActivity"
             android:exported="false" />
        <activity
-            android:name=".users.customer.MainActivity"
+            android:name=".MainActivity"
             android:exported="true">
            <intent-filter>
                <action android:name="android.intent.action.MAIN" />

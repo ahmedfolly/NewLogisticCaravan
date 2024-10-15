@@ -4,7 +4,6 @@ import static com.example.logisticcavan.common.utils.Constant.COURIER;
 import static com.example.logisticcavan.common.utils.Constant.CUSTOMER;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -13,11 +12,10 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.logisticcavan.R;
-import com.example.logisticcavan.auth.data.LocalStorageRepository;
 import com.example.logisticcavan.auth.domain.useCase.GetUserInfoLocallyUseCase;
 import com.example.logisticcavan.auth.presentation.AuthActivity;
 import com.example.logisticcavan.users.courier.CourierActivity;
-import com.example.logisticcavan.users.customer.MainActivity;
+import com.example.logisticcavan.MainActivity;
 import com.example.logisticcavan.users.restaurant.RestaurantActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;

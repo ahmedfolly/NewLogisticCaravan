@@ -1,15 +1,11 @@
-package com.example.logisticcavan.users.customer;
+package com.example.logisticcavan;
 
 import android.os.Bundle;
 import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.logisticcavan.R;
 import com.example.logisticcavan.products.getproducts.domain.Product;
 import com.example.logisticcavan.products.getproducts.presentation.GetProductsViewModel;
 
@@ -24,15 +20,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-<<<<<<< HEAD:app/src/main/java/com/example/logisticcavan/MainActivity.java
-=======
-//<<<<<<< HEAD
-//=======
-//        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-//            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-//            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-//            return insets;
-//        });
+
 
 
         viewModel = new ViewModelProvider(this).get(GetProductsViewModel.class);
@@ -49,7 +37,5 @@ public class MainActivity extends AppCompatActivity {
         }, () -> {
             Log.d("TAG", "onLoad: Loading ");
         }));
-//>>>>>>> 9280da99b93c61d886c5567aa8d9bfdce2a4d104
->>>>>>> b05200dc2f87182349b1fefdbc1e42734e64bf8f:app/src/main/java/com/example/logisticcavan/users/customer/MainActivity.java
     }
 }

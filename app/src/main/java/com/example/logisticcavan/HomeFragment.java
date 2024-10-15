@@ -1,13 +1,10 @@
-package com.example.logisticcavan.users.customer;
+package com.example.logisticcavan;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -20,14 +17,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-<<<<<<< HEAD:app/src/main/java/com/example/logisticcavan/HomeFragment.java
-import com.example.logisticcavan.common.MyResult;
-=======
-import com.example.logisticcavan.R;
-import com.example.logisticcavan.auth.presentation.AuthActivity;
 import com.example.logisticcavan.common.base.BaseFragment;
-import com.example.logisticcavan.common.utils.MyResult;
->>>>>>> b05200dc2f87182349b1fefdbc1e42734e64bf8f:app/src/main/java/com/example/logisticcavan/users/customer/HomeFragment.java
 import com.example.logisticcavan.common.utils.CategoriesListLocal;
 import com.example.logisticcavan.offers.presentation.OffersAdapter;
 import com.example.logisticcavan.offers.presentation.OffersViewModel;
@@ -36,22 +26,8 @@ import com.example.logisticcavan.products.getproducts.domain.Product;
 import com.example.logisticcavan.products.getproducts.presentation.GetCategoryProductsViewModel;
 import com.example.logisticcavan.products.getproducts.presentation.GetProductsViewModel;
 import com.example.logisticcavan.products.getproducts.presentation.ProductsAdapter;
-import com.example.logisticcavan.restaurants.domain.ProductWithRestaurant;
-import com.example.logisticcavan.restaurants.domain.Restaurant;
 import com.example.logisticcavan.restaurants.presentation.GetRestaurantViewModel;
-<<<<<<< HEAD:app/src/main/java/com/example/logisticcavan/HomeFragment.java
-
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
-import java.util.Set;
-=======
-import com.google.firebase.auth.FirebaseAuth;
-
-import java.util.List;
-import java.util.Objects;
->>>>>>> b05200dc2f87182349b1fefdbc1e42734e64bf8f:app/src/main/java/com/example/logisticcavan/users/customer/HomeFragment.java
 import java.util.stream.Collectors;
 
 import dagger.hilt.android.AndroidEntryPoint;
@@ -164,6 +140,8 @@ public class HomeFragment extends BaseFragment implements CategoriesAdapter.OnIt
             foodProgressBar.setVisibility(View.GONE);
         }, error -> {
         }, () -> foodProgressBar.setVisibility(View.VISIBLE)));
+
+
     }
 
     private void setupProductsContainer(View view, ProductsAdapter adapter) {
@@ -181,6 +159,7 @@ public class HomeFragment extends BaseFragment implements CategoriesAdapter.OnIt
     @Override
     public void getCategoryName(String categoryName) {
         if (!categoryName.equals("All")) {
+
             categoryProductsViewModel.fetchCategoryProducts(categoryName);
             categoryProductsViewModel.getCategoryProductsLiveData().observe(getViewLifecycleOwner(), result -> {
                 result.handle(productsResult -> {

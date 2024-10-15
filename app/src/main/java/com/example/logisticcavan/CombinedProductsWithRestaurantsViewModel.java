@@ -6,13 +6,12 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.logisticcavan.common.MyResult;
+import com.example.logisticcavan.common.utils.MyResult;
 import com.example.logisticcavan.products.getproducts.domain.Product;
 import com.example.logisticcavan.restaurants.domain.ProductWithRestaurant;
 import com.example.logisticcavan.restaurants.domain.Restaurant;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class CombinedProductsWithRestaurantsViewModel extends ViewModel {

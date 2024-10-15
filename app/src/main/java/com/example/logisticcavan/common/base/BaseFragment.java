@@ -19,7 +19,7 @@ import androidx.fragment.app.Fragment;
 import com.example.logisticcavan.R;
 import com.example.logisticcavan.auth.presentation.AuthActivity;
 import com.example.logisticcavan.users.courier.CourierActivity;
-import com.example.logisticcavan.users.customer.MainActivity;
+import com.example.logisticcavan.MainActivity;
 import com.example.logisticcavan.users.restaurant.RestaurantActivity;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
