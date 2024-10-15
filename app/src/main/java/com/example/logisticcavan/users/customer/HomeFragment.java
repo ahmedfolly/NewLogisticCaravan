@@ -1,6 +1,7 @@
 package com.example.logisticcavan.users.customer;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,6 +16,8 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.logisticcavan.R;
+import com.example.logisticcavan.auth.presentation.AuthActivity;
+import com.example.logisticcavan.common.base.BaseFragment;
 import com.example.logisticcavan.common.utils.MyResult;
 import com.example.logisticcavan.common.utils.CategoriesListLocal;
 import com.example.logisticcavan.offers.presentation.OffersAdapter;
@@ -27,12 +30,15 @@ import com.example.logisticcavan.products.getproducts.presentation.ProductsAdapt
 import com.example.logisticcavan.restaurants.domain.ProductWithRestaurant;
 import com.example.logisticcavan.restaurants.domain.Restaurant;
 import com.example.logisticcavan.restaurants.presentation.GetRestaurantViewModel;
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class HomeFragment extends Fragment implements CategoriesAdapter.OnItemSelected {
+public class HomeFragment extends BaseFragment implements CategoriesAdapter.OnItemSelected {
     private OffersViewModel offersViewModel;
     private GetProductsViewModel productsViewModel;
     private GetCategoryProductsViewModel categoryProductsViewModel;
@@ -55,6 +61,12 @@ public class HomeFragment extends Fragment implements CategoriesAdapter.OnItemSe
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
+
+
+
+
+
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
@@ -65,7 +77,15 @@ public class HomeFragment extends Fragment implements CategoriesAdapter.OnItemSe
         getOffers(view);
         getProducts();
         setupProductsContainer(view, productsAdapter);
+
+        view.findViewById(R.id.notification_id).setOnClickListener(view1 -> {
+
+            signOut();
+
+        });
     }
+
+
 
     private void getCategories(View view) {
         categoriesContainer = view.findViewById(R.id.categories_container_id);

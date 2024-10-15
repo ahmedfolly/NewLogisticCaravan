@@ -6,6 +6,8 @@ import com.example.logisticcavan.auth.data.AuthRepoImp;
 import com.example.logisticcavan.auth.data.LocalStorageRepository;
 import com.example.logisticcavan.auth.data.RemoteStorageRepository;
 import com.example.logisticcavan.auth.domain.repo.AuthRepository;
+import com.example.logisticcavan.auth.domain.useCase.GetUserInfoLocallyUseCase;
+import com.example.logisticcavan.auth.domain.useCase.GetUserInfoRemotelyUseCase;
 import com.example.logisticcavan.auth.domain.useCase.LoginUseCase;
 import com.example.logisticcavan.auth.domain.useCase.SignUpUseCase;
 import com.example.logisticcavan.auth.domain.useCase.StoreUserInfoLocallyUseCase;
@@ -32,10 +34,11 @@ public class AuthDi {
             LoginUseCase loginUseCase,
             SignUpUseCase signUpUseCase,
             StoreUserInfoRemotelyUseCase storeUserInfoRemotelyUseCase,
-            StoreUserInfoLocallyUseCase storeUserInfoLocallyUseCase
+            StoreUserInfoLocallyUseCase storeUserInfoLocallyUseCase,
+            GetUserInfoRemotelyUseCase getUserInfoRemotelyUseCase
 
     ) {
-        return new AuthViewModel(loginUseCase, signUpUseCase, storeUserInfoRemotelyUseCase, storeUserInfoLocallyUseCase);
+        return new AuthViewModel(loginUseCase, signUpUseCase, storeUserInfoRemotelyUseCase, storeUserInfoLocallyUseCase,getUserInfoRemotelyUseCase);
     }
 
     //  Use Cases
@@ -58,20 +61,34 @@ public class AuthDi {
     }
 
     @Provides
+    GetUserInfoRemotelyUseCase provideGetUserInfoRemotelyUseCase(RemoteStorageRepository remoteStorageRepository
+    ) {
+        return new GetUserInfoRemotelyUseCase(remoteStorageRepository);
+    }
+
+    @Provides
     StoreUserInfoLocallyUseCase provideStoreUserInfoLocallyUseCase(LocalStorageRepository localStorageRepository
     ) {
         return new StoreUserInfoLocallyUseCase(localStorageRepository);
+    }
+
+    @Provides
+    GetUserInfoLocallyUseCase provideGetUserInfoLocallyUseCase(LocalStorageRepository localStorageRepository
+    ) {
+        return new GetUserInfoLocallyUseCase(localStorageRepository);
     }
 
 
 
     // Repositories
     @Provides
+    @Singleton
     RemoteStorageRepository provideRemoteStorageRepository(FirebaseFirestore firebaseFirestore) {
         return new RemoteStorageRepository(firebaseFirestore);
     }
 
     @Provides
+    @Singleton
     LocalStorageRepository provideLocalStorageRepository(SharedPreferences sharedPreferences) {
         return new LocalStorageRepository(sharedPreferences);
     }

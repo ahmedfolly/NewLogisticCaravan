@@ -2,11 +2,17 @@ package com.example.logisticcavan.auth.domain.entity;
 
 public class UserInfo {
 
-    private final String id;
-    private final String name;
-    private final String type;
-    private final String email;
-    private final String token;
+    private  String id = null;
+    private  String name = null ;
+    private  String type = null;
+    private  String email = null;
+    private  String token = null;
+
+    public UserInfo() {
+
+    }
+
+
 
     public UserInfo(String id ,
                     String name ,

@@ -74,11 +74,8 @@ public class SignUpFragment extends BaseFragment {
     }
 
     private void resultOfSigning(CompletableFuture<AuthResult> result) {
-        result.thenAccept(authResult -> {
-
-          storeUserInfo(authResult);
-
-        }).exceptionally(
+        result.thenAccept(this::storeUserInfo)
+              .exceptionally(
                 ex -> {
             dismissProgressDialog();
             showError(binding.getRoot(),ex.getMessage());
@@ -109,7 +106,6 @@ public class SignUpFragment extends BaseFragment {
 
 
     }
-
 
     private boolean validateInputs() {
 
@@ -160,9 +156,6 @@ public class SignUpFragment extends BaseFragment {
         } else {
             binding.textInputLayoutConfirmPassworde.setError(null);
         }
-
-//        getRegistrationData(email,password);
-//        getUserInfo("",name,authViewModel.getTypeUser(),email,"");
 
         return true;
     }

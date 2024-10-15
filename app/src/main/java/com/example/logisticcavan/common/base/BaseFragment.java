@@ -17,11 +17,16 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.logisticcavan.R;
+import com.example.logisticcavan.auth.presentation.AuthActivity;
 import com.example.logisticcavan.users.courier.CourierActivity;
 import com.example.logisticcavan.users.customer.MainActivity;
 import com.example.logisticcavan.users.restaurant.RestaurantActivity;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class BaseFragment extends Fragment {
 
     Dialog progressDialog;
@@ -81,4 +86,13 @@ public class BaseFragment extends Fragment {
         snackbar.getView().setBackgroundColor(view.getResources().getColor(android.R.color.holo_red_light));
         snackbar.show();
     }
+
+
+    public void signOut() {
+        FirebaseAuth.getInstance().signOut();
+        startActivity(new Intent(getContext(), AuthActivity.class));
+        requireActivity().finish();
+    }
+
+
 }
