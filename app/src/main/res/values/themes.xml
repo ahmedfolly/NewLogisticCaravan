@@ -3,7 +3,10 @@
     <style name="Base.Theme.LogisticCavan" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
-        <item name="colorPrimary">#B8E55763</item>
+<!--        <item name="colorPrimary">#B8E55763</item>-->
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="colorPrimary">@color/primary_color</item>
         <item name="fontFamily">@font/afacad_regular</item>
     </style>
     <style name="Widget.CustomBottomNavigationView" parent="Widget.Material3.BottomNavigationView">

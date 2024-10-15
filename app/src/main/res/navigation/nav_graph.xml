@@ -9,5 +9,19 @@
         android:id="@+id/homeFragment"
         android:name="com.example.logisticcavan.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_foodDetailFragment"
+            app:destination="@id/foodDetailFragment" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/foodDetailFragment"
+        android:name="com.example.logisticcavan.FoodDetailFragment"
+        android:label="fragment_food_detail"
+        tools:layout="@layout/fragment_food_detail" >
+        <argument
+            android:name="productWithRestaurant"
+            app:argType="com.example.logisticcavan.restaurants.domain.ProductWithRestaurant" />
+    </fragment>
 </navigation>

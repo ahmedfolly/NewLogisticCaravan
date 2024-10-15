@@ -1,5 +1,6 @@
 package com.example.logisticcavan.restaurants.presentation;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -9,6 +10,7 @@ import com.example.logisticcavan.restaurants.domain.GetRestaurantsByIdsUseCase;
 import com.example.logisticcavan.restaurants.domain.Restaurant;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -27,7 +29,7 @@ public class GetRestaurantViewModel extends ViewModel {
         this.getRestaurantsByIds = getRestaurantsByIds;
     }
 
-    public MutableLiveData<MyResult<List<Restaurant>>> getRestaurant() {
+    public LiveData<MyResult<List<Restaurant>>> getRestaurant() {
         return _restaurantLiveData;
     }
 

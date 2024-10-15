@@ -50,17 +50,30 @@
                 android:textSize="20sp"
                 android:text="Exclusiv for you"
                 android:layout_marginTop="8dp" />
-            <androidx.recyclerview.widget.RecyclerView
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                tools:listitem="@layout/offer_item"
-                android:id="@+id/offers_container"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp" />
+                android:layout_height="wrap_content">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:listitem="@layout/offer_item"
+                    android:id="@+id/offers_container"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp" />
+                <com.google.android.material.progressindicator.CircularProgressIndicator
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/offers_loader_progress_bar"
+                    android:visibility="gone"
+                    android:indeterminate="true"
+                    android:layout_centerInParent="true"/>
+            </RelativeLayout>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 tools:listitem="@layout/category_item"
+                android:visibility="gone"
                 android:id="@+id/categories_container_id"/>
             <TextView
                 android:layout_width="match_parent"
@@ -70,13 +83,26 @@
                 android:textSize="20sp"
                 android:text="Available dishes"
                 />
-            <androidx.recyclerview.widget.RecyclerView
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                tools:listitem="@layout/food_item"
-                android:id="@+id/food_container"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp" />
+                android:layout_height="wrap_content">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:listitem="@layout/food_item"
+                    android:id="@+id/food_container"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp" />
+                <com.google.android.material.progressindicator.CircularProgressIndicator
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/food_loader_progress_bar"
+                    android:visibility="gone"
+                    android:indeterminate="true"
+                    android:layout_centerInParent="true"/>
+
+            </RelativeLayout>
+
 
         </LinearLayout>
 

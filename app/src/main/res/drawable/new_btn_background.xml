@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@android:color/transparent" />
+            <corners android:radius="32dp" />
+            <stroke android:width="2dp" android:color="@color/primary_color" />
+        </shape>
+    </item>
+    <item android:drawable="@drawable/storefront_24px"
+        android:gravity="right|center_vertical"
+        android:end = "8dp"/> <!-- Adjust gravity as needed -->
+</layer-list>

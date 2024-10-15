@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     id("com.google.gms.google-services")
     id("com.google.dagger.hilt.android")
+    id ("androidx.navigation.safeargs")
+
 }
 
 android {
@@ -37,6 +39,7 @@ android {
 }
 
 dependencies {
+    implementation (libs.navigation.fragment)
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
@@ -45,16 +48,13 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
-
     //firebase
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth)
     implementation(libs.firebase.firestore)
-
     //hilt
     implementation(libs.hilt.android)
     annotationProcessor (libs.hilt.compiler)
-
     //rxjava
     implementation(libs.rxjava.android)
 
