@@ -147,7 +147,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/textInputLayoutPassword" />
 
                 <TextView
-                    android:id="@+id/Courier"
+                    android:id="@+id/logIn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="100dp"
@@ -175,7 +175,7 @@
                     android:text="Don’t have have an account?"
                     android:textColor="@color/black"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/Courier" />
+                    app:layout_constraintTop_toBottomOf="@+id/logIn" />
 
                 <TextView
                     android:id="@+id/signUp"

@@ -4,9 +4,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.logisticcavan.common.MyResult;
+import com.example.logisticcavan.common.utils.MyResult;
 import com.example.logisticcavan.products.getproducts.domain.GetCategoryProductsUseCase;
-import com.example.logisticcavan.products.getproducts.domain.GetProductsUseCase;
 import com.example.logisticcavan.products.getproducts.domain.Product;
 
 import java.util.List;

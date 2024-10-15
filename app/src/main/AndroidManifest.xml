@@ -5,8 +5,8 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
-        android:allowBackup="true"
         android:name=".common.MyApplication"
+        android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
@@ -15,15 +15,29 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.LogisticCavan"
         tools:targetApi="31">
-
         <activity
-            android:name=".common.SplashActivity"
+            android:name=".users.restaurant.RestaurantActivity"
+            android:exported="false" />
+        <activity
+            android:name=".users.courier.CourierActivity"
+            android:exported="false" />
+        <activity
+            android:name=".common.ui.SplashActivity"
             android:exported="true">
+<<<<<<< HEAD
 
+=======
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+>>>>>>> b05200dc2f87182349b1fefdbc1e42734e64bf8f
         </activity>
         <activity
             android:name=".auth.presentation.AuthActivity"
             android:exported="false" />
+<<<<<<< HEAD
        <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -32,6 +46,11 @@
                <category android:name="android.intent.category.LAUNCHER" />
            </intent-filter>
         </activity>
+=======
+        <activity
+            android:name=".users.customer.MainActivity"
+            android:exported="true"></activity>
+>>>>>>> b05200dc2f87182349b1fefdbc1e42734e64bf8f
     </application>
 
 </manifest>

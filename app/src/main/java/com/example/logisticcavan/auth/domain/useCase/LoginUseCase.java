@@ -1,5 +1,7 @@
-package com.example.logisticcavan.auth.domain;
+package com.example.logisticcavan.auth.domain.useCase;
 
+import com.example.logisticcavan.auth.domain.entity.RegistrationData;
+import com.example.logisticcavan.auth.domain.repo.AuthRepository;
 import com.google.firebase.auth.AuthResult;
 
 import java.util.concurrent.CompletableFuture;

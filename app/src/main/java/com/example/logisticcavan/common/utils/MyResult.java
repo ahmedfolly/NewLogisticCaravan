@@ -1,4 +1,4 @@
-package com.example.logisticcavan.common;
+package com.example.logisticcavan.common.utils;
 
 import java.util.function.Consumer;
 

@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.logisticcavan.common.MyResult;
+import com.example.logisticcavan.common.utils.MyResult;
 import com.example.logisticcavan.offers.domain.GetOffersUseCase;
 import com.example.logisticcavan.offers.domain.Offer;
 

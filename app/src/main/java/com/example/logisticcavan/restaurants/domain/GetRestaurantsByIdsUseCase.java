@@ -1,6 +1,6 @@
 package com.example.logisticcavan.restaurants.domain;
 
-import com.example.logisticcavan.common.MyResult;
+import com.example.logisticcavan.common.utils.MyResult;
 
 import java.util.List;
 import java.util.Set;

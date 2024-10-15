@@ -1,4 +1,4 @@
-package com.example.logisticcavan.auth.domain;
+package com.example.logisticcavan.auth.domain.entity;
 
 final public class RegistrationData {
 

@@ -1,7 +1,7 @@
 package com.example.logisticcavan.auth.data;
 
-import com.example.logisticcavan.auth.domain.AuthRepository;
-import com.example.logisticcavan.auth.domain.RegistrationData;
+import com.example.logisticcavan.auth.domain.repo.AuthRepository;
+import com.example.logisticcavan.auth.domain.entity.RegistrationData;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -48,6 +48,10 @@ public class AuthRepoImp implements AuthRepository {
         return future;
 
     }
+
+
+
+
 
 
 }

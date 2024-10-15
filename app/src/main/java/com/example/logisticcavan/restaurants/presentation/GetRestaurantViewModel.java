@@ -4,8 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.logisticcavan.common.MyResult;
-import com.example.logisticcavan.restaurants.domain.GetRestaurantUseCase;
+import com.example.logisticcavan.common.utils.MyResult;
 import com.example.logisticcavan.restaurants.domain.GetRestaurantsByIdsUseCase;
 import com.example.logisticcavan.restaurants.domain.Restaurant;
 
