@@ -24,20 +24,15 @@
         <activity
             android:name=".common.ui.SplashActivity"
             android:exported="true">
-<<<<<<< HEAD
-
-=======
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
->>>>>>> b05200dc2f87182349b1fefdbc1e42734e64bf8f
         </activity>
         <activity
             android:name=".auth.presentation.AuthActivity"
             android:exported="false" />
-<<<<<<< HEAD
        <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -46,11 +41,9 @@
                <category android:name="android.intent.category.LAUNCHER" />
            </intent-filter>
         </activity>
-=======
         <activity
             android:name=".users.customer.MainActivity"
             android:exported="true"></activity>
->>>>>>> b05200dc2f87182349b1fefdbc1e42734e64bf8f
     </application>
 
 </manifest>

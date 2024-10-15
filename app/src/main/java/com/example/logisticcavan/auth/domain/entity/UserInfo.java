@@ -3,6 +3,7 @@ package com.example.logisticcavan.auth.domain.entity;
 public class UserInfo {
 
     private  String id = null;
+
     private  String name = null ;
     private  String type = null;
     private  String email = null;
@@ -11,8 +12,6 @@ public class UserInfo {
     public UserInfo() {
 
     }
-
-
 
     public UserInfo(String id ,
                     String name ,
