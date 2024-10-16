@@ -8,7 +8,7 @@ public class Order {
     private String payment = "";
     private double price = 0.0;
     private String productId = "";
-    private String pending = "";
+    private String status = "";
     private String to = "";
     private int totalAmount = 0;
     private double totalCost = 0.0;
@@ -64,12 +64,12 @@ public class Order {
         this.productId = productId;
     }
 
-    public String getPending() {
-        return pending;
+    public String getStatus() {
+        return status;
     }
 
-    public void setPending(String pending) {
-        this.pending = pending;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getTo() {

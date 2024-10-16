@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
-import com.example.logisticcavan.navigations.usernav.HomeFragmentDirections;
+import com.example.logisticcavan.navigations.commonui.HomeFragmentDirections;
 import com.example.logisticcavan.restaurants.domain.ProductWithRestaurant;
 import com.example.logisticcavan.R;
 import com.example.logisticcavan.products.getproducts.domain.Product;

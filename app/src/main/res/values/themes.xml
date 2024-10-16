@@ -5,7 +5,6 @@
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
 <!--        <item name="colorPrimary">#B8E55763</item>-->
         <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:windowBackground">@android:color/transparent</item>
         <item name="colorPrimary">@color/primary_color</item>
         <item name="fontFamily">@font/afacad_regular</item>
     </style>

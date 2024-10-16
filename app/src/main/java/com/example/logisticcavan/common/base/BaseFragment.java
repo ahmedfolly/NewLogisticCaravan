@@ -20,7 +20,6 @@ import com.example.logisticcavan.R;
 import com.example.logisticcavan.auth.presentation.AuthActivity;
 import com.example.logisticcavan.navigations.courierNav.CourierActivity;
 import com.example.logisticcavan.navigations.commonui.MainActivity;
-import com.example.logisticcavan.navigations.restaurantNav.RestaurantActivity;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -69,8 +68,6 @@ public class BaseFragment extends Fragment {
             startActivity(new Intent(getActivity(), MainActivity.class));
         }else if (typeUser.equals(COURIER)){
             startActivity(new Intent(getActivity(), CourierActivity.class));
-        }else {
-            startActivity(new Intent(getActivity(), RestaurantActivity.class));
         }
 
     }
