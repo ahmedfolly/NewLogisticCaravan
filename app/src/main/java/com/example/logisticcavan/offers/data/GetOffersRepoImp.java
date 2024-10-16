@@ -3,7 +3,7 @@ package com.example.logisticcavan.offers.data;
 import android.util.Log;
 
 import com.example.logisticcavan.common.utils.MyResult;
-import com.example.logisticcavan.offers.domain.GetOffersRepo;
+import com.example.logisticcavan.offers.domain.repos.GetOffersRepo;
 import com.example.logisticcavan.offers.domain.Offer;
 import com.google.firebase.firestore.FirebaseFirestore;
 

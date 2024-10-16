@@ -1,6 +1,8 @@
-package com.example.logisticcavan.offers.domain;
+package com.example.logisticcavan.offers.domain.usecases;
 
 import com.example.logisticcavan.common.utils.MyResult;
+import com.example.logisticcavan.offers.domain.repos.GetOffersRepo;
+import com.example.logisticcavan.offers.domain.Offer;
 
 import java.util.List;
 

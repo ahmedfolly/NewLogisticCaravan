@@ -1,22 +1,20 @@
-package com.example.logisticcavan;
+package com.example.logisticcavan.products.getproducts.presentation.UI;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.bumptech.glide.Glide;
+import com.example.logisticcavan.R;
+import com.example.logisticcavan.navigations.usernav.FoodDetailFragmentArgs;
 import com.google.android.material.button.MaterialButton;
-
 
 public class FoodDetailFragment extends Fragment {
 

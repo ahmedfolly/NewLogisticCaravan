@@ -1,4 +1,4 @@
-package com.example.logisticcavan;
+package com.example.logisticcavan.navigations.commonui;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -17,9 +17,11 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.logisticcavan.R;
+import com.example.logisticcavan.restaurants.presentation.CombinedProductsWithRestaurantsViewModel;
 import com.example.logisticcavan.common.base.BaseFragment;
 import com.example.logisticcavan.common.utils.CategoriesListLocal;
-import com.example.logisticcavan.offers.presentation.OffersAdapter;
+import com.example.logisticcavan.offers.presentation.customer.OffersAdapter;
 import com.example.logisticcavan.offers.presentation.OffersViewModel;
 import com.example.logisticcavan.products.categories.CategoriesAdapter;
 import com.example.logisticcavan.products.getproducts.domain.Product;
@@ -63,15 +65,8 @@ public class HomeFragment extends BaseFragment implements CategoriesAdapter.OnIt
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
-
-
-
-
-
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);

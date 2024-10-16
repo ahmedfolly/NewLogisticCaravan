@@ -1,4 +1,4 @@
-package com.example.logisticcavan;
+package com.example.logisticcavan.restaurants.presentation;
 
 import android.util.Log;
 

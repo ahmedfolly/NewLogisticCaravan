@@ -1,8 +1,8 @@
 package com.example.logisticcavan.offers;
 
 import com.example.logisticcavan.offers.data.GetOffersRepoImp;
-import com.example.logisticcavan.offers.domain.GetOffersRepo;
-import com.example.logisticcavan.offers.domain.GetOffersUseCase;
+import com.example.logisticcavan.offers.domain.repos.GetOffersRepo;
+import com.example.logisticcavan.offers.domain.usecases.GetOffersUseCase;
 import com.google.firebase.firestore.FirebaseFirestore;
 import dagger.Module;
 import dagger.Provides;

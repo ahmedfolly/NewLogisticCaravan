@@ -1,4 +1,4 @@
-package com.example.logisticcavan;
+package com.example.logisticcavan.navigations.commonui;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -6,6 +6,7 @@ import android.util.Log;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.logisticcavan.R;
 import com.example.logisticcavan.products.getproducts.domain.Product;
 import com.example.logisticcavan.products.getproducts.presentation.GetProductsViewModel;
 

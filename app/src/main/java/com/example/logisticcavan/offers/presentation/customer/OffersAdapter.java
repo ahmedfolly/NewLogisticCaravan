@@ -1,4 +1,4 @@
-package com.example.logisticcavan.offers.presentation;
+package com.example.logisticcavan.offers.presentation.customer;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +12,6 @@ import com.bumptech.glide.Glide;
 import com.example.logisticcavan.R;
 import com.example.logisticcavan.offers.domain.Offer;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersVH> {

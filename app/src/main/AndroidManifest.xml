@@ -17,10 +17,10 @@
         android:theme="@style/Theme.LogisticCavan"
         tools:targetApi="31">
         <activity
-            android:name=".RestaurantActivity"
+            android:name=".navigations.restaurantNav.RestaurantActivity"
             android:exported="false" />
         <activity
-            android:name=".CourierActivity"
+            android:name=".navigations.courierNav.CourierActivity"
             android:exported="false" />
         <activity
             android:name=".common.ui.SplashActivity"
@@ -35,7 +35,7 @@
             android:name=".auth.presentation.AuthActivity"
             android:exported="false" />
        <activity
-            android:name=".MainActivity"
+            android:name=".navigations.commonui.MainActivity"
             android:exported="true">
            <intent-filter>
                <action android:name="android.intent.action.MAIN" />
