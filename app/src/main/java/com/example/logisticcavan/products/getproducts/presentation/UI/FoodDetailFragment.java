@@ -40,10 +40,12 @@ public class FoodDetailFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Glide.with(view)
+
+        Glide.with( view )
                 .load(args.getProductWithRestaurant().getProduct().getProductImageLink())
-                .override(800, 800)
+                .override  (800  , 800 )
                 .into((ImageView) view.findViewById(R.id.food_image_detail_id));
+
         TextView foodName = view.findViewById(R.id.food_name_detail_id);
         foodName.setText(args.getProductWithRestaurant().getProduct().getProductName());
         TextView restaurantName = view.findViewById(R.id.restaurant_name_detail_id);
