@@ -13,12 +13,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.logisticcavan.R;
-<<<<<<< HEAD
 import com.example.logisticcavan.orders.addorder.presentation.ui.AddOrderBottomSheet;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-=======
-
->>>>>>> be26e884bb35ab89886f2dda32d4bbd0dde06879
 import com.google.android.material.button.MaterialButton;
 
 public class FoodDetailFragment extends Fragment {
