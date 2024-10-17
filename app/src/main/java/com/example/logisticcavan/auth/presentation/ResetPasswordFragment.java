@@ -125,21 +125,5 @@ public class ResetPasswordFragment extends BaseFragment {
 
     }
 
-    private void resultOfSendingResetEmail(CompletableFuture<Void> result) {
-        Log.e("TAG", "resultOfSendingResetEmail:  ");
-
-        result.thenAccept(aVoid -> {
-            dismissProgressDialog();
-//            showSuccess(binding.getRoot(), "Email sent successfully");
-//            navController.popBackStack();
-        }).exceptionally(ex -> {
-            Log.e("TAG", "resultOfSendingResetEmail:  -> "+ex.getMessage());
-
-            dismissProgressDialog();
-            showError(binding.getRoot(), ex.getMessage());
-            return null;
-        });
-
-    }
 
 }
