@@ -13,7 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.logisticcavan.R;
-import com.example.logisticcavan.navigations.usernav.FoodDetailFragmentArgs;
+
 import com.google.android.material.button.MaterialButton;
 
 public class FoodDetailFragment extends Fragment {

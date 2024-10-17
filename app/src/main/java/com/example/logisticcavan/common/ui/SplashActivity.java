@@ -16,7 +16,7 @@ import com.example.logisticcavan.auth.domain.useCase.GetUserInfoLocallyUseCase;
 import com.example.logisticcavan.auth.presentation.AuthActivity;
 import com.example.logisticcavan.navigations.courierNav.CourierActivity;
 import com.example.logisticcavan.navigations.commonui.MainActivity;
-import com.example.logisticcavan.navigations.restaurantNav.RestaurantActivity;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -64,10 +64,7 @@ public class SplashActivity extends AppCompatActivity {
             startActivity(new Intent(SplashActivity.this, MainActivity.class));
         }else if (typeUser.equals(COURIER)){
             startActivity(new Intent(SplashActivity.this, CourierActivity.class));
-        }else {
-            startActivity(new Intent(SplashActivity.this, RestaurantActivity.class));
         }
-
     }
 
 }
