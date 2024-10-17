@@ -13,8 +13,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.logisticcavan.R;
+<<<<<<< HEAD
 import com.example.logisticcavan.orders.addorder.presentation.ui.AddOrderBottomSheet;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+=======
+
+>>>>>>> be26e884bb35ab89886f2dda32d4bbd0dde06879
 import com.google.android.material.button.MaterialButton;
 
 public class FoodDetailFragment extends Fragment {
@@ -41,10 +45,12 @@ public class FoodDetailFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Glide.with(view)
+
+        Glide.with( view )
                 .load(args.getProductWithRestaurant().getProduct().getProductImageLink())
-                .override(800, 800)
+                .override  (800  , 800 )
                 .into((ImageView) view.findViewById(R.id.food_image_detail_id));
+
         TextView foodName = view.findViewById(R.id.food_name_detail_id);
         foodName.setText(args.getProductWithRestaurant().getProduct().getProductName());
         TextView restaurantName = view.findViewById(R.id.restaurant_name_detail_id);
