@@ -16,7 +16,6 @@ import com.example.logisticcavan.auth.domain.useCase.GetUserInfoLocallyUseCase;
 import com.example.logisticcavan.auth.presentation.AuthActivity;
 import com.example.logisticcavan.navigations.courierNav.CourierActivity;
 import com.example.logisticcavan.navigations.commonui.MainActivity;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 

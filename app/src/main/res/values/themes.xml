@@ -3,18 +3,28 @@
     <style name="Base.Theme.LogisticCavan" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
-<!--        <item name="colorPrimary">#B8E55763</item>-->
+        <!--        <item name="colorPrimary">#B8E55763</item>-->
         <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:windowBackground">@android:color/transparent</item>
         <item name="colorPrimary">@color/primary_color</item>
         <item name="fontFamily">@font/afacad_regular</item>
+        <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>
+
     </style>
+
     <style name="Widget.CustomBottomNavigationView" parent="Widget.Material3.BottomNavigationView">
         <item name="itemActiveIndicatorStyle">@style/CustomBottomNavIndicator</item>
         <item name="itemIconTint">#FFFFFF</item>
 
     </style>
+    <style name="AppBottomSheetDialogTheme"
+        parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/AppModalStyle</item>
+    </style>
 
+    <style name="AppModalStyle"
+        parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/bottom_sheet_background</item>
+    </style>
     <!-- Custom style for the active indicator -->
     <style name="CustomBottomNavIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
         <item name="android:color">#1AFFFFFF</item> <!-- Set the color of the active indicator -->
@@ -26,5 +36,6 @@
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item> <!-- Make it a circle or adjust as needed -->
     </style>
+
     <style name="Theme.LogisticCavan" parent="Base.Theme.LogisticCavan" />
 </resources>

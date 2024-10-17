@@ -13,7 +13,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.logisticcavan.R;
-
+import com.example.logisticcavan.orders.addorder.presentation.ui.AddOrderBottomSheet;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.button.MaterialButton;
 
 public class FoodDetailFragment extends Fragment {
@@ -55,5 +56,18 @@ public class FoodDetailFragment extends Fragment {
         foodDesc.setText(args.getProductWithRestaurant().getProduct().getFoodDesc());
         MaterialButton visitRestaurantBtn = view.findViewById(R.id.visit_restaurant_btn_id);
         visitRestaurantBtn.setText("Visit " + args.getProductWithRestaurant().getRestaurant().getRestaurantName());
+        MaterialButton orderFoodBtn = view.findViewById(R.id.order_food_btn_id);
+        orderFoodBtn.setOnClickListener(v -> {
+            AddOrderBottomSheet bottomSheetDialogFragment = new AddOrderBottomSheet();
+            bottomSheetDialogFragment.setArguments(sendArgs());
+            bottomSheetDialogFragment.show(getParentFragmentManager(), bottomSheetDialogFragment.getTag());
+            bottomSheetDialogFragment.setCancelable(true);
+        });
+
+    }
+    private Bundle sendArgs() {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("productWithRestaurant", args.getProductWithRestaurant());
+        return bundle;
     }
 }

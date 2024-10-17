@@ -2,7 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     id("com.google.gms.google-services")
     id("com.google.dagger.hilt.android")
-    id ("androidx.navigation.safeargs")
+    id("androidx.navigation.safeargs")
 
 }
 
@@ -39,7 +39,7 @@ android {
 }
 
 dependencies {
-    implementation (libs.navigation.fragment)
+    implementation(libs.navigation.fragment)
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
@@ -54,13 +54,17 @@ dependencies {
     implementation(libs.firebase.firestore)
     //hilt
     implementation(libs.hilt.android)
-    annotationProcessor (libs.hilt.compiler)
+    annotationProcessor(libs.hilt.compiler)
     //rxjava
     implementation(libs.rxjava.android)
 
     //glide
     implementation(libs.glide)
+    implementation("com.google.code.gson:gson:2.8.8")
+    implementation (libs.room.rxjava3)
+    implementation (libs.rxandroid)
 
-    implementation ("com.google.code.gson:gson:2.8.8")
+    implementation (libs.room)  // Room runtime
+    annotationProcessor(libs.room.compiler) // To generate Room Database classes)
 
 }

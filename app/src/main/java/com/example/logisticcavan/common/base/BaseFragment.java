@@ -20,7 +20,6 @@ import com.example.logisticcavan.R;
 import com.example.logisticcavan.auth.presentation.AuthActivity;
 import com.example.logisticcavan.navigations.courierNav.CourierActivity;
 import com.example.logisticcavan.navigations.commonui.MainActivity;
-
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 

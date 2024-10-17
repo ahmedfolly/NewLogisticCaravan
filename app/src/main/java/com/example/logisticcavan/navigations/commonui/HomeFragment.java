@@ -124,10 +124,11 @@ public class HomeFragment extends BaseFragment implements CategoriesAdapter.OnIt
             for(Product product : productsResult){
                 Log.d("TAG", "getProducts: "+product.getFoodDesc());
             }
-
             restaurantViewModel.fetchRestaurantsIds(restaurantIds);
         }, error -> {
         }, () -> foodProgressBar.setVisibility(View.VISIBLE)));
+
+        combinedProductsWithRestaurantsViewModel.getCombinedLiveData().removeObservers(getViewLifecycleOwner());
         combinedProductsWithRestaurantsViewModel.combineSources(productsViewModel.getProductsLiveData(), restaurantViewModel.getRestaurant());
         combinedProductsWithRestaurantsViewModel.getCombinedLiveData().observe(getViewLifecycleOwner(), result -> result.handle(productWithRestaurants -> {
             productsAdapter.submitList(productWithRestaurants);
@@ -135,8 +136,6 @@ public class HomeFragment extends BaseFragment implements CategoriesAdapter.OnIt
             foodProgressBar.setVisibility(View.GONE);
         }, error -> {
         }, () -> foodProgressBar.setVisibility(View.VISIBLE)));
-
-
     }
 
     private void setupProductsContainer(View view, ProductsAdapter adapter) {
