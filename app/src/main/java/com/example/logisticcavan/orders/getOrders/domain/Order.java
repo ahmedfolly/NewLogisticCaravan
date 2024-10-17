@@ -1,5 +1,8 @@
 package com.example.logisticcavan.orders.getOrders.domain;
 
+import java.util.List;
+import java.util.Map;
+
 public class Order {
 
     private String dateCreated = "";
@@ -12,6 +15,34 @@ public class Order {
     private String to = "";
     private int totalAmount = 0;
     private double totalCost = 0.0;
+
+    private List<Map<String,Object>> cartItems;
+    private String clientName;
+    private String RestaurantName;
+
+    public List<Map<String, Object>> getCartItems() {
+        return cartItems;
+    }
+
+    public void setCartItems(List<Map<String, Object>> cartItems) {
+        this.cartItems = cartItems;
+    }
+
+    public String getClientName() {
+        return clientName;
+    }
+
+    public void setClientName(String clientName) {
+        this.clientName = clientName;
+    }
+
+    public String getRestaurantName() {
+        return RestaurantName;
+    }
+
+    public void setRestaurantName(String restaurantName) {
+        RestaurantName = restaurantName;
+    }
 
     public Order() {
     }
