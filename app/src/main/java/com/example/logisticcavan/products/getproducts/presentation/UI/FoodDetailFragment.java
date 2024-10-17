@@ -57,9 +57,15 @@ public class FoodDetailFragment extends Fragment {
         MaterialButton orderFoodBtn = view.findViewById(R.id.order_food_btn_id);
         orderFoodBtn.setOnClickListener(v -> {
             AddOrderBottomSheet bottomSheetDialogFragment = new AddOrderBottomSheet();
+            bottomSheetDialogFragment.setArguments(sendArgs());
             bottomSheetDialogFragment.show(getParentFragmentManager(), bottomSheetDialogFragment.getTag());
             bottomSheetDialogFragment.setCancelable(true);
         });
 
+    }
+    private Bundle sendArgs() {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("productWithRestaurant", args.getProductWithRestaurant());
+        return bundle;
     }
 }
