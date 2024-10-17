@@ -50,7 +50,7 @@
     </fragment>
     <fragment
         android:id="@+id/restorPasswordFragment"
-        android:name="com.example.logisticcavan.auth.presentation.RestorPasswordFragment"
+        android:name="com.example.logisticcavan.auth.presentation.ResetPasswordFragment"
         android:label="fragment_restor_password"
-        tools:layout="@layout/fragment_restor_password" />
+        tools:layout="@layout/fragment_reset_password" />
 </navigation>

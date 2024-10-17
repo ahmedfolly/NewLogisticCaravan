@@ -9,6 +9,7 @@ import com.example.logisticcavan.auth.domain.repo.AuthRepository;
 import com.example.logisticcavan.auth.domain.useCase.GetUserInfoLocallyUseCase;
 import com.example.logisticcavan.auth.domain.useCase.GetUserInfoRemotelyUseCase;
 import com.example.logisticcavan.auth.domain.useCase.LoginUseCase;
+import com.example.logisticcavan.auth.domain.useCase.SendPasswordResetEmailUseCase;
 import com.example.logisticcavan.auth.domain.useCase.SignUpUseCase;
 import com.example.logisticcavan.auth.domain.useCase.StoreUserInfoLocallyUseCase;
 import com.example.logisticcavan.auth.domain.useCase.StoreUserInfoRemotelyUseCase;
@@ -35,10 +36,17 @@ public class AuthDi {
             SignUpUseCase signUpUseCase,
             StoreUserInfoRemotelyUseCase storeUserInfoRemotelyUseCase,
             StoreUserInfoLocallyUseCase storeUserInfoLocallyUseCase,
-            GetUserInfoRemotelyUseCase getUserInfoRemotelyUseCase
+            GetUserInfoRemotelyUseCase getUserInfoRemotelyUseCase,
+            SendPasswordResetEmailUseCase sendPasswordResetEmailUseCase
 
     ) {
-        return new AuthViewModel(loginUseCase, signUpUseCase, storeUserInfoRemotelyUseCase, storeUserInfoLocallyUseCase,getUserInfoRemotelyUseCase);
+        return new AuthViewModel(loginUseCase,
+                signUpUseCase,
+                storeUserInfoRemotelyUseCase,
+                storeUserInfoLocallyUseCase,
+                getUserInfoRemotelyUseCase
+        ,sendPasswordResetEmailUseCase
+        );
     }
 
     //  Use Cases
@@ -76,6 +84,12 @@ public class AuthDi {
     GetUserInfoLocallyUseCase provideGetUserInfoLocallyUseCase(LocalStorageRepository localStorageRepository
     ) {
         return new GetUserInfoLocallyUseCase(localStorageRepository);
+    }
+
+   @Provides
+    SendPasswordResetEmailUseCase provideSendPasswordResetEmailUseCase(AuthRepository authRepository
+    ) {
+        return new SendPasswordResetEmailUseCase(authRepository);
     }
 
 

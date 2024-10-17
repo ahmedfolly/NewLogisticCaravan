@@ -6,6 +6,7 @@ import com.example.logisticcavan.auth.domain.entity.RegistrationData;
 import com.example.logisticcavan.auth.domain.entity.UserInfo;
 import com.example.logisticcavan.auth.domain.useCase.GetUserInfoRemotelyUseCase;
 import com.example.logisticcavan.auth.domain.useCase.LoginUseCase;
+import com.example.logisticcavan.auth.domain.useCase.SendPasswordResetEmailUseCase;
 import com.example.logisticcavan.auth.domain.useCase.SignUpUseCase;
 import com.example.logisticcavan.auth.domain.useCase.StoreUserInfoLocallyUseCase;
 import com.example.logisticcavan.auth.domain.useCase.StoreUserInfoRemotelyUseCase;
@@ -25,16 +26,23 @@ public class AuthViewModel  extends ViewModel {
     private StoreUserInfoRemotelyUseCase storeUserInfoRemotelyUseCase;
     private StoreUserInfoLocallyUseCase storeUserInfoLocallyUseCase;
     private GetUserInfoRemotelyUseCase getUserInfoRemotelyUseCase;
+    private SendPasswordResetEmailUseCase sendPasswordResetEmailUseCase;
 
     private String typeUser;
 
     @Inject
-    public AuthViewModel(LoginUseCase loginUseCase, SignUpUseCase signUpUseCase, StoreUserInfoRemotelyUseCase storeUserInfoRemotelyUseCase, StoreUserInfoLocallyUseCase storeUserInfoLocallyUseCase, GetUserInfoRemotelyUseCase getUserInfoRemotelyUseCase) {
+    public AuthViewModel(LoginUseCase loginUseCase,
+                         SignUpUseCase signUpUseCase,
+                         StoreUserInfoRemotelyUseCase storeUserInfoRemotelyUseCase,
+                         StoreUserInfoLocallyUseCase storeUserInfoLocallyUseCase,
+                         GetUserInfoRemotelyUseCase getUserInfoRemotelyUseCase,
+                         SendPasswordResetEmailUseCase sendPasswordResetEmailUseCase) {
         this.loginUseCase = loginUseCase;
         this.signUpUseCase = signUpUseCase;
         this.storeUserInfoRemotelyUseCase = storeUserInfoRemotelyUseCase;
         this.storeUserInfoLocallyUseCase = storeUserInfoLocallyUseCase;
         this.getUserInfoRemotelyUseCase = getUserInfoRemotelyUseCase;
+        this.sendPasswordResetEmailUseCase = sendPasswordResetEmailUseCase;
     }
 
     public CompletableFuture<AuthResult> login(RegistrationData registrationData) {
@@ -51,6 +59,10 @@ public class AuthViewModel  extends ViewModel {
 
     public CompletableFuture<UserInfo> getUserRemotely(String email){
         return getUserInfoRemotelyUseCase.getUserInfo(email);
+    }
+
+    public CompletableFuture<Void> sendPasswordResetEmail(String email){
+        return sendPasswordResetEmailUseCase.sendPasswordResetEmail(email);
     }
 
     public void storeUserInfoLocally(UserInfo userInfo) {

@@ -9,4 +9,7 @@ public interface AuthRepository {
 
      CompletableFuture<AuthResult>  logIn(RegistrationData registrationData);
      CompletableFuture<AuthResult>  signUp(RegistrationData registrationData);
+     CompletableFuture<Void>  sendPasswordResetEmail(String email);
+
+
 }

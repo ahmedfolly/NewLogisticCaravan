@@ -1,7 +1,10 @@
 package com.example.logisticcavan.auth.data;
 
+import android.util.Log;
+
 import com.example.logisticcavan.auth.domain.repo.AuthRepository;
 import com.example.logisticcavan.auth.domain.entity.RegistrationData;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -49,9 +52,26 @@ public class AuthRepoImp implements AuthRepository {
 
     }
 
+    @Override
+    public CompletableFuture<Void> sendPasswordResetEmail(String email) {
+        Log.e("TAG", "sendPasswordResetEmail: " );
 
+        CompletableFuture<Void> future = new CompletableFuture<>();
 
+     Task<Void> task = firebaseAuth.sendPasswordResetEmail(email);
+     task.addOnCompleteListener( task1 ->{
+         if (task1.isSuccessful()){
+             Log.e("TAG", "sendPasswordResetEmail: null  " );
 
+             future.complete(task1.getResult());
+         }else {
+             Log.e("TAG", "sendPasswordResetEmail: getException " );
+
+             future.completeExceptionally(task1.getException());
+         }
+     }) ;
+        return null;
+    }
 
 
 }
