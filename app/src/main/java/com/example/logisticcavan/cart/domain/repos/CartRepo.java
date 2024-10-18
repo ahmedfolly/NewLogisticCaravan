@@ -5,14 +5,16 @@ import com.example.logisticcavan.common.utils.MyResult;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.Single;
 
 public interface CartRepo {
-    void insert(CartItem cartItem);
+    Single<Boolean> insert(CartItem cartItem);
 
     Observable<MyResult<List<CartItem>>> getAllCartItems();
 
-    void deleteAll();
+    Completable deleteAll();
 
     void deleteItemById(int id);
 
@@ -21,4 +23,8 @@ public interface CartRepo {
     void updatePrice(int id, double price);
 
     Observable<MyResult<Double>> getTotalCartPrice();
+
+    Single<Boolean> getRestaurantIdOfFirstItem(String restaurantId);
+
+    Single<Integer> getCartItemsCount();
 }

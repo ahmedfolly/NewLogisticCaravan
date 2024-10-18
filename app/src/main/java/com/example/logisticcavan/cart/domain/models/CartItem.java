@@ -15,6 +15,9 @@ public class CartItem {
     private int quantity;
     private String productId;
 
+    public CartItem() {
+    }
+
     public CartItem(int id, String restaurantId, String productName, String productImageLink, double price, int quantity, String productId) {
         this.id = id;
         this.restaurantId = restaurantId;

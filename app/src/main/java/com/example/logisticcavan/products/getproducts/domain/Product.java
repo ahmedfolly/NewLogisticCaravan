@@ -7,15 +7,18 @@ import androidx.annotation.NonNull;
 
 
 public class Product implements Parcelable {
-    String productName = "";
-    String productCategory="";
-    String productImageLink="";
-    double productPrice=0.0;
-    String resId="";
+    private String productName = "";
+    private String productCategory = "";
+    private String productImageLink = "";
+    private double productPrice = 0.0;
+    private String resId = "";
 
-    String foodDesc="";
+    private String foodDesc = "";
+    private String productID = "";
 
-    public Product(){}
+    public Product() {
+    }
+
     protected Product(Parcel in) {
         productName = in.readString();
         productCategory = in.readString();
@@ -23,6 +26,7 @@ public class Product implements Parcelable {
         productPrice = in.readDouble();
         resId = in.readString();
         foodDesc = in.readString();
+        productID = in.readString();
     }
 
     public static final Creator<Product> CREATOR = new Creator<Product>() {
@@ -36,6 +40,14 @@ public class Product implements Parcelable {
             return new Product[size];
         }
     };
+
+    public String getProductID() {
+        return productID;
+    }
+
+    public void setProductID(String productID) {
+        this.productID = productID;
+    }
 
     public String getProductName() {
         return productName;
@@ -98,5 +110,6 @@ public class Product implements Parcelable {
         parcel.writeDouble(productPrice);
         parcel.writeString(resId);
         parcel.writeString(foodDesc);
+        parcel.writeString(productID);
     }
 }

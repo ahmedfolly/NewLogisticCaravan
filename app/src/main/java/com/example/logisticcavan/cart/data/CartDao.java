@@ -10,24 +10,36 @@ import com.example.logisticcavan.common.utils.MyResult;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.Single;
 
 @Dao
 public interface CartDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insert(CartItem cartItem);
+    Single<Long> insert(CartItem cartItem);
+
     @Query("SELECT * FROM cart_table")
     Observable<List<CartItem>> getAllCartItems();
+
     @Query("DELETE FROM cart_table")
-    void deleteAll();
+    Completable deleteAll();
+
     @Query("DELETE FROM cart_table WHERE id = :id")
     void deleteItemById(int id);
+
     @Query("UPDATE cart_table SET quantity = :quantity WHERE id = :id")
     void updateQuantity(int id, int quantity);
+
     @Query("UPDATE cart_table SET price = :price WHERE id = :id")
     void updatePrice(int id, double price);
+
     @Query("SELECT SUM(price) FROM cart_table")
     Observable<Double> getTotalCartPrice();
 
+    @Query("SELECT COUNT(*) > 0 FROM cart_table WHERE restaurantId = :restaurantId")
+    Single<Boolean> getRestaurantId(String restaurantId);
 
+    @Query("SELECT COUNT(*) FROM cart_table")
+    Single<Integer> getCartItemsCount();
 }

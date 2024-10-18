@@ -7,6 +7,10 @@ import com.example.logisticcavan.cart.data.CartDao;
 import com.example.logisticcavan.cart.data.CartRepoImp;
 import com.example.logisticcavan.cart.domain.repos.CartRepo;
 import com.example.logisticcavan.cart.domain.usecases.AddToCartUseCase;
+import com.example.logisticcavan.cart.domain.usecases.EmptyCartUseCase;
+import com.example.logisticcavan.cart.domain.usecases.GetCartCountUseCase;
+import com.example.logisticcavan.cart.domain.usecases.GetRestaurantIdOfFirstItemUseCase;
+
 import dagger.Module;
 import dagger.Provides;
 import dagger.hilt.InstallIn;
@@ -17,8 +21,22 @@ import dagger.hilt.components.SingletonComponent;
 @InstallIn(SingletonComponent.class)
 public class CartDI {
     @Provides
+    public GetRestaurantIdOfFirstItemUseCase provideGetRestaurantIdOfFirstItemUseCase(CartRepo cartRepo) {
+        return new GetRestaurantIdOfFirstItemUseCase(cartRepo);
+    }
+
+    @Provides
     public AddToCartUseCase provideAddToCartUseCase(CartRepo cartRepo) {
         return new AddToCartUseCase(cartRepo);
+    }
+    @Provides
+    public EmptyCartUseCase provideEmptyCartUseCase(CartRepo cartRepo) {
+        return new EmptyCartUseCase(cartRepo);
+    }
+
+    @Provides
+    public GetCartCountUseCase provideGetCartCountUseCase(CartRepo cartRepo) {
+        return new GetCartCountUseCase(cartRepo);
     }
 
     @Provides
