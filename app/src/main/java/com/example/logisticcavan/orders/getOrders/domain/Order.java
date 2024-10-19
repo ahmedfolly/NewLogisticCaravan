@@ -10,7 +10,7 @@ public class Order {
     private String location = "";
     private String payment = "";
     private double price = 0.0;
-    private String productId = "";
+    private String orderId = "";
     private String status = "";
     private String to = "";
     private int totalAmount = 0;
@@ -87,12 +87,12 @@ public class Order {
         this.price = price;
     }
 
-    public String getProductId() {
-        return productId;
+    public String getOrderId() {
+        return orderId;
     }
 
-    public void setProductId(String productId) {
-        this.productId = productId;
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
     }
 
     public String getStatus() {

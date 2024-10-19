@@ -10,6 +10,7 @@ import com.example.logisticcavan.auth.domain.useCase.SendPasswordResetEmailUseCa
 import com.example.logisticcavan.auth.domain.useCase.SignUpUseCase;
 import com.example.logisticcavan.auth.domain.useCase.StoreUserInfoLocallyUseCase;
 import com.example.logisticcavan.auth.domain.useCase.StoreUserInfoRemotelyUseCase;
+import com.example.logisticcavan.common.base.BaseViewModel;
 import com.google.firebase.auth.AuthResult;
 
 import java.util.concurrent.CompletableFuture;
@@ -19,7 +20,7 @@ import javax.inject.Inject;
 import dagger.hilt.android.lifecycle.HiltViewModel;
 
 @HiltViewModel
-public class AuthViewModel  extends ViewModel {
+public class AuthViewModel  extends BaseViewModel {
 
     private LoginUseCase loginUseCase;
     private SignUpUseCase signUpUseCase;

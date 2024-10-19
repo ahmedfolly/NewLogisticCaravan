@@ -1,5 +1,7 @@
 package com.example.logisticcavan.orders.addorder.data;
 
+import static com.example.logisticcavan.common.utils.Constant.ORDERS;
+
 import com.example.logisticcavan.common.utils.MyResult;
 import com.example.logisticcavan.orders.addorder.domain.AddOrderRepo;
 import com.example.logisticcavan.orders.getOrders.domain.Order;
@@ -21,7 +23,7 @@ public class AddOrderRepoImp implements AddOrderRepo {
     @Override
     public Observable<MyResult<String>> addOrder(Order order) {
         subject.onNext(MyResult.loading());
-        firestore.collection("Orders")
+        firestore.collection(ORDERS)
                 .add(getOrderDataToUpload(order))
                 .addOnSuccessListener(documentReference -> {
                     subject.onNext(MyResult.success("Uploaded successfully"));
@@ -40,7 +42,7 @@ public class AddOrderRepoImp implements AddOrderRepo {
         orderDataToUpload.put("location", order.getLocation());
         orderDataToUpload.put("payment", order.getPayment());
         orderDataToUpload.put("price", order.getPrice());
-        orderDataToUpload.put("productId", order.getProductId());
+        orderDataToUpload.put("productId", order.getOrderId());
         orderDataToUpload.put("pending", order.getStatus());
         orderDataToUpload.put("to", order.getTo());
         orderDataToUpload.put("totalAmount", order.getTotalAmount());

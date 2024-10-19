@@ -1,0 +1,45 @@
+package com.example.logisticcavan.orders.getOrders.data;
+
+import static com.example.logisticcavan.common.utils.Constant.ORDERS;
+import static com.example.logisticcavan.common.utils.Constant.STATUS;
+
+import com.example.logisticcavan.orders.getOrders.domain.Order;
+import com.example.logisticcavan.orders.getOrders.domain.OrderRepository;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+
+import javax.inject.Inject;
+
+public class CourierOrderRepositoryImpl implements OrderRepository {
+
+
+    private final FirebaseFirestore firebaseFirestore;
+
+    @Inject
+    public CourierOrderRepositoryImpl(FirebaseFirestore firebaseFirestore) {
+        this.firebaseFirestore = firebaseFirestore;
+    }
+
+
+    @Override
+    public CompletableFuture<List<Order>> getCourierOrdersBasedStatus(String status) {
+
+        CompletableFuture<List<Order>> future = new CompletableFuture<>();
+
+        firebaseFirestore.collection(ORDERS).whereEqualTo(STATUS, status).addSnapshotListener((value, error) -> {
+            if (error != null) {
+                future.completeExceptionally(error);
+            } else {
+                if (value != null) {
+                    future.complete(value.toObjects(Order.class));
+                }
+            }
+        });
+
+        return future;
+    }
+
+
+}
