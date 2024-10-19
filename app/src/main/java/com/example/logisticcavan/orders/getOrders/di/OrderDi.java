@@ -2,6 +2,7 @@ package com.example.logisticcavan.orders.getOrders.di;
 
 import com.example.logisticcavan.orders.getOrders.courier.presentaion.GetCourierOrdersViewModel;
 import com.example.logisticcavan.orders.getOrders.data.CourierOrderRepositoryImpl;
+import com.example.logisticcavan.orders.getOrders.domain.GetAllOrderUseCaseCase;
 import com.example.logisticcavan.orders.getOrders.domain.GetCourierOrdersBasedStatusUseCase;
 import com.example.logisticcavan.orders.getOrders.domain.OrderRepository;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -18,11 +19,7 @@ import dagger.hilt.components.SingletonComponent;
 public class OrderDi {
 
 
-    @Provides
-    @Singleton
-    public OrderRepository provideOrderRepository(FirebaseFirestore firebaseFireStore) {
-        return new CourierOrderRepositoryImpl(firebaseFireStore);
-    }
+
 
 
     @Provides
@@ -31,9 +28,25 @@ public class OrderDi {
     }
 
     @Provides
+    public GetAllOrderUseCaseCase provideGetAllOrderUseCaseCase(OrderRepository orderRepository) {
+        return new GetAllOrderUseCaseCase(orderRepository);
+    }
+
+
+
+
+    @Provides
     @Singleton
-    public GetCourierOrdersViewModel provideGetCourierOrdersViewModel(GetCourierOrdersBasedStatusUseCase getCourierOrdersBasedStatusUseCase){
-        return new GetCourierOrdersViewModel(getCourierOrdersBasedStatusUseCase);
+    public OrderRepository provideOrderRepository(FirebaseFirestore firebaseFireStore) {
+        return new CourierOrderRepositoryImpl(firebaseFireStore);
+    }
+
+
+
+    @Provides
+    @Singleton
+    public GetCourierOrdersViewModel provideGetCourierOrdersViewModel(GetCourierOrdersBasedStatusUseCase getCourierOrdersBasedStatusUseCase,GetAllOrderUseCaseCase getAllOrderUseCaseCase){
+        return new GetCourierOrdersViewModel(getCourierOrdersBasedStatusUseCase,getAllOrderUseCaseCase);
     }
 
 

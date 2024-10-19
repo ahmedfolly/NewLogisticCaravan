@@ -65,6 +65,7 @@ public class CourierHomeFragment extends Fragment {
             int itemId = item.getItemId();
             updateUiStatus(false);
             if (itemId == R.id.filter_by_all) {
+                getCourierOrdersViewModel.getAllOrders();
                 return true;
             } else if (itemId == R.id.filter_by_pending) {
                 getCourierOrdersViewModel.getOrdersBasedStatus(PENDING);

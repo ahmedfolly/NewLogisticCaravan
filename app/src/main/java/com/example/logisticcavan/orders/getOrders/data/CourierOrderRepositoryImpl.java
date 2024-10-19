@@ -41,5 +41,20 @@ public class CourierOrderRepositoryImpl implements OrderRepository {
         return future;
     }
 
+    @Override
+    public CompletableFuture<List<Order>> getAllOrders() {
+        CompletableFuture<List<Order>> future = new CompletableFuture<>();
+         firebaseFirestore.collection(ORDERS).addSnapshotListener(((value, error) -> {
+             if(error != null){
+                 future.completeExceptionally(error);
+             }else {
+                 if (value != null) {
+                     List<Order> list = value.toObjects(Order.class);
+                   future.complete(list);
+                 }
+             }
+         }));
+        return future;
+    }
 
 }
