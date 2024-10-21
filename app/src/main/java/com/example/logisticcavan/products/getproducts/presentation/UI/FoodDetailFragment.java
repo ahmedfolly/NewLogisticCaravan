@@ -31,11 +31,8 @@ import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
 public class FoodDetailFragment extends Fragment implements AddOrderBottomSheet.AddToCartCallback {
-
     FoodDetailFragmentArgs args;
     private CartViewModel cartViewModel;
-    private boolean isItemAdded = false;
-
     public FoodDetailFragment() {
         // Required empty public constructor
     }
@@ -90,20 +87,7 @@ public class FoodDetailFragment extends Fragment implements AddOrderBottomSheet.
 
     @Override
     public void addToCart(int quantity, double price) {
-//        this.id = id;
-//        this.restaurantId = restaurantId;
-//        this.productName = productName;
-//        this.productImageLink = productImageLink;
-//        this.price = price;
-//        this.quantity = quantity;
-//        this.productId = productId;
-        CartItem cartItem = new CartItem();
-        cartItem.setRestaurantId(args.getProductWithRestaurant().getRestaurant().getRestaurantId());
-        cartItem.setProductName(args.getProductWithRestaurant().getProduct().getProductName());
-        cartItem.setProductImageLink(args.getProductWithRestaurant().getProduct().getProductImageLink());
-        cartItem.setPrice(price);
-        cartItem.setQuantity(quantity);
-        cartItem.setProductId(args.getProductWithRestaurant().getProduct().getProductID());
+        CartItem cartItem = getCartItem(quantity, price);
         //adding to cart operation.
         cartViewModel.getRestaurantIdOfFirstItem(args.getProductWithRestaurant().getRestaurant().getRestaurantId(), new CartViewModel.GetRestaurantIdCallback() {
             @Override
@@ -138,6 +122,20 @@ public class FoodDetailFragment extends Fragment implements AddOrderBottomSheet.
             }
         });
     }
+
+    @NonNull
+    private CartItem getCartItem(int quantity, double price) {
+        CartItem cartItem = new CartItem();
+        cartItem.setRestaurantId(args.getProductWithRestaurant().getRestaurant().getRestaurantId());
+        cartItem.setProductName(args.getProductWithRestaurant().getProduct().getProductName());
+        cartItem.setProductImageLink(args.getProductWithRestaurant().getProduct().getProductImageLink());
+        cartItem.setPrice(price);
+        cartItem.setQuantity(quantity);
+        cartItem.setRestaurantName(args.getProductWithRestaurant().getRestaurant().getRestaurantName());
+        cartItem.setProductId(args.getProductWithRestaurant().getProduct().getProductID());
+        return cartItem;
+    }
+
     private void setupWarningDialog(CartItem cartItem) {
         String restaurantName = args.getProductWithRestaurant().getRestaurant().getRestaurantName();
         Dialog dialog = new Dialog(requireContext());

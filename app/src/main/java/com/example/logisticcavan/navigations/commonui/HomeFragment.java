@@ -6,6 +6,9 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,10 +17,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.logisticcavan.R;
+import com.example.logisticcavan.restaurants.domain.ProductWithRestaurant;
+import com.example.logisticcavan.restaurants.domain.Restaurant;
 import com.example.logisticcavan.restaurants.presentation.CombinedProductsWithRestaurantsViewModel;
 import com.example.logisticcavan.common.base.BaseFragment;
 import com.example.logisticcavan.common.utils.CategoriesListLocal;
@@ -29,6 +35,7 @@ import com.example.logisticcavan.products.getproducts.presentation.GetCategoryPr
 import com.example.logisticcavan.products.getproducts.presentation.GetProductsViewModel;
 import com.example.logisticcavan.products.getproducts.presentation.ProductsAdapter;
 import com.example.logisticcavan.restaurants.presentation.GetRestaurantViewModel;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -45,8 +52,8 @@ public class HomeFragment extends BaseFragment implements CategoriesAdapter.OnIt
     private CategoriesAdapter categoriesAdapter;
     private OffersAdapter offersAdapter;
     private ProductsAdapter productsAdapter;
-
-    private ProgressBar foodProgressBar,offerLoaderProgress;
+    private NavController navController;
+    private ProgressBar foodProgressBar, offerLoaderProgress;
     private CombinedProductsWithRestaurantsViewModel combinedProductsWithRestaurantsViewModel;
 
     @Override
@@ -65,15 +72,22 @@ public class HomeFragment extends BaseFragment implements CategoriesAdapter.OnIt
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        return view;
     }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         productsContainer = view.findViewById(R.id.food_container);
         offersContainer = view.findViewById(R.id.offers_container);
-        foodProgressBar= view.findViewById(R.id.food_loader_progress_bar);
-        offerLoaderProgress= view.findViewById(R.id.offers_loader_progress_bar);
+        foodProgressBar = view.findViewById(R.id.food_loader_progress_bar);
+        offerLoaderProgress = view.findViewById(R.id.offers_loader_progress_bar);
+        ImageView filterList = view.findViewById(R.id.filter_list_id);
+        filterList.setOnClickListener(v -> {
+            navController = Navigation.findNavController(v);
+            navController.navigate(R.id.action_homeFragment_to_cartFragment);
+        });
         getCategories(view);
         getOffers(view);
         getProducts();
@@ -85,7 +99,6 @@ public class HomeFragment extends BaseFragment implements CategoriesAdapter.OnIt
 
         });
     }
-
 
 
     private void getCategories(View view) {
@@ -121,21 +134,30 @@ public class HomeFragment extends BaseFragment implements CategoriesAdapter.OnIt
         productsViewModel.fetchProducts();
         productsViewModel.getProductsLiveData().observe(getViewLifecycleOwner(), result -> result.handle(productsResult -> {
             List<String> restaurantIds = restaurantIds(productsResult);
-            for(Product product : productsResult){
-                Log.d("TAG", "getProducts: "+product.getFoodDesc());
-            }
             restaurantViewModel.fetchRestaurantsIds(restaurantIds);
+            restaurantViewModel.getRestaurant().observe(getViewLifecycleOwner(), restaurantResult -> restaurantResult.handle(restaurants -> {
+                List<ProductWithRestaurant> productWithRestaurants = productsResult.stream().map(product -> {
+                    Restaurant restaurant = restaurants.stream().filter(r -> r.getRestaurantId().equals(product.getResId())).findFirst().orElse(null);
+                    return new ProductWithRestaurant(product, restaurant);
+                }).collect(Collectors.toList());
+                productsAdapter.submitList(productWithRestaurants);
+                setupProductsContainer(this.requireView(), productsAdapter);
+                foodProgressBar.setVisibility(View.GONE);
+            }, errorOnLoadingRestaurants -> {
+            }, () -> {
+            }));
         }, error -> {
         }, () -> foodProgressBar.setVisibility(View.VISIBLE)));
 
-        combinedProductsWithRestaurantsViewModel.getCombinedLiveData().removeObservers(getViewLifecycleOwner());
-        combinedProductsWithRestaurantsViewModel.combineSources(productsViewModel.getProductsLiveData(), restaurantViewModel.getRestaurant());
-        combinedProductsWithRestaurantsViewModel.getCombinedLiveData().observe(getViewLifecycleOwner(), result -> result.handle(productWithRestaurants -> {
-            productsAdapter.submitList(productWithRestaurants);
-            setupProductsContainer(this.requireView(), productsAdapter);
-            foodProgressBar.setVisibility(View.GONE);
-        }, error -> {
-        }, () -> foodProgressBar.setVisibility(View.VISIBLE)));
+
+//        combinedProductsWithRestaurantsViewModel.getCombinedLiveData().removeObservers(getViewLifecycleOwner());
+//        combinedProductsWithRestaurantsViewModel.combineSources(productsViewModel.getProductsLiveData(), restaurantViewModel.getRestaurant());
+//        combinedProductsWithRestaurantsViewModel.getCombinedLiveData().observe(getViewLifecycleOwner(), result -> result.handle(productWithRestaurants -> {
+//            productsAdapter.submitList(productWithRestaurants);
+//            setupProductsContainer(this.requireView(), productsAdapter);
+//            foodProgressBar.setVisibility(View.GONE);
+//        }, error -> {
+//        }, () -> foodProgressBar.setVisibility(View.VISIBLE)));
     }
 
     private void setupProductsContainer(View view, ProductsAdapter adapter) {

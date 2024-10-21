@@ -17,8 +17,28 @@ public class Order {
     private double totalCost = 0.0;
 
     private List<Map<String,Object>> cartItems;
-    private String clientName;
-    private String RestaurantName;
+    private String clientName="";
+    private String RestaurantName="";
+
+    private String clientLocation ="";
+
+    private String clientPhone="";
+
+    public String getClientLocation() {
+        return clientLocation;
+    }
+
+    public void setClientLocation(String clientLocation) {
+        this.clientLocation = clientLocation;
+    }
+
+    public String getClientPhone() {
+        return clientPhone;
+    }
+
+    public void setClientPhone(String clientPhone) {
+        this.clientPhone = clientPhone;
+    }
 
     public List<Map<String, Object>> getCartItems() {
         return cartItems;

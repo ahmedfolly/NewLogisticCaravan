@@ -12,6 +12,9 @@
         <action
             android:id="@+id/action_homeFragment_to_foodDetailFragment"
             app:destination="@id/foodDetailFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_cartFragment"
+            app:destination="@id/cartFragment" />
     </fragment>
     <fragment
         android:id="@+id/foodDetailFragment"
@@ -22,4 +25,9 @@
             android:name="productWithRestaurant"
             app:argType="com.example.logisticcavan.restaurants.domain.ProductWithRestaurant" />
     </fragment>
+    <fragment
+        android:id="@+id/cartFragment"
+        android:name="com.example.logisticcavan.CartFragment"
+        android:label="fragment_cart"
+        tools:layout="@layout/fragment_cart" />
 </navigation>

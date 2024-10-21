@@ -14,11 +14,12 @@ public class CartItem {
     private double price;
     private int quantity;
     private String productId;
+    private String restaurantName;
 
     public CartItem() {
     }
 
-    public CartItem(int id, String restaurantId, String productName, String productImageLink, double price, int quantity, String productId) {
+    public CartItem(int id, String restaurantId, String productName, String productImageLink, double price, int quantity, String productId, String restaurantName) {
         this.id = id;
         this.restaurantId = restaurantId;
         this.productName = productName;
@@ -26,6 +27,15 @@ public class CartItem {
         this.price = price;
         this.quantity = quantity;
         this.productId = productId;
+        this.restaurantName = restaurantName;
+    }
+
+    public String getRestaurantName() {
+        return restaurantName;
+    }
+
+    public void setRestaurantName(String restaurantName) {
+        this.restaurantName = restaurantName;
     }
 
     public int getId() {

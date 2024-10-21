@@ -13,7 +13,7 @@
 
     <style name="Widget.CustomBottomNavigationView" parent="Widget.Material3.BottomNavigationView">
         <item name="itemActiveIndicatorStyle">@style/CustomBottomNavIndicator</item>
-        <item name="itemIconTint">#FFFFFF</item>
+        <item name="itemIconTint">@color/primary_color</item>
 
     </style>
     <style name="AppBottomSheetDialogTheme"
@@ -27,7 +27,7 @@
     </style>
     <!-- Custom style for the active indicator -->
     <style name="CustomBottomNavIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
-        <item name="android:color">#1AFFFFFF</item> <!-- Set the color of the active indicator -->
+        <item name="android:color">#33E55763</item> <!-- Set the color of the active indicator -->
         <item name="shapeAppearanceOverlay">@style/ShapeAppearance.CustomActiveIndicator</item>
     </style>
 
