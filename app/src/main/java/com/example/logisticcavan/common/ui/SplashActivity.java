@@ -60,8 +60,12 @@ public class SplashActivity extends AppCompatActivity {
         Log.e("TAG", "navigateBasedOnUser:  "+typeUser );
 
         if (typeUser.equals(CUSTOMER)) {
+            Log.e("TAG", "MainActivity:  " );
+
             startActivity(new Intent(SplashActivity.this, MainActivity.class));
         }else if (typeUser.equals(COURIER)){
+            Log.e("TAG", "SplashActivity:  " );
+
             startActivity(new Intent(SplashActivity.this, CourierActivity.class));
         }
     }

@@ -1,5 +1,6 @@
 package com.example.logisticcavan.orders.getOrders.courier.presentaion;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,11 +31,12 @@ public class CourierOrdersAdapter extends RecyclerView.Adapter<CourierOrdersAdap
     @Override
     public void onBindViewHolder(@NonNull CourierOrdersAdapter.OffersVH holder, int position) {
         Order order = orders.get(position);
-        holder.idOrder.setText("12343");
-        holder.customerName.setText("Ahmed Kamel");
-        holder.restaurantName.setText("Ash Cafe Roastery");
-        holder.itemNumber.setText("4");
-
+        holder.idOrder.setText(order.getOrderId());
+        holder.clientName.setText(order.getClientName());
+        holder.restaurantName.setText(order.getRestaurantName());
+        holder.status.setText(order.getStatus());
+        Log.e("TAG" , ""+order.getCartItems().size());
+        holder.itemNumber.setText(""+order.getCartItems().size());
         holder.itemView.setOnClickListener(view1 -> {
 
         });
@@ -47,16 +49,18 @@ public class CourierOrdersAdapter extends RecyclerView.Adapter<CourierOrdersAdap
 
     public class OffersVH extends RecyclerView.ViewHolder {
         TextView idOrder;
-        TextView customerName;
+        TextView clientName;
         TextView restaurantName;
         TextView itemNumber;
+        TextView status;
 
         public OffersVH(@NonNull View itemView) {
             super(itemView);
             idOrder = itemView.findViewById(R.id.idOrder);
-            customerName = itemView.findViewById(R.id.customerName);
+            clientName = itemView.findViewById(R.id.customerName);
             restaurantName = itemView.findViewById(R.id.restaurantName);
             itemNumber = itemView.findViewById(R.id.itemNumber);
+            status = itemView.findViewById(R.id.status);
         }
     }
 }
