@@ -9,6 +9,7 @@ import com.example.logisticcavan.cart.domain.repos.CartRepo;
 import com.example.logisticcavan.cart.domain.usecases.AddToCartUseCase;
 import com.example.logisticcavan.cart.domain.usecases.EmptyCartUseCase;
 import com.example.logisticcavan.cart.domain.usecases.GetCartCountUseCase;
+import com.example.logisticcavan.cart.domain.usecases.GetCartProductsUseCase;
 import com.example.logisticcavan.cart.domain.usecases.GetRestaurantIdOfFirstItemUseCase;
 
 import dagger.Module;
@@ -38,7 +39,10 @@ public class CartDI {
     public GetCartCountUseCase provideGetCartCountUseCase(CartRepo cartRepo) {
         return new GetCartCountUseCase(cartRepo);
     }
-
+    @Provides
+    public GetCartProductsUseCase providesGetCartProductsUseCase(CartRepo cartRepo){
+        return new GetCartProductsUseCase(cartRepo);
+    }
     @Provides
     public CartRepo provideCartRepo(CartDao cartDao) {
         return new CartRepoImp(cartDao);

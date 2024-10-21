@@ -28,7 +28,6 @@ import dagger.hilt.components.SingletonComponent;
 @InstallIn(SingletonComponent.class)
 public class AuthDi {
 
-
     @Provides
     @Singleton
     AuthViewModel provideAuthViewModel(
@@ -37,7 +36,8 @@ public class AuthDi {
             StoreUserInfoRemotelyUseCase storeUserInfoRemotelyUseCase,
             StoreUserInfoLocallyUseCase storeUserInfoLocallyUseCase,
             GetUserInfoRemotelyUseCase getUserInfoRemotelyUseCase,
-            SendPasswordResetEmailUseCase sendPasswordResetEmailUseCase
+            SendPasswordResetEmailUseCase sendPasswordResetEmailUseCase,
+            GetUserInfoLocallyUseCase getUserInfoLocallyUseCase
 
     ) {
         return new AuthViewModel(loginUseCase,
@@ -45,11 +45,13 @@ public class AuthDi {
                 storeUserInfoRemotelyUseCase,
                 storeUserInfoLocallyUseCase,
                 getUserInfoRemotelyUseCase
-        ,sendPasswordResetEmailUseCase
+                , sendPasswordResetEmailUseCase,
+                getUserInfoLocallyUseCase
         );
     }
 
     //  Use Cases
+
     @Provides
     LoginUseCase provideLoginUseCase(AuthRepository authRepository
     ) {
@@ -86,13 +88,11 @@ public class AuthDi {
         return new GetUserInfoLocallyUseCase(localStorageRepository);
     }
 
-   @Provides
+    @Provides
     SendPasswordResetEmailUseCase provideSendPasswordResetEmailUseCase(AuthRepository authRepository
     ) {
         return new SendPasswordResetEmailUseCase(authRepository);
     }
-
-
 
     // Repositories
     @Provides

@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.logisticcavan.auth.domain.entity.RegistrationData;
 import com.example.logisticcavan.auth.domain.entity.UserInfo;
+import com.example.logisticcavan.auth.domain.useCase.GetUserInfoLocallyUseCase;
 import com.example.logisticcavan.auth.domain.useCase.GetUserInfoRemotelyUseCase;
 import com.example.logisticcavan.auth.domain.useCase.LoginUseCase;
 import com.example.logisticcavan.auth.domain.useCase.SendPasswordResetEmailUseCase;
@@ -26,6 +27,7 @@ public class AuthViewModel  extends ViewModel {
     private StoreUserInfoRemotelyUseCase storeUserInfoRemotelyUseCase;
     private StoreUserInfoLocallyUseCase storeUserInfoLocallyUseCase;
     private GetUserInfoRemotelyUseCase getUserInfoRemotelyUseCase;
+    private GetUserInfoLocallyUseCase getUserInfoLocallyUseCase;
     private SendPasswordResetEmailUseCase sendPasswordResetEmailUseCase;
 
     private String typeUser;
@@ -36,13 +38,15 @@ public class AuthViewModel  extends ViewModel {
                          StoreUserInfoRemotelyUseCase storeUserInfoRemotelyUseCase,
                          StoreUserInfoLocallyUseCase storeUserInfoLocallyUseCase,
                          GetUserInfoRemotelyUseCase getUserInfoRemotelyUseCase,
-                         SendPasswordResetEmailUseCase sendPasswordResetEmailUseCase) {
+                         SendPasswordResetEmailUseCase sendPasswordResetEmailUseCase,
+    GetUserInfoLocallyUseCase getUserInfoLocallyUseCase) {
         this.loginUseCase = loginUseCase;
         this.signUpUseCase = signUpUseCase;
         this.storeUserInfoRemotelyUseCase = storeUserInfoRemotelyUseCase;
         this.storeUserInfoLocallyUseCase = storeUserInfoLocallyUseCase;
         this.getUserInfoRemotelyUseCase = getUserInfoRemotelyUseCase;
         this.sendPasswordResetEmailUseCase = sendPasswordResetEmailUseCase;
+        this.getUserInfoLocallyUseCase = getUserInfoLocallyUseCase;
     }
 
     public CompletableFuture<AuthResult> login(RegistrationData registrationData) {
@@ -78,5 +82,8 @@ public class AuthViewModel  extends ViewModel {
         return typeUser;
     }
 
+    public UserInfo getUserInfoLocally() {
+        return getUserInfoLocallyUseCase.getUserInfo();
+    }
 
 }

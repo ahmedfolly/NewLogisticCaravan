@@ -45,6 +45,11 @@ public class AddOrderRepoImp implements AddOrderRepo {
         orderDataToUpload.put("to", order.getTo());
         orderDataToUpload.put("totalAmount", order.getTotalAmount());
         orderDataToUpload.put("totalCost", order.getTotalCost());
+        orderDataToUpload.put("cartItems", order.getCartItems());
+        orderDataToUpload.put("clientName", order.getClientName());
+        orderDataToUpload.put("clientLocation", order.getClientLocation());
+        orderDataToUpload.put("clientPhone", order.getClientPhone());
+        orderDataToUpload.put("RestaurantName", order.getRestaurantName());
         return orderDataToUpload;
     }
 }
