@@ -23,6 +23,7 @@ import com.example.logisticcavan.R;
 import com.example.logisticcavan.cart.domain.models.CartItem;
 import com.example.logisticcavan.cart.presentaion.CartViewModel;
 import com.example.logisticcavan.cart.presentaion.ui.AddOrderBottomSheet;
+import com.example.logisticcavan.products.getproducts.domain.Product;
 import com.google.android.material.button.MaterialButton;
 
 import java.util.Objects;
@@ -86,7 +87,7 @@ public class FoodDetailFragment extends Fragment implements AddOrderBottomSheet.
     }
 
     @Override
-    public void addToCart(int quantity, double price) {
+    public void addToCart(Product product, int quantity, double price) {
         CartItem cartItem = getCartItem(quantity, price);
         //adding to cart operation.
         cartViewModel.getRestaurantIdOfFirstItem(args.getProductWithRestaurant().getRestaurant().getRestaurantId(), new CartViewModel.GetRestaurantIdCallback() {

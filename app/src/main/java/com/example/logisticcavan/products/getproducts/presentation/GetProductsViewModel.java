@@ -33,8 +33,8 @@ public class GetProductsViewModel extends ViewModel {
         this.getProductsUseCase = getProductsUseCase;
     }
 
-    public void fetchProducts() {
-        disposable.add(getProductsUseCase.execute().subscribe(_productsLiveData::postValue, error -> {
+    public void fetchProducts(List<String> productsIds) {
+        disposable.add(getProductsUseCase.execute(productsIds).subscribe(_productsLiveData::postValue, error -> {
             _productsLiveData.postValue(MyResult.error(new Exception("error" + error.getMessage())));
         }));
 

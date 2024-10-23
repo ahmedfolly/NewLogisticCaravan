@@ -104,7 +104,12 @@ public class CartFragment extends Fragment implements ConfirmOrderBottomFragment
 
     private void setupCartItemsContainer() {
         cartItemsContainer.setHasFixedSize(true);
-        cartItemsContainer.setLayoutManager(new LinearLayoutManager(requireContext()));
+        cartItemsContainer.setLayoutManager(new LinearLayoutManager(requireContext()){
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        });
         cartItemsContainer.setAdapter(cartsAdapter);
     }
 

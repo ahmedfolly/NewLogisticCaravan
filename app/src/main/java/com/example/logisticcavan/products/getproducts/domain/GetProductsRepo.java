@@ -7,5 +7,6 @@ import java.util.List;
 import io.reactivex.rxjava3.core.Observable;
 
 public interface GetProductsRepo{
-    Observable<MyResult<List<Product>>> getAllProducts();
+    Observable<MyResult<List<Product>>> getAllProducts(List<String> productsIds);
+    Observable<MyResult<Product>> getProductById(String productId);
 }

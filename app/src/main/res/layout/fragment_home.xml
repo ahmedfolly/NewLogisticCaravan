@@ -42,14 +42,13 @@
                     android:src="@drawable/bell"
                     android:id="@+id/notification_id"/>
             </LinearLayout>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:textColor="@color/black"
-                android:textSize="20sp"
-                android:text="Exclusiv for you"
-                android:layout_marginTop="8dp" />
+<!--            <TextView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:textStyle="bold"-->
+<!--                android:textColor="@color/black"-->
+<!--                android:textSize="20sp"-->
+<!--                android:layout_marginTop="8dp" />-->
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -81,7 +80,7 @@
                 android:textColor="@color/black"
                 android:textStyle="bold"
                 android:textSize="20sp"
-                android:text="Available dishes"
+                android:text="Food &amp; Drinks"
                 />
             <RelativeLayout
                 android:layout_width="match_parent"

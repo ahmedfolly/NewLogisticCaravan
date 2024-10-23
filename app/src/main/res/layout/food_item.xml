@@ -1,79 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-
+    android:orientation="horizontal"
+    android:background="@drawable/food_item_backgound"
+    android:layout_margin="8dp"
     >
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:elevation="4dp"
+    <ImageView
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_margin="8dp"
-        app:cardCornerRadius="8dp">
-        <LinearLayout
+        android:scaleType="fitXY"
+        android:id="@+id/food_image_details_id" />
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center">
+        <TextView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                >
-                <ImageView
-                    android:id="@+id/food_image_id"
-                    android:layout_width="match_parent"
-                    android:layout_height="150dp"
-                    android:scaleType="fitXY" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentBottom="true"
-                    android:layout_margin="8dp"
-                    android:id="@+id/restaurant_name_id"
-                    android:textSize="15sp"
-                    android:textColor="@color/white"/>
-            </RelativeLayout>
-
-
-            <TextView
-                android:id="@+id/product_name_id"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="start"
-                android:textColor="@color/primary_color"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:orientation="horizontal"
-                android:padding="4dp">
-
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/paid_24px" />
-
-                <TextView
-                    android:id="@+id/product_price_id"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:gravity="center|start"
-                    android:layout_marginStart="4dp"
-                    android:layout_marginEnd="4dp"
-                    android:layout_weight="1"
-                    android:textColor="@color/black"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
-
-            </LinearLayout>
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
-
-</FrameLayout>
+            android:layout_height="wrap_content"
+            android:id="@+id/food_name_details_id"
+            android:textSize="15sp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:text="jlfaksfkl"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/food_gradients_details_id"
+            android:textSize="12sp"
+            android:textColor="@color/grey_color"
+            android:text="asdfowpe fweio jfsajkf wojf j"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/food_price_details_id"
+            android:textSize="15sp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            />
+    </LinearLayout>
+</LinearLayout>

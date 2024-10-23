@@ -3,13 +3,13 @@
     <item
         android:id="@+id/account_item"
         android:title="Profile"
-        android:icon="@drawable/outline_person_24"/>
+        android:icon="@drawable/storefront_24px"/>
     <item
         android:id="@+id/tray_item"
         android:title="Orders"
-        android:icon="@drawable/list_alt_24px"/>
+        android:icon="@drawable/local_shipping_24px"/>
     <item
         android:id="@+id/food_menu_item"
         android:title="Menu"
-        android:icon="@drawable/restaurant_24px"/>
+        android:icon="@drawable/notifications_24px"/>
 </menu>

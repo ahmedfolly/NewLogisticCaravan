@@ -8,8 +8,34 @@ import androidx.annotation.NonNull;
 public class Restaurant implements Parcelable {
     private String restaurantName="";
     private String restaurantImageLink="";
-
     private String restaurantId="";
+    private String restaurantLogoLink="";
+    private String availableTime="";
+    private String deliveryTime="";
+
+    public String getRestaurantLogoLink() {
+        return restaurantLogoLink;
+    }
+
+    public void setRestaurantLogoLink(String restaurantLogoLink) {
+        this.restaurantLogoLink = restaurantLogoLink;
+    }
+
+    public String getAvailableTime() {
+        return availableTime;
+    }
+
+    public void setAvailableTime(String availableTime) {
+        this.availableTime = availableTime;
+    }
+
+    public String getDeliveryTime() {
+        return deliveryTime;
+    }
+
+    public void setDeliveryTime(String deliveryTime) {
+        this.deliveryTime = deliveryTime;
+    }
 
     protected Restaurant(Parcel in) {
         restaurantName = in.readString();

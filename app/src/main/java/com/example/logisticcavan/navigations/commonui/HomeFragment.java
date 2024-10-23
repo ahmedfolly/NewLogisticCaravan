@@ -35,6 +35,8 @@ import com.example.logisticcavan.products.getproducts.presentation.GetCategoryPr
 import com.example.logisticcavan.products.getproducts.presentation.GetProductsViewModel;
 import com.example.logisticcavan.products.getproducts.presentation.ProductsAdapter;
 import com.example.logisticcavan.restaurants.presentation.GetRestaurantViewModel;
+import com.example.logisticcavan.restaurants.presentation.GetRestaurantsViewModel;
+import com.example.logisticcavan.restaurants.presentation.RestaurantsAdapter;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -52,19 +54,23 @@ public class HomeFragment extends BaseFragment implements CategoriesAdapter.OnIt
     private CategoriesAdapter categoriesAdapter;
     private OffersAdapter offersAdapter;
     private ProductsAdapter productsAdapter;
+    private RestaurantsAdapter restaurantsAdapter;
     private NavController navController;
     private ProgressBar foodProgressBar, offerLoaderProgress;
     private CombinedProductsWithRestaurantsViewModel combinedProductsWithRestaurantsViewModel;
+    private GetRestaurantsViewModel getRestaurantsViewModel;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         categoriesAdapter = new CategoriesAdapter(CategoriesListLocal.categories, this);
         productsAdapter = new ProductsAdapter();
+        restaurantsAdapter = new RestaurantsAdapter();
         offersViewModel = new ViewModelProvider(this).get(OffersViewModel.class);
         productsViewModel = new ViewModelProvider(this).get(GetProductsViewModel.class);
         restaurantViewModel = new ViewModelProvider(this).get(GetRestaurantViewModel.class);
         categoryProductsViewModel = new ViewModelProvider(this).get(GetCategoryProductsViewModel.class);
+        getRestaurantsViewModel = new ViewModelProvider(this).get(GetRestaurantsViewModel.class);
         combinedProductsWithRestaurantsViewModel = new ViewModelProvider(this).get(CombinedProductsWithRestaurantsViewModel.class);
 
     }
@@ -90,9 +96,9 @@ public class HomeFragment extends BaseFragment implements CategoriesAdapter.OnIt
         });
         getCategories(view);
         getOffers(view);
-        getProducts();
-        setupProductsContainer(view, productsAdapter);
-
+//        getProducts();
+        setupProductsContainer(view,restaurantsAdapter);
+        getRestaurants();
         view.findViewById(R.id.notification_id).setOnClickListener(view1 -> {
 
             signOut();
@@ -130,57 +136,68 @@ public class HomeFragment extends BaseFragment implements CategoriesAdapter.OnIt
     }
 
     @SuppressLint("CheckResult")
-    private void getProducts() {
-        productsViewModel.fetchProducts();
-        productsViewModel.getProductsLiveData().observe(getViewLifecycleOwner(), result -> result.handle(productsResult -> {
-            List<String> restaurantIds = restaurantIds(productsResult);
-            restaurantViewModel.fetchRestaurantsIds(restaurantIds);
-            restaurantViewModel.getRestaurant().observe(getViewLifecycleOwner(), restaurantResult -> restaurantResult.handle(restaurants -> {
-                List<ProductWithRestaurant> productWithRestaurants = productsResult.stream().map(product -> {
-                    Restaurant restaurant = restaurants.stream().filter(r -> r.getRestaurantId().equals(product.getResId())).findFirst().orElse(null);
-                    return new ProductWithRestaurant(product, restaurant);
-                }).collect(Collectors.toList());
-                productsAdapter.submitList(productWithRestaurants);
-                setupProductsContainer(this.requireView(), productsAdapter);
-                foodProgressBar.setVisibility(View.GONE);
-            }, errorOnLoadingRestaurants -> {
-            }, () -> {
-            }));
-        }, error -> {
-        }, () -> foodProgressBar.setVisibility(View.VISIBLE)));
-
-
-//        combinedProductsWithRestaurantsViewModel.getCombinedLiveData().removeObservers(getViewLifecycleOwner());
-//        combinedProductsWithRestaurantsViewModel.combineSources(productsViewModel.getProductsLiveData(), restaurantViewModel.getRestaurant());
-//        combinedProductsWithRestaurantsViewModel.getCombinedLiveData().observe(getViewLifecycleOwner(), result -> result.handle(productWithRestaurants -> {
-//            productsAdapter.submitList(productWithRestaurants);
-//            setupProductsContainer(this.requireView(), productsAdapter);
-//            foodProgressBar.setVisibility(View.GONE);
+//    private void getProducts() {
+//        productsViewModel.fetchProducts();
+//        productsViewModel.getProductsLiveData().observe(getViewLifecycleOwner(), result -> result.handle(productsResult -> {
+//            List<String> restaurantIds = restaurantIds(productsResult);
+//            restaurantViewModel.fetchRestaurantsIds(restaurantIds);
+//            restaurantViewModel.getRestaurant().observe(getViewLifecycleOwner(), restaurantResult -> restaurantResult.handle(restaurants -> {
+//                List<ProductWithRestaurant> productWithRestaurants = productsResult.stream().map(product -> {
+//                    Restaurant restaurant = restaurants.stream().filter(r -> r.getRestaurantId().equals(product.getResId())).findFirst().orElse(null);
+//                    return new ProductWithRestaurant(product, restaurant);
+//                }).collect(Collectors.toList());
+//                productsAdapter.submitList(productWithRestaurants);
+//                foodProgressBar.setVisibility(View.GONE);
+//            }, errorOnLoadingRestaurants -> {
+//            }, () -> {
+//            }));
 //        }, error -> {
 //        }, () -> foodProgressBar.setVisibility(View.VISIBLE)));
-    }
+//
+//
+////        combinedProductsWithRestaurantsViewModel.getCombinedLiveData().removeObservers(getViewLifecycleOwner());
+////        combinedProductsWithRestaurantsViewModel.combineSources(productsViewModel.getProductsLiveData(), restaurantViewModel.getRestaurant());
+////        combinedProductsWithRestaurantsViewModel.getCombinedLiveData().observe(getViewLifecycleOwner(), result -> result.handle(productWithRestaurants -> {
+////            productsAdapter.submitList(productWithRestaurants);
+////            setupProductsContainer(this.requireView(), productsAdapter);
+////            foodProgressBar.setVisibility(View.GONE);
+////        }, error -> {
+////        }, () -> foodProgressBar.setVisibility(View.VISIBLE)));
+//    }
 
-    private void setupProductsContainer(View view, ProductsAdapter adapter) {
-        productsContainer = view.findViewById(R.id.food_container);
-        productsContainer.setHasFixedSize(true);
-        productsContainer.setLayoutManager(new GridLayoutManager(view.getContext(), 2));
-        productsContainer.setAdapter(adapter);
-    }
+    private void getRestaurants() {
+        getRestaurantsViewModel.fetchRestaurants();
+        getRestaurantsViewModel.getRestaurants().observe(getViewLifecycleOwner(), myResult -> {
+            myResult.handle(restaurants -> {
+                        restaurantsAdapter.submitList(restaurants);
+                        setupProductsContainer(this.requireView(), restaurantsAdapter);
+                    }, error -> {
+                    },
+                    () -> {});
+                    });
+        }
 
-    @Override
-    public void scrollToPosition(int position) {
-        categoriesContainer.smoothScrollToPosition(position);
-    }
+        private void setupProductsContainer (View view, RestaurantsAdapter restaurantsAdapter){
+            productsContainer = view.findViewById(R.id.food_container);
+            productsContainer.setHasFixedSize(true);
+            productsContainer.setLayoutManager(new LinearLayoutManager(requireContext(),RecyclerView.HORIZONTAL,false));
+            productsContainer.setAdapter(restaurantsAdapter);
+        }
 
-    @Override
-    public void getCategoryName(String categoryName) {
-        if (!categoryName.equals("All")) {
+        @Override
+        public void scrollToPosition ( int position){
+            categoriesContainer.smoothScrollToPosition(position);
+        }
 
-            categoryProductsViewModel.fetchCategoryProducts(categoryName);
-            categoryProductsViewModel.getCategoryProductsLiveData().observe(getViewLifecycleOwner(), result -> {
-                result.handle(productsResult -> {
-                    List<String> restaurantIds = restaurantIds(productsResult);
-                    restaurantViewModel.fetchRestaurantsIds(restaurantIds);
+        @Override
+        public void getCategoryName (String categoryName){
+            if (!categoryName.equals("All")) {
+
+                categoryProductsViewModel.fetchCategoryProducts(categoryName);
+                categoryProductsViewModel.getCategoryProductsLiveData().observe(getViewLifecycleOwner(), result -> {
+                    result.handle(productsResult -> {
+                        List<String> restaurantIds = restaurantIds(productsResult);
+                        restaurantViewModel.fetchRestaurantsIds(restaurantIds);
 //                    List<String> restaurantIds = restaurantIds(productsResult);
 //                    List<String> restaurantsIdsSet = new ArrayList<>(new HashSet<>(restaurantIds));
 //                    restaurantViewModel.fetchRestaurantsIds(restaurantsIdsSet);
@@ -197,23 +214,23 @@ public class HomeFragment extends BaseFragment implements CategoriesAdapter.OnIt
 //                    }, errorOnLoadingRestaurants -> {
 //                    }, () -> {
 //                    }));
-                }, error -> {
-                }, () -> {
+                    }, error -> {
+                    }, () -> {
+                    });
+                    combinedProductsWithRestaurantsViewModel.combineSources(categoryProductsViewModel.getCategoryProductsLiveData(), restaurantViewModel.getRestaurant());
+                    combinedProductsWithRestaurantsViewModel.getCombinedLiveData().observe(getViewLifecycleOwner(), productWithRestaurantsResult -> productWithRestaurantsResult.handle(productWithRestaurants -> {
+                        productsAdapter.submitList(productWithRestaurants);
+//                        setupProductsContainer(this.requireView(), productsAdapter);
+                    }, error -> {
+                    }, () -> {
+                    }));
                 });
-                combinedProductsWithRestaurantsViewModel.combineSources(categoryProductsViewModel.getCategoryProductsLiveData(), restaurantViewModel.getRestaurant());
-                combinedProductsWithRestaurantsViewModel.getCombinedLiveData().observe(getViewLifecycleOwner(), productWithRestaurantsResult -> productWithRestaurantsResult.handle(productWithRestaurants -> {
-                    productsAdapter.submitList(productWithRestaurants);
-                    setupProductsContainer(this.requireView(), productsAdapter);
-                }, error -> {
-                }, () -> {
-                }));
-            });
-        } else {
-            getProducts();
+            } else {
+//                getProducts();
+            }
+        }
+
+        List<String> restaurantIds (List < Product > products) {
+            return products.stream().map(Product::getResId).collect(Collectors.toList());
         }
     }
-
-    List<String> restaurantIds(List<Product> products) {
-        return products.stream().map(Product::getResId).collect(Collectors.toList());
-    }
-}

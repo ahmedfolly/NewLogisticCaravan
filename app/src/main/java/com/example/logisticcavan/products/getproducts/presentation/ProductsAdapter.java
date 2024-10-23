@@ -64,10 +64,10 @@ public class ProductsAdapter extends ListAdapter<ProductWithRestaurant, Products
         TextView productPrice, restaurantName;
         public ProductsVH(@NonNull View itemView) {
             super(itemView);
-            productImage = itemView.findViewById(R.id.food_image_id);
-            foodName = itemView.findViewById(R.id.product_name_id);
-            productPrice = itemView.findViewById(R.id.product_price_id);
-            restaurantName = itemView.findViewById(R.id.restaurant_name_id);
+//            productImage = itemView.findViewById(R.id.food_image_id);
+//            foodName = itemView.findViewById(R.id.product_name_id);
+//            productPrice = itemView.findViewById(R.id.product_price_id);
+//            restaurantName = itemView.findViewById(R.id.restaurant_name_id);
         }
     }
     static class ProductsDiffUtil extends DiffUtil.ItemCallback<ProductWithRestaurant> {

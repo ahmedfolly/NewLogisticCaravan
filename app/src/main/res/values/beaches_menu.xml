@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="beaches_list">
+        <item>Seasehell island</item>
+        <item>Breeze island</item>
+        <item>Palm island</item>
+        <item>Masts island</item>
+        <item>Wave island</item>
+        <item>Pearl island</item>
+    </string-array>
+    <string-array name="schedule_list">
+    <item>Scheduled time</item>
+</string-array>
+</resources>

@@ -17,7 +17,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.logisticcavan.R;
+import com.example.logisticcavan.products.getproducts.domain.Product;
 import com.example.logisticcavan.restaurants.domain.ProductWithRestaurant;
+import com.example.logisticcavan.restaurants.domain.Restaurant;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 public class AddOrderBottomSheet extends BottomSheetDialogFragment {
@@ -43,24 +45,26 @@ public class AddOrderBottomSheet extends BottomSheetDialogFragment {
         super.onViewCreated(view, savedInstanceState);
         Bundle args = getArguments();
         assert args != null;
-        ProductWithRestaurant productWithRestaurant = args.getParcelable("productWithRestaurant");
-        assert productWithRestaurant != null;
+//        Restaurant restaurant = args.getParcelable("restaurant");
+        Product product = args.getParcelable("product");
+
         ImageView foodImage = view.findViewById(R.id.food_image_bottom_sheet);
+        assert product != null;
         Glide.with(view)
-                .load(productWithRestaurant.getProduct().getProductImageLink())
+                .load(product.getProductImageLink())
                 .apply(RequestOptions.bitmapTransform(new RoundedCorners(16)))
                 .into(foodImage);
         TextView foodName = view.findViewById(R.id.food_name_bottom_sheet);
+        foodName.setText(product.getProductName());
         TextView foodDesc = view.findViewById(R.id.food_description_bottom_sheet);
-        foodName.setText(productWithRestaurant.getProduct().getProductName());
-        foodDesc.setText(productWithRestaurant.getProduct().getFoodDesc());
+        foodDesc.setText(product.getFoodDesc());
         TextView orderQuantity = view.findViewById(R.id.order_quantity);
-        double price = productWithRestaurant.getProduct().getProductPrice();
+        double price = product.getProductPrice();
         TextView totalPriceTxt = view.findViewById(R.id.order_total_price);
         calculateTotalPrice(totalPriceTxt, 1, price);
         increaseOrderItemQuantity(view,totalPriceTxt, orderQuantity, price);
         decreaseOrderItemQuantity(view,totalPriceTxt, orderQuantity, price);
-        addToCart(view,orderQuantity,totalPriceTxt);
+        addToCart(view,product,orderQuantity,totalPriceTxt);
     }
 
     private void increaseOrderItemQuantity(View view,TextView totalPriceTxt, TextView orderQuantity, double price) {
@@ -90,18 +94,18 @@ public class AddOrderBottomSheet extends BottomSheetDialogFragment {
         totalPriceTxt.setText(String.valueOf(totalPrice));
     }
 
-    private void addToCart(View view,TextView quantityText,TextView totalPriceTxt) {
+    private void addToCart(View view,Product product,TextView quantityText,TextView totalPriceTxt) {
 
         CardView addToCartBtn = view.findViewById(R.id.add_product_to_cart);
         addToCartBtn.setOnClickListener(v -> {
             int quantity = Integer.parseInt(quantityText.getText().toString());
             double price = Double.parseDouble(totalPriceTxt.getText().toString());
-            addToCartCallback.addToCart(quantity, price);
+            addToCartCallback.addToCart(product,quantity, price);
             dismiss();
         });
     }
 
     public interface AddToCartCallback {
-        void addToCart(int quantity, double price);
+        void addToCart(Product product,int quantity, double price);
     }
 }

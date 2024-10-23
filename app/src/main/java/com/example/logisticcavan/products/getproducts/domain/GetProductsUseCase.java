@@ -13,9 +13,9 @@ public class GetProductsUseCase {
         this.repo = repo;
     }
 
-    public Observable<MyResult<List<Product>>> execute() {
+    public Observable<MyResult<List<Product>>> execute(List<String> productsIds) {
 
-        return repo.getAllProducts();
+        return repo.getAllProducts(productsIds);
 
     }
 
