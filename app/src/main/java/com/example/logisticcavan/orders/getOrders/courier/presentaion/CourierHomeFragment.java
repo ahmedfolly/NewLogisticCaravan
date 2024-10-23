@@ -1,10 +1,9 @@
 package com.example.logisticcavan.orders.getOrders.courier.presentaion;
 
-import static com.example.logisticcavan.common.utils.Constant.COMPLETED;
+import static com.example.logisticcavan.common.utils.Constant.SHIPPED;
 import static com.example.logisticcavan.common.utils.Constant.PENDING;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.View;
@@ -71,7 +70,7 @@ public class CourierHomeFragment extends Fragment {
                 getCourierOrdersViewModel.getOrdersBasedStatus(PENDING);
                 return true;
             } else if (itemId == R.id.filter_by_completed) {
-                getCourierOrdersViewModel.getOrdersBasedStatus(COMPLETED);
+                getCourierOrdersViewModel.getOrdersBasedStatus(SHIPPED);
                 return true;
             }
             return false;

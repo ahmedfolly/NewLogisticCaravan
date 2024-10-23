@@ -10,5 +10,6 @@ public class Constant {
     public static final String ORDERS = "Orders";
     public static final String STATUS = "status";
     public static final String PENDING = "PENDING";
-    public static final String COMPLETED = "COMPLETED";
+    public static final String SHIPPED = "Shipped";
 }
+

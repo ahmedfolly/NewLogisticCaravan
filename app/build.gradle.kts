@@ -1,9 +1,9 @@
+
 plugins {
     alias(libs.plugins.android.application)
     id("com.google.gms.google-services")
     id("com.google.dagger.hilt.android")
     id("androidx.navigation.safeargs")
-
 }
 
 android {
@@ -16,7 +16,6 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     buildFeatures {
@@ -60,6 +59,7 @@ dependencies {
 
     //glide
     implementation(libs.glide)
+    //gson
     implementation("com.google.code.gson:gson:2.8.8")
     implementation (libs.room.rxjava3)
     implementation (libs.rxandroid)

@@ -15,7 +15,6 @@ public class Order {
     private String to = "";
     private int totalAmount = 0;
     private double totalCost = 0.0;
-
     private List<Map<String,Object>> cartItems;
     private String clientName="";
     private String RestaurantName="";
