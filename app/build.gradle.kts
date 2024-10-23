@@ -59,6 +59,7 @@ dependencies {
 
     //glide
     implementation(libs.glide)
+    //gson
     implementation("com.google.code.gson:gson:2.8.8")
     implementation (libs.room.rxjava3)
     implementation (libs.rxandroid)
