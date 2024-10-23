@@ -7,7 +7,6 @@ public class Order {
 
     private String dateCreated = "";
     private String from = "";
-    private String location = "";
     private String payment = "";
     private double price = 0.0;
     private String orderId = "";
@@ -22,6 +21,34 @@ public class Order {
     private String clientLocation ="";
 
     private String clientPhone="";
+
+    private Map<String,String> courier;
+    private Map<String,String> deliveryTime;
+    private Map<String,String> location;
+
+    public Map<String, String> getCourier() {
+        return courier;
+    }
+
+    public void setCourier(Map<String, String> courier) {
+        this.courier = courier;
+    }
+
+    public Map<String, String> getDeliveryTime() {
+        return deliveryTime;
+    }
+
+    public void setDeliveryTime(Map<String, String> deliveryTime) {
+        this.deliveryTime = deliveryTime;
+    }
+
+    public Map<String, String> getLocation() {
+        return location;
+    }
+
+    public void setLocation(Map<String, String> location) {
+        this.location = location;
+    }
 
     public String getClientLocation() {
         return clientLocation;
@@ -80,14 +107,6 @@ public class Order {
 
     public void setFrom(String from) {
         this.from = from;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
     }
 
     public String getPayment() {
