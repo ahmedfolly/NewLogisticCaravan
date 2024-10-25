@@ -8,10 +8,13 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.logisticcavan.cart.domain.models.CartItem;
 import com.example.logisticcavan.cart.domain.usecases.AddToCartUseCase;
+import com.example.logisticcavan.cart.domain.usecases.DeleteCartItemByIdUseCase;
 import com.example.logisticcavan.cart.domain.usecases.EmptyCartUseCase;
 import com.example.logisticcavan.cart.domain.usecases.GetCartCountUseCase;
 import com.example.logisticcavan.cart.domain.usecases.GetCartProductsUseCase;
 import com.example.logisticcavan.cart.domain.usecases.GetRestaurantIdOfFirstItemUseCase;
+import com.example.logisticcavan.cart.domain.usecases.GetTotalPriceUseCase;
+import com.example.logisticcavan.cart.domain.usecases.UpdateQuantityUseCase;
 import com.example.logisticcavan.common.utils.MyResult;
 
 import java.util.List;
@@ -28,20 +31,38 @@ public class CartViewModel extends ViewModel {
     private final EmptyCartUseCase emptyCartUseCase;
     private final GetCartCountUseCase getCartCountUseCase;
     private final GetCartProductsUseCase getCartProductsUseCase;
+    private final UpdateQuantityUseCase updateQuantityUseCase;
+    private final DeleteCartItemByIdUseCase deleteCartItemByIdUseCase;
+    private final GetTotalPriceUseCase getTotalPriceUseCase;
     private final CompositeDisposable disposable = new CompositeDisposable();
     private final MutableLiveData<MyResult<List<CartItem>>> cartItemsLiveData = new MutableLiveData<>();
+    private final MutableLiveData<Double> totalPriceLiveData = new MutableLiveData<>();
 
     @Inject
     public CartViewModel(AddToCartUseCase addToCartUseCase,
                          GetRestaurantIdOfFirstItemUseCase getRestaurantIdOfFirstItemUseCase,
                          EmptyCartUseCase emptyCartUseCase,
                          GetCartCountUseCase getCartCountUseCase,
-                         GetCartProductsUseCase getCartProductsUseCase) {
+                         GetCartProductsUseCase getCartProductsUseCase,
+                         UpdateQuantityUseCase updateQuantityUseCase,
+                         DeleteCartItemByIdUseCase deleteCartItemByIdUseCase,
+                         GetTotalPriceUseCase getTotalPriceUseCase) {
         this.addToCartUseCase = addToCartUseCase;
         this.getRestaurantIdOfFirstItemUseCase = getRestaurantIdOfFirstItemUseCase;
         this.emptyCartUseCase = emptyCartUseCase;
         this.getCartCountUseCase = getCartCountUseCase;
         this.getCartProductsUseCase = getCartProductsUseCase;
+        this.updateQuantityUseCase = updateQuantityUseCase;
+        this.deleteCartItemByIdUseCase = deleteCartItemByIdUseCase;
+        this.getTotalPriceUseCase = getTotalPriceUseCase;
+    }
+
+    public void deleteItemById(int id) {
+        disposable.add(deleteCartItemByIdUseCase.deleteItemById(id).subscribe());
+    }
+
+    public void updateQuantity(int id, int quantity, double price) {
+        disposable.add(updateQuantityUseCase.execute(id, quantity, price).subscribe());
     }
 
     public void addToCart(CartItem cartItem, AddToCartResultCallback itemCallback) {
@@ -53,7 +74,9 @@ public class CartViewModel extends ViewModel {
     }
 
     public void emptyCart(EmptyCartResultCallback emptyCartResultCallback) {
-        disposable.add(emptyCartUseCase.execute().subscribe(()->{emptyCartResultCallback.onSuccess(true);}, emptyCartResultCallback::onError));
+        disposable.add(emptyCartUseCase.execute().subscribe(() -> {
+            emptyCartResultCallback.onSuccess(true);
+        }, emptyCartResultCallback::onError));
     }
 
     public void getCartCount(CartCountCallback cartCountCallback) {
@@ -63,10 +86,21 @@ public class CartViewModel extends ViewModel {
                 )
         );
     }
-    public void getCartItems(){
+
+    public void getCartItems() {
         disposable.add(getCartProductsUseCase.execute().subscribe(cartItemsLiveData::postValue));
     }
-    public LiveData<MyResult<List<CartItem>>> getCartItemsData(){
+    public void fetchTotalPrice() {
+        disposable.add(getTotalPriceUseCase.execute().subscribe(result->{
+            Log.d("TAG", "fetchTotalPrice: "+result);
+            totalPriceLiveData.postValue(result);
+        }));
+    }
+    public LiveData<Double> getTotalPriceData() {
+        return totalPriceLiveData;
+    }
+
+    public LiveData<MyResult<List<CartItem>>> getCartItemsData() {
         return cartItemsLiveData;
     }
 
@@ -92,6 +126,9 @@ public class CartViewModel extends ViewModel {
         void onSuccess(int count);
 
         void onError(Throwable e);
+    }
+    public interface CartTotalPrice{
+        void onSuccess(double price);
     }
 
     @Override

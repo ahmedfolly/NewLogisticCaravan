@@ -1,9 +1,16 @@
 package com.example.logisticcavan.orders.getOrders.domain;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Order {
+public class Order implements Parcelable {
 
     private String dateCreated = "";
     private String from = "";
@@ -25,6 +32,83 @@ public class Order {
     private Map<String,String> courier;
     private Map<String,String> deliveryTime;
     private Map<String,String> location;
+    private Map<String,String> customer;
+    private Map<String,String> restaurant;
+    private Map<String,Object> generalDetails;
+
+    protected Order(Parcel in) {
+        dateCreated = in.readString();
+        from = in.readString();
+        payment = in.readString();
+        price = in.readDouble();
+        orderId = in.readString();
+        status = in.readString();
+        to = in.readString();
+        totalAmount = in.readInt();
+        totalCost = in.readDouble();
+        clientName = in.readString();
+        RestaurantName = in.readString();
+        clientLocation = in.readString();
+        clientPhone = in.readString();
+
+        cartItems = new ArrayList<>();
+        in.readList(cartItems, Map.class.getClassLoader());
+
+        courier = new HashMap<>();
+        in.readMap(courier, String.class.getClassLoader());
+
+        deliveryTime = new HashMap<>();
+        in.readMap(deliveryTime, String.class.getClassLoader());
+
+        location = new HashMap<>();
+        in.readMap(location, String.class.getClassLoader());
+
+        customer = new HashMap<>();
+        in.readMap(customer, String.class.getClassLoader());
+
+        restaurant = new HashMap<>();
+        in.readMap(restaurant, String.class.getClassLoader());
+
+        generalDetails = new HashMap<>();
+        in.readMap(generalDetails, Object.class.getClassLoader());
+
+    }
+
+    public static final Creator<Order> CREATOR = new Creator<Order>() {
+        @Override
+        public Order createFromParcel(Parcel in) {
+            return new Order(in);
+        }
+
+        @Override
+        public Order[] newArray(int size) {
+            return new Order[size];
+        }
+    };
+
+    public Map<String, String> getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Map<String, String> customer) {
+        this.customer = customer;
+    }
+
+    public Map<String, String> getRestaurant() {
+        return restaurant;
+    }
+
+    public void setRestaurant(Map<String, String> restaurant) {
+        this.restaurant = restaurant;
+    }
+
+    public Map<String, Object> getGeneralDetails() {
+        return generalDetails;
+    }
+
+    public void setGeneralDetails(Map<String, Object> generalDetails) {
+        this.generalDetails = generalDetails;
+    }
 
     public Map<String, String> getCourier() {
         return courier;
@@ -163,5 +247,35 @@ public class Order {
 
     public void setTotalCost(double totalCost) {
         this.totalCost = totalCost;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel parcel, int i) {
+        parcel.writeString(dateCreated);
+        parcel.writeString(from);
+        parcel.writeString(payment);
+        parcel.writeDouble(price);
+        parcel.writeString(orderId);
+        parcel.writeString(status);
+        parcel.writeString(to);
+        parcel.writeInt(totalAmount);
+        parcel.writeDouble(totalCost);
+        parcel.writeString(clientName);
+        parcel.writeString(RestaurantName);
+        parcel.writeString(clientLocation);
+        parcel.writeString(clientPhone);
+
+        parcel.writeList(cartItems);
+        parcel.writeMap(courier);
+        parcel.writeMap(deliveryTime);
+        parcel.writeMap(location);
+        parcel.writeMap(customer);
+        parcel.writeMap(restaurant);
+        parcel.writeMap(generalDetails);
     }
 }

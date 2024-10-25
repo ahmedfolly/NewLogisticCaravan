@@ -14,7 +14,11 @@
             app:destination="@id/foodDetailFragment" />
         <action
             android:id="@+id/action_homeFragment_to_cartFragment"
-            app:destination="@id/cartFragment" />
+            app:destination="@id/cartFragment"
+            app:popEnterAnim="@anim/fadein"
+            app:enterAnim="@anim/fadein"
+            app:exitAnim="@anim/fadeout"
+            app:popExitAnim="@anim/fadeout"/>
         <action
             android:id="@+id/action_homeFragment_to_restaurantDetailsFragment"
             app:destination="@id/restaurantDetailsFragment" />
@@ -30,9 +34,17 @@
     </fragment>
     <fragment
         android:id="@+id/cartFragment"
-        android:name="com.example.logisticcavan.CartFragment"
+        android:name="com.example.logisticcavan.cart.presentaion.ui.CartFragment"
         android:label="fragment_cart"
-        tools:layout="@layout/fragment_cart" />
+        tools:layout="@layout/fragment_cart" >
+        <action
+            android:id="@+id/action_cartFragment_to_placeOrderFragment"
+            app:destination="@id/placeOrderFragment"
+            app:popEnterAnim="@anim/fadein"
+            app:enterAnim="@anim/fadein"
+            app:exitAnim="@anim/fadeout"
+            app:popExitAnim="@anim/fadeout"/>
+    </fragment>
     <fragment
         android:id="@+id/restaurantDetailsFragment"
         android:name="com.example.logisticcavan.RestaurantDetailsFragment"
@@ -42,5 +54,32 @@
         <argument
             android:name="restaurant"
             app:argType="com.example.logisticcavan.restaurants.domain.Restaurant" />
+    </fragment>
+    <fragment
+        android:id="@+id/placeOrderFragment"
+        android:name="com.example.logisticcavan.PlaceOrderFragment"
+        android:label="fragment_place_order"
+        tools:layout="@layout/fragment_place_order" >
+
+        <argument
+            android:name="order"
+            app:argType="com.example.logisticcavan.orders.getOrders.domain.Order" />
+        <argument
+            android:name="beach"
+            app:argType="string" />
+        <argument
+            android:name="villaNum"
+            app:argType="string" />
+        <argument
+            android:name="price"
+            app:argType="float" />
+        <action
+            android:id="@+id/action_placeOrderFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:popEnterAnim="@anim/fadein"
+            app:enterAnim="@anim/fadein"
+            app:exitAnim="@anim/fadeout"
+            app:popExitAnim="@anim/fadeout"
+            />
     </fragment>
 </navigation>

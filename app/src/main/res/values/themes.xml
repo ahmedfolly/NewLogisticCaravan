@@ -5,14 +5,15 @@
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
         <!--        <item name="colorPrimary">#B8E55763</item>-->
         <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="colorPrimary">@color/primary_color</item>
         <item name="fontFamily">@font/afacad_regular</item>
         <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>
     </style>
     <style name="SpinnerTheme" parent="android:Widget.Spinner">
         <item name="android:background">@drawable/spinner_background</item>
     </style>
-
+    <style name="CustomShapeAppearance" parent="">
+        <item name="cornerSize">16dp</item> <!-- Change this value to adjust the radius -->
+    </style>
     <style name="Widget.CustomBottomNavigationView" parent="Widget.Material3.BottomNavigationView">
         <item name="itemActiveIndicatorStyle">@style/CustomBottomNavIndicator</item>
         <item name="itemIconTint">@color/primary_color</item>

@@ -4,6 +4,7 @@ import com.example.logisticcavan.cart.domain.repos.CartRepo;
 import com.example.logisticcavan.common.utils.MyResult;
 
 import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.Single;
 
 public class GetTotalPriceUseCase {
     private final CartRepo cartRepo;
@@ -12,7 +13,7 @@ public class GetTotalPriceUseCase {
         this.cartRepo = cartRepo;
     }
 
-    public Observable<MyResult<Double>> execute() {
+    public Single<Double> execute() {
         return cartRepo.getTotalCartPrice();
     }
 }

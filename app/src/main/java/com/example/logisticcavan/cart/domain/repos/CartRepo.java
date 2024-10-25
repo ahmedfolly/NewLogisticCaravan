@@ -16,13 +16,13 @@ public interface CartRepo {
 
     Completable deleteAll();
 
-    void deleteItemById(int id);
+    Single<Boolean> deleteItemById(int id);
 
-    void updateQuantity(int id, int quantity);
+    Single<Boolean> updateQuantity(int id, int quantity, double price);
 
     void updatePrice(int id, double price);
 
-    Observable<MyResult<Double>> getTotalCartPrice();
+    Single<Double> getTotalCartPrice();
 
     Single<Boolean> getRestaurantIdOfFirstItem(String restaurantId);
 

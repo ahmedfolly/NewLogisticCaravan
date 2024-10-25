@@ -37,21 +37,27 @@ public class AddOrderRepoImp implements AddOrderRepo {
 
     private Map<String, Object> getOrderDataToUpload(Order order) {
         Map<String, Object> orderDataToUpload = new HashMap<>();
-        orderDataToUpload.put("dateCreated", order.getDateCreated());
-        orderDataToUpload.put("from", order.getFrom());
-        orderDataToUpload.put("location", order.getLocation());
-        orderDataToUpload.put("payment", order.getPayment());
-        orderDataToUpload.put("price", order.getPrice());
-        orderDataToUpload.put("productId", order.getOrderId());
-        orderDataToUpload.put("pending", order.getStatus());
-        orderDataToUpload.put("to", order.getTo());
-        orderDataToUpload.put("totalAmount", order.getTotalAmount());
-        orderDataToUpload.put("totalCost", order.getTotalCost());
+//        orderDataToUpload.put("dateCreated", order.getDateCreated());
+//        orderDataToUpload.put("from", order.getFrom());
+//        orderDataToUpload.put("location", order.getLocation());
+//        orderDataToUpload.put("payment", order.getPayment());
+//        orderDataToUpload.put("price", order.getPrice());
+//        orderDataToUpload.put("productId", order.getOrderId());
+//        orderDataToUpload.put("pending", order.getStatus());
+//        orderDataToUpload.put("to", order.getTo());
+//        orderDataToUpload.put("totalAmount", order.getTotalAmount());
+//        orderDataToUpload.put("totalCost", order.getTotalCost());
         orderDataToUpload.put("cartItems", order.getCartItems());
-        orderDataToUpload.put("clientName", order.getClientName());
-        orderDataToUpload.put("clientLocation", order.getClientLocation());
-        orderDataToUpload.put("clientPhone", order.getClientPhone());
-        orderDataToUpload.put("RestaurantName", order.getRestaurantName());
+//        orderDataToUpload.put("clientName", order.getClientName());
+//        orderDataToUpload.put("clientLocation", order.getClientLocation());
+//        orderDataToUpload.put("clientPhone", order.getClientPhone());
+//        orderDataToUpload.put("RestaurantName", order.getRestaurantName());
+        orderDataToUpload.put("courier", order.getCourier());
+        orderDataToUpload.put("deliveryTime", order.getDeliveryTime());
+        orderDataToUpload.put("customer", order.getCustomer());
+        orderDataToUpload.put("restaurant", order.getRestaurant());
+        orderDataToUpload.put("generalDetails", order.getGeneralDetails());
+        orderDataToUpload.put("location", order.getLocation());
         return orderDataToUpload;
     }
 }

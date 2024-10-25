@@ -59,13 +59,22 @@ public class CartRepoImp implements CartRepo {
     }
 
     @Override
-    public void deleteItemById(int id) {
-        cartDao.deleteItemById(id);
+    public Single<Boolean> deleteItemById(int id) {
+        return Single.fromCallable(() -> {
+                    cartDao.deleteItemById(id);
+                    return true;
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
     @Override
-    public void updateQuantity(int id, int quantity) {
-        cartDao.updateQuantity(id, quantity);
+    public Single<Boolean> updateQuantity(int id, int quantity, double price) {
+        return Single.fromCallable(() -> {
+                    cartDao.updateQuantity(id, quantity, price);
+                    return true;
+                }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
     @Override
@@ -74,11 +83,10 @@ public class CartRepoImp implements CartRepo {
     }
 
     @Override
-    public Observable<MyResult<Double>> getTotalCartPrice() {
-        return cartDao.getTotalCartPrice()
-                .map(MyResult::success)
+    public Single<Double> getTotalCartPrice() {
+        return Single.fromCallable(cartDao::getTotalCartPrice)
                 .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io());
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
     @Override

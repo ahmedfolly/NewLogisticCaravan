@@ -1,6 +1,7 @@
 package com.example.logisticcavan.navigations.commonui;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -72,7 +73,6 @@ public class HomeFragment extends BaseFragment implements CategoriesAdapter.OnIt
         categoryProductsViewModel = new ViewModelProvider(this).get(GetCategoryProductsViewModel.class);
         getRestaurantsViewModel = new ViewModelProvider(this).get(GetRestaurantsViewModel.class);
         combinedProductsWithRestaurantsViewModel = new ViewModelProvider(this).get(CombinedProductsWithRestaurantsViewModel.class);
-
     }
 
     @Override
@@ -97,7 +97,7 @@ public class HomeFragment extends BaseFragment implements CategoriesAdapter.OnIt
         getCategories(view);
         getOffers(view);
 //        getProducts();
-        setupProductsContainer(view,restaurantsAdapter);
+        setupProductsContainer(view, restaurantsAdapter);
         getRestaurants();
         view.findViewById(R.id.notification_id).setOnClickListener(view1 -> {
 
@@ -105,7 +105,6 @@ public class HomeFragment extends BaseFragment implements CategoriesAdapter.OnIt
 
         });
     }
-
 
     private void getCategories(View view) {
         categoriesContainer = view.findViewById(R.id.categories_container_id);
@@ -173,31 +172,32 @@ public class HomeFragment extends BaseFragment implements CategoriesAdapter.OnIt
                         setupProductsContainer(this.requireView(), restaurantsAdapter);
                     }, error -> {
                     },
-                    () -> {});
+                    () -> {
                     });
-        }
+        });
+    }
 
-        private void setupProductsContainer (View view, RestaurantsAdapter restaurantsAdapter){
-            productsContainer = view.findViewById(R.id.food_container);
-            productsContainer.setHasFixedSize(true);
-            productsContainer.setLayoutManager(new LinearLayoutManager(requireContext(),RecyclerView.HORIZONTAL,false));
-            productsContainer.setAdapter(restaurantsAdapter);
-        }
+    private void setupProductsContainer(View view, RestaurantsAdapter restaurantsAdapter) {
+        productsContainer = view.findViewById(R.id.food_container);
+        productsContainer.setHasFixedSize(true);
+        productsContainer.setLayoutManager(new LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false));
+        productsContainer.setAdapter(restaurantsAdapter);
+    }
 
-        @Override
-        public void scrollToPosition ( int position){
-            categoriesContainer.smoothScrollToPosition(position);
-        }
+    @Override
+    public void scrollToPosition(int position) {
+        categoriesContainer.smoothScrollToPosition(position);
+    }
 
-        @Override
-        public void getCategoryName (String categoryName){
-            if (!categoryName.equals("All")) {
+    @Override
+    public void getCategoryName(String categoryName) {
+        if (!categoryName.equals("All")) {
 
-                categoryProductsViewModel.fetchCategoryProducts(categoryName);
-                categoryProductsViewModel.getCategoryProductsLiveData().observe(getViewLifecycleOwner(), result -> {
-                    result.handle(productsResult -> {
-                        List<String> restaurantIds = restaurantIds(productsResult);
-                        restaurantViewModel.fetchRestaurantsIds(restaurantIds);
+            categoryProductsViewModel.fetchCategoryProducts(categoryName);
+            categoryProductsViewModel.getCategoryProductsLiveData().observe(getViewLifecycleOwner(), result -> {
+                result.handle(productsResult -> {
+                    List<String> restaurantIds = restaurantIds(productsResult);
+                    restaurantViewModel.fetchRestaurantsIds(restaurantIds);
 //                    List<String> restaurantIds = restaurantIds(productsResult);
 //                    List<String> restaurantsIdsSet = new ArrayList<>(new HashSet<>(restaurantIds));
 //                    restaurantViewModel.fetchRestaurantsIds(restaurantsIdsSet);
@@ -214,23 +214,23 @@ public class HomeFragment extends BaseFragment implements CategoriesAdapter.OnIt
 //                    }, errorOnLoadingRestaurants -> {
 //                    }, () -> {
 //                    }));
-                    }, error -> {
-                    }, () -> {
-                    });
-                    combinedProductsWithRestaurantsViewModel.combineSources(categoryProductsViewModel.getCategoryProductsLiveData(), restaurantViewModel.getRestaurant());
-                    combinedProductsWithRestaurantsViewModel.getCombinedLiveData().observe(getViewLifecycleOwner(), productWithRestaurantsResult -> productWithRestaurantsResult.handle(productWithRestaurants -> {
-                        productsAdapter.submitList(productWithRestaurants);
-//                        setupProductsContainer(this.requireView(), productsAdapter);
-                    }, error -> {
-                    }, () -> {
-                    }));
+                }, error -> {
+                }, () -> {
                 });
-            } else {
+                combinedProductsWithRestaurantsViewModel.combineSources(categoryProductsViewModel.getCategoryProductsLiveData(), restaurantViewModel.getRestaurant());
+                combinedProductsWithRestaurantsViewModel.getCombinedLiveData().observe(getViewLifecycleOwner(), productWithRestaurantsResult -> productWithRestaurantsResult.handle(productWithRestaurants -> {
+                    productsAdapter.submitList(productWithRestaurants);
+//                        setupProductsContainer(this.requireView(), productsAdapter);
+                }, error -> {
+                }, () -> {
+                }));
+            });
+        } else {
 //                getProducts();
-            }
-        }
-
-        List<String> restaurantIds (List < Product > products) {
-            return products.stream().map(Product::getResId).collect(Collectors.toList());
         }
     }
+
+    List<String> restaurantIds(List<Product> products) {
+        return products.stream().map(Product::getResId).collect(Collectors.toList());
+    }
+}

@@ -7,10 +7,13 @@ import com.example.logisticcavan.cart.data.CartDao;
 import com.example.logisticcavan.cart.data.CartRepoImp;
 import com.example.logisticcavan.cart.domain.repos.CartRepo;
 import com.example.logisticcavan.cart.domain.usecases.AddToCartUseCase;
+import com.example.logisticcavan.cart.domain.usecases.DeleteCartItemByIdUseCase;
 import com.example.logisticcavan.cart.domain.usecases.EmptyCartUseCase;
 import com.example.logisticcavan.cart.domain.usecases.GetCartCountUseCase;
 import com.example.logisticcavan.cart.domain.usecases.GetCartProductsUseCase;
 import com.example.logisticcavan.cart.domain.usecases.GetRestaurantIdOfFirstItemUseCase;
+import com.example.logisticcavan.cart.domain.usecases.GetTotalPriceUseCase;
+import com.example.logisticcavan.cart.domain.usecases.UpdateQuantityUseCase;
 
 import dagger.Module;
 import dagger.Provides;
@@ -21,6 +24,21 @@ import dagger.hilt.components.SingletonComponent;
 @Module
 @InstallIn(SingletonComponent.class)
 public class CartDI {
+    @Provides
+    public GetTotalPriceUseCase provideGetTotalPriceUseCase(CartRepo cartRepo) {
+        return new GetTotalPriceUseCase(cartRepo);
+    }
+
+    @Provides
+    public DeleteCartItemByIdUseCase provideDeleteCartItemByIdUseCase(CartRepo cartRepo) {
+        return new DeleteCartItemByIdUseCase(cartRepo);
+    }
+
+    @Provides
+    public UpdateQuantityUseCase provideUpdateQuantityUseCase(CartRepo cartRepo) {
+        return new UpdateQuantityUseCase(cartRepo);
+    }
+
     @Provides
     public GetRestaurantIdOfFirstItemUseCase provideGetRestaurantIdOfFirstItemUseCase(CartRepo cartRepo) {
         return new GetRestaurantIdOfFirstItemUseCase(cartRepo);

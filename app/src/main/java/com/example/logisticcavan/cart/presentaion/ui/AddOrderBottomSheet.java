@@ -17,6 +17,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.logisticcavan.R;
+import com.example.logisticcavan.cart.presentaion.DetectQuantityUtil;
 import com.example.logisticcavan.products.getproducts.domain.Product;
 import com.example.logisticcavan.restaurants.domain.ProductWithRestaurant;
 import com.example.logisticcavan.restaurants.domain.Restaurant;
@@ -61,51 +62,26 @@ public class AddOrderBottomSheet extends BottomSheetDialogFragment {
         TextView orderQuantity = view.findViewById(R.id.order_quantity);
         double price = product.getProductPrice();
         TextView totalPriceTxt = view.findViewById(R.id.order_total_price);
-        calculateTotalPrice(totalPriceTxt, 1, price);
-        increaseOrderItemQuantity(view,totalPriceTxt, orderQuantity, price);
-        decreaseOrderItemQuantity(view,totalPriceTxt, orderQuantity, price);
-        addToCart(view,product,orderQuantity,totalPriceTxt);
-    }
-
-    private void increaseOrderItemQuantity(View view,TextView totalPriceTxt, TextView orderQuantity, double price) {
-        ImageButton increaseOrderQuantityBtn = view.findViewById(R.id.increase_order_quantity_btn_id);
-        increaseOrderQuantityBtn.setOnClickListener(v -> {
-            int currentQuantity = Integer.parseInt(orderQuantity.getText().toString());
-            currentQuantity += 1;
-            orderQuantity.setText(String.valueOf(currentQuantity));
-            calculateTotalPrice(totalPriceTxt, currentQuantity, price);
-        });
-    }
-
-    private void decreaseOrderItemQuantity(View view,TextView totalPriceTxt, TextView orderQuantity, double price) {
+        DetectQuantityUtil.calculateTotalPrice(totalPriceTxt, 1, price);
         ImageButton decreaseOrderQuantityBtn = view.findViewById(R.id.decrease_order_quantity_btn_id);
-        decreaseOrderQuantityBtn.setOnClickListener(v -> {
-            int currentQuantity = Integer.parseInt(orderQuantity.getText().toString());
-            if (currentQuantity > 1) {
-                currentQuantity -= 1;
-                orderQuantity.setText(String.valueOf(currentQuantity));
-                calculateTotalPrice(totalPriceTxt, currentQuantity, price);
-            }
-        });
+        ImageButton increaseOrderQuantityBtn = view.findViewById(R.id.increase_order_quantity_btn_id);
+        DetectQuantityUtil.increaseOrderItemQuantity("order", null, increaseOrderQuantityBtn, totalPriceTxt, orderQuantity, price);
+        DetectQuantityUtil.decreaseOrderItemQuantity("order", null, decreaseOrderQuantityBtn, totalPriceTxt, orderQuantity, price);
+        addToCart(view, product, orderQuantity, totalPriceTxt);
     }
 
-    private void calculateTotalPrice(TextView totalPriceTxt, int quantity, double price) {
-        double totalPrice = quantity * price;
-        totalPriceTxt.setText(String.valueOf(totalPrice));
-    }
-
-    private void addToCart(View view,Product product,TextView quantityText,TextView totalPriceTxt) {
+    private void addToCart(View view, Product product, TextView quantityText, TextView totalPriceTxt) {
 
         CardView addToCartBtn = view.findViewById(R.id.add_product_to_cart);
         addToCartBtn.setOnClickListener(v -> {
             int quantity = Integer.parseInt(quantityText.getText().toString());
             double price = Double.parseDouble(totalPriceTxt.getText().toString());
-            addToCartCallback.addToCart(product,quantity, price);
+            addToCartCallback.addToCart(product, quantity, price);
             dismiss();
         });
     }
 
     public interface AddToCartCallback {
-        void addToCart(Product product,int quantity, double price);
+        void addToCart(Product product, int quantity, double price);
     }
 }
