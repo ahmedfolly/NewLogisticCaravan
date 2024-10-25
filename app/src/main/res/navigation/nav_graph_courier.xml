@@ -10,4 +10,40 @@
         android:name="com.example.logisticcavan.orders.getOrders.courier.presentaion.CourierHomeFragment"
         android:label="fragment_courier_home"
         tools:layout="@layout/fragment_courier_home" />
+    <fragment
+        android:id="@+id/moreFragment"
+        android:name="com.example.logisticcavan.more.presentaion.MoreFragment"
+        android:label="fragment_more"
+        tools:layout="@layout/fragment_more" >
+        <action
+            android:id="@+id/action_moreFragment_to_aboutAppFragment"
+            app:destination="@id/aboutAppFragment" />
+        <action
+            android:id="@+id/action_moreFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/courierNotificationFragment"
+        android:name="com.example.logisticcavan.courierNotificaiton.CourierNotificationFragment"
+        android:label="fragment_courier_notification"
+        tools:layout="@layout/fragment_courier_notification" />
+    <fragment
+        android:id="@+id/changePasswordFragment"
+        tools:layout="@layout/fragment_change_password"
+        android:name="com.example.logisticcavan.more.presentaion.ChangePasswordFragment"
+        android:label="ChangePasswordFragment" />
+    <fragment
+        android:id="@+id/aboutAppFragment"
+        android:name="com.example.logisticcavan.more.presentaion.AboutAppFragment"
+        android:label="fragment_about_app"
+        tools:layout="@layout/fragment_about_app" />
+    <fragment
+        android:id="@+id/profileFragment"
+        tools:layout="@layout/fragment_profile"
+        android:name="com.example.logisticcavan.more.presentaion.ProfileFragment"
+        android:label="ProfileFragment" >
+        <action
+            android:id="@+id/action_profileFragment_to_changePasswordFragment"
+            app:destination="@id/changePasswordFragment" />
+    </fragment>
 </navigation>

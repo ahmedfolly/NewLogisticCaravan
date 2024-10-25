@@ -1,4 +1,4 @@
-package com.example.logisticcavan.More;
+package com.example.logisticcavan.courierNotificaiton;
 
 import android.os.Bundle;
 
@@ -11,15 +11,13 @@ import android.view.ViewGroup;
 import com.example.logisticcavan.R;
 
 
-public class AboutAppFragment extends Fragment {
-
+public class CourierNotificationFragment extends Fragment {
 
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_about_app, container, false);
+        return inflater.inflate(R.layout.fragment_courier_notification, container, false);
     }
 }

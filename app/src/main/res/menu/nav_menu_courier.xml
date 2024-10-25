@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+
     <item
-        android:id="@+id/tray_item"
+        android:id="@+id/courierHomeFragment"
         android:title="Orders"
-        android:icon="@drawable/list_alt_24px"/>
+        android:icon="@drawable/icon_orders"/>
 
     <item
-        android:id="@+id/account_item"
-        android:title="Profile"
-        android:icon="@drawable/outline_person_24"/>
+        android:id="@+id/courierNotificationFragment"
+        android:title="Notifications"
+        android:icon="@drawable/notifications_24px"/>
 
-<!--    <item-->
-<!--        android:id="@+id/food_menu_item"-->
-<!--        android:title="Menu"-->
-<!--        android:icon="@drawable/restaurant_24px"/>-->
+    <item
+        android:id="@+id/moreFragment"
+        android:title="More"
+        android:icon="@drawable/icon_more"/>
 
 
 </menu>

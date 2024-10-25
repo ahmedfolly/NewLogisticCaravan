@@ -1,21 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    tools:context=".More.MoreFragment">
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:textColor="#D14753"
-        android:textSize="18sp"
-        android:background="@color/white"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:text="Settings" />
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:paddingTop="24dp"
+        tools:context=".more.presentaion.MoreFragment">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:background="@color/white"
+
+            android:gravity="center"
+            android:text="Settings"
+            android:textColor="#D14753"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#F5F5F5"
+
+            android:orientation="vertical">
     <LinearLayout
         android:layout_width="match_parent"
         android:orientation="horizontal"
@@ -37,8 +53,7 @@
             android:layout_weight="1"
             android:layout_marginStart="12dp"
             android:text="Personal Information"
-            android:textSize="18sp"
-            />
+            android:textSize="18sp" />
 
         <ImageView
             android:id="@+id/iconProfile"
@@ -49,6 +64,7 @@
 
 
     </LinearLayout>
+
     <View
         android:id="@+id/viehw4"
         android:layout_width="match_parent"
@@ -59,6 +75,7 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView6" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:orientation="horizontal"
@@ -80,8 +97,7 @@
             android:layout_weight="1"
             android:layout_marginStart="12dp"
             android:text="How The Logistic Caravan works"
-            android:textSize="18sp"
-            />
+            android:textSize="18sp" />
 
         <ImageView
             android:id="@+id/iconAboutApp"
@@ -92,7 +108,8 @@
 
 
     </LinearLayout>
-    <View
+
+            <View
         android:id="@+id/view4"
         android:layout_width="match_parent"
         android:layout_height="2dp"
@@ -103,4 +120,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
-</LinearLayout>
+        </LinearLayout>
+
+
+    </LinearLayout>
+</layout>
