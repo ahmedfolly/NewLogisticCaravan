@@ -23,10 +23,10 @@
             app:destination="@id/profileFragment" />
     </fragment>
     <fragment
-        android:id="@+id/courierNotificationFragment"
-        android:name="com.example.logisticcavan.courierNotificaiton.CourierNotificationFragment"
+        android:id="@+id/notificationFragment"
+        android:name="com.example.logisticcavan.notifications.getnotifications.presentaion.ui.NotificationFragment"
         android:label="fragment_courier_notification"
-        tools:layout="@layout/fragment_courier_notification" />
+        tools:layout="@layout/fragment_notification" />
     <fragment
         android:id="@+id/changePasswordFragment"
         tools:layout="@layout/fragment_change_password"

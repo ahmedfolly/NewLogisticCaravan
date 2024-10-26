@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.logisticcavan.R;
+import com.example.logisticcavan.common.base.BaseFragment;
 import com.example.logisticcavan.databinding.FragmentCourierHomeBinding;
 import com.example.logisticcavan.orders.getOrders.domain.Order;
 
@@ -25,7 +26,7 @@ import javax.inject.Inject;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class CourierHomeFragment extends Fragment {
+public class CourierHomeFragment extends BaseFragment {
 
     private CourierOrdersAdapter courierOrdersAdapter;
     private FragmentCourierHomeBinding binding;

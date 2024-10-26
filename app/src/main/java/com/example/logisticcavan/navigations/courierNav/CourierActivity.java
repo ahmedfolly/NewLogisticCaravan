@@ -40,9 +40,9 @@ public class CourierActivity extends AppCompatActivity {
                 navController.popBackStack(R.id.courierHomeFragment, false);
                 navController.navigate(R.id.courierHomeFragment);
                 return true;
-            } else if (itemId == R.id.courierNotificationFragment) {
-                navController.popBackStack(R.id.courierNotificationFragment, false);
-                navController.navigate(R.id.courierNotificationFragment);
+            } else if (itemId == R.id.notificationFragment) {
+                navController.popBackStack(R.id.notificationFragment, false);
+                navController.navigate(R.id.notificationFragment);
                 return true;
             } else if (itemId == R.id.moreFragment) {
                 navController.popBackStack(R.id.moreFragment, false);

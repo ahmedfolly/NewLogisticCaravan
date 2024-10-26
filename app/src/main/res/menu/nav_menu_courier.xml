@@ -7,7 +7,7 @@
         android:icon="@drawable/icon_orders"/>
 
     <item
-        android:id="@+id/courierNotificationFragment"
+        android:id="@+id/notificationFragment"
         android:title="Notifications"
         android:icon="@drawable/notifications_24px"/>
 
