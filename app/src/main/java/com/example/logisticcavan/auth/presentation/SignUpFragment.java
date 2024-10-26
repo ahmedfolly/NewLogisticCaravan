@@ -30,8 +30,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 public class SignUpFragment extends BaseFragment {
     private static final String TAG = "SignUpFragment";
 
-    String name,email,password,confirmPassword;
-    @Inject
+    String firstName, lastName, address, phone, name, email, password, confirmPassword;    @Inject
     AuthViewModel authViewModel;
 
     private FragmentSignUpBinding binding;
@@ -86,7 +85,7 @@ public class SignUpFragment extends BaseFragment {
 
     private void storeUserInfo(AuthResult authResult) {
         String userId =   authResult.getUser().getUid();
-        UserInfo userInfo = getUserInfo(userId,name,authViewModel.getTypeUser(),email,"Token");
+        UserInfo userInfo = getUserInfo(userId,firstName,lastName,phone,address,authViewModel.getTypeUser(),email,"Token",password);
         authViewModel.storeUserInfoLocally(userInfo);
         CompletableFuture<Void> result = authViewModel.storeUserInfoRemotely(userInfo);
         resultOfStoring(result);
@@ -108,34 +107,62 @@ public class SignUpFragment extends BaseFragment {
     }
 
     private boolean validateInputs() {
+        firstName = binding.editFirstName.getText().toString().trim();
+        lastName = binding.editLastName.getText().toString().trim();
+        address = binding.editAdress.getText().toString().trim();
+        phone = binding.editPhone.getText().toString().trim();
+        name = firstName + " " + lastName;
+        email = binding.editEmail.getText().toString().trim();
+        password = binding.editPassword.getText().toString().trim();
+        confirmPassword = binding.editPasswordConfirme.getText().toString().trim();
 
-         name = binding.editName.getText().toString().trim();
-         email = binding.editEmail.getText().toString().trim();
-         password = binding.editPassword.getText().toString().trim();
-         confirmPassword = binding.editPasswordConfirme.getText().toString().trim();
-
-         //Name validation
-        if (name.isEmpty()) {
-            binding.textInputLayoutName.setError("Name is required");
+        // Validate First Name
+        if (firstName.isEmpty()) {
+            binding.textInputFirstName.setError("First name is required");
             return false;
         } else {
-            binding.textInputLayoutName.setError(null);
+            binding.textInputFirstName.setError(null);
         }
 
-        // Email validation
-         if (email.isEmpty()) {
+        // Validate Last Name
+        if (lastName.isEmpty()) {
+            binding.textInputLayoutLastName.setError("Last name is required");
+            return false;
+        } else {
+            binding.textInputLayoutLastName.setError(null);
+        }
+
+        // Validate Address
+        if (address.isEmpty()) {
+            binding.textInputLayoutAdress.setError("Address is required");
+            return false;
+        } else {
+            binding.textInputLayoutAdress.setError(null);
+        }
+
+        // Validate Phone
+        if (phone.isEmpty()) {
+            binding.textInputLayoutPhone.setError("Phone number is required");
+            return false;
+        } else if (!android.util.Patterns.PHONE.matcher(phone).matches()) {
+            binding.textInputLayoutPhone.setError("Enter a valid phone number");
+            return false;
+        } else {
+            binding.textInputLayoutPhone.setError(null);
+        }
+
+        // Validate Email
+        if (email.isEmpty()) {
             binding.textInputLayoutEmail.setError("Email is required");
             return false;
-        }
-        else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+        } else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             binding.textInputLayoutEmail.setError("Enter a valid email");
             return false;
-        }
-        else {
+        } else {
             binding.textInputLayoutEmail.setError(null);
         }
 
-        // Password validation
+        // Validate Password
         if (password.isEmpty()) {
             binding.textInputLayoutPassword.setError("Password is required");
             return false;
@@ -146,7 +173,7 @@ public class SignUpFragment extends BaseFragment {
             binding.textInputLayoutPassword.setError(null);
         }
 
-        // Confirm password validation
+        // Validate Confirm Password
         if (confirmPassword.isEmpty()) {
             binding.textInputLayoutConfirmPassworde.setError("Please confirm your password");
             return false;
@@ -160,8 +187,15 @@ public class SignUpFragment extends BaseFragment {
         return true;
     }
 
-    private UserInfo getUserInfo(String id, String name, String typeUser, String email, String token) {
-        return  new UserInfo(id,name,typeUser,email,token);
+    private UserInfo getUserInfo(String id,
+                                 String firstName ,
+                                 String lastName ,
+                                 String phone ,
+                                 String address ,
+                                 String type,
+                                 String email,
+                                 String token, String password) {
+        return  new UserInfo(id,firstName,lastName,phone,address,type,email,token,password);
     }
 
     private RegistrationData getRegistrationData(String email, String password) {

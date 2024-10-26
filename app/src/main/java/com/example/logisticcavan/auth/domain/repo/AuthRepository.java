@@ -12,4 +12,5 @@ public interface AuthRepository {
      CompletableFuture<Void>  sendPasswordResetEmail(String email);
 
 
+    CompletableFuture<Void> changePassword(String oldPassword, String newPassword);
 }

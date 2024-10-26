@@ -28,6 +28,29 @@ public class CourierActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
 
 
+        hundelNavigation(bottomNavigationView, navController);
+
+    }
+
+    private static void hundelNavigation(BottomNavigationView bottomNavigationView, NavController navController) {
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.courierHomeFragment) {
+                navController.navigate(R.id.homeFragment);
+                navController.popBackStack(R.id.courierHomeFragment, false);
+                navController.navigate(R.id.courierHomeFragment);
+                return true;
+            } else if (itemId == R.id.courierNotificationFragment) {
+                navController.popBackStack(R.id.courierNotificationFragment, false);
+                navController.navigate(R.id.courierNotificationFragment);
+                return true;
+            } else if (itemId == R.id.moreFragment) {
+                navController.popBackStack(R.id.moreFragment, false);
+                navController.navigate(R.id.moreFragment);
+                return true;
+            }
+            return true;
+        });
     }
 
 
