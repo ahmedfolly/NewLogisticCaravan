@@ -53,7 +53,7 @@ public class CourierHomeFragment extends BaseFragment {
     }
 
     private void setUpClickListener() {
-        binding.filterListId.setOnClickListener(this::showFilterMenu);
+        binding.cartIcon.setOnClickListener(this::showFilterMenu);
     }
 
     private void showFilterMenu(View v) {

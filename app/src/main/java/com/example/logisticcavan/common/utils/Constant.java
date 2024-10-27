@@ -11,5 +11,6 @@ public class Constant {
     public static final String STATUS = "status";
     public static final String PENDING = "Pending";
     public static final String SHIPPED = "Shipped";
+    public static final String flagFromPlaceOrderScreen = "fromPlaceScreen";
 }
 

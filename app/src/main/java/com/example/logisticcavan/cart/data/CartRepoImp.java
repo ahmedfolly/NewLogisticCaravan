@@ -30,12 +30,6 @@ public class CartRepoImp implements CartRepo {
     @SuppressLint("CheckResult")
     @Override
     public Single<Boolean> insert(CartItem cartItem) {
-//        return Observable.fromCallable(() -> {
-//                    cartDao.insert(cartItem);
-//                    return true;
-//                })
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread());
         return cartDao.insert(cartItem)
                 .map(id -> id != -1)
                 .subscribeOn(Schedulers.io())

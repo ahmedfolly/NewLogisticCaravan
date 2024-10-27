@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
+import androidx.navigation.NavDirections;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import com.example.logisticcavan.cart.presentaion.CartViewModel;
+import com.example.logisticcavan.common.utils.Constant;
 import com.example.logisticcavan.orders.addorder.presentation.AddOrderViewModel;
 import com.example.logisticcavan.orders.getOrders.domain.Order;
 import com.google.android.material.button.MaterialButton;
@@ -35,6 +37,7 @@ public class PlaceOrderFragment extends Fragment {
     private PlaceOrderFragmentArgs data;
     private ProgressBar progressBar;
 
+    private static OrderPlaceCallback orderPlaceCallback;
     NavController navController;
     public PlaceOrderFragment() {
         // Required empty public constructor
@@ -45,6 +48,7 @@ public class PlaceOrderFragment extends Fragment {
         super.onCreate(savedInstanceState);
         cartViewModel = new ViewModelProvider(this).get(CartViewModel.class);
         addOrderViewModel = new ViewModelProvider(this).get(AddOrderViewModel.class);
+
     }
 
     @Override
@@ -106,7 +110,8 @@ public class PlaceOrderFragment extends Fragment {
             public void onSuccess(String message) {
                 Log.d("TAG", "uploadOrder: uploaded");
                 progressBar.setVisibility(View.GONE);
-                navController.navigate(R.id.action_placeOrderFragment_to_homeFragment);
+                NavDirections directions = PlaceOrderFragmentDirections.actionPlaceOrderFragmentToTrakOrderFragment(Constant.flagFromPlaceOrderScreen);
+                navController.navigate(directions);
             }
 
             @Override
@@ -129,5 +134,13 @@ public class PlaceOrderFragment extends Fragment {
         generalDetails.put("status", "Pending");
         return generalDetails;
     }
+    public static void setOrderPlaceCallback(OrderPlaceCallback orderPlaceCallback) {
+        PlaceOrderFragment.orderPlaceCallback = orderPlaceCallback;
+    }
 
+    public interface OrderPlaceCallback {
+        void onSuccess();
+        void onError();
+        void onLoading();
+    }
 }

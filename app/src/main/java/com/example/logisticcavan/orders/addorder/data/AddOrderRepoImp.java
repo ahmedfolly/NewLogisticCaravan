@@ -5,16 +5,19 @@ import static com.example.logisticcavan.common.utils.Constant.ORDERS;
 import com.example.logisticcavan.common.utils.MyResult;
 import com.example.logisticcavan.orders.addorder.domain.AddOrderRepo;
 import com.example.logisticcavan.orders.getOrders.domain.Order;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.subjects.BehaviorSubject;
 
 public class AddOrderRepoImp implements AddOrderRepo {
     private final FirebaseFirestore firestore;
+    private final FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private final BehaviorSubject<MyResult<String>> subject = BehaviorSubject.create();
 
     public AddOrderRepoImp(FirebaseFirestore firestore) {
@@ -24,7 +27,8 @@ public class AddOrderRepoImp implements AddOrderRepo {
     public Observable<MyResult<String>> addOrder(Order order) {
         subject.onNext(MyResult.loading());
         firestore.collection(ORDERS)
-                .add(getOrderDataToUpload(order))
+                .document(Objects.requireNonNull(mAuth.getCurrentUser()).getUid())
+                .set(getOrderDataToUpload(order))
                 .addOnSuccessListener(documentReference -> {
                     subject.onNext(MyResult.success("Uploaded successfully"));
                 })
@@ -34,7 +38,6 @@ public class AddOrderRepoImp implements AddOrderRepo {
 
         return subject.hide();
     }
-
     private Map<String, Object> getOrderDataToUpload(Order order) {
         Map<String, Object> orderDataToUpload = new HashMap<>();
 //        orderDataToUpload.put("dateCreated", order.getDateCreated());

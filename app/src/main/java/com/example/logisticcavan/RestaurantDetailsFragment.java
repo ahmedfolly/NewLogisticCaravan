@@ -184,7 +184,7 @@ public class RestaurantDetailsFragment extends Fragment implements RestaurantPro
             }
             @Override
             public void onError(Throwable e) {
-                Toast.makeText(getContext(), "Error adding to cart", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Error adding to cart"+e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

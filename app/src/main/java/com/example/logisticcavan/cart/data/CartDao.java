@@ -19,6 +19,9 @@ public interface CartDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     Single<Long> insert(CartItem cartItem);
 
+    @Query("SELECT * FROM cart_table WHERE productName = :name")
+    Single<CartItem> getCartItemByName(String name);
+
     @Query("SELECT * FROM cart_table")
     Observable<List<CartItem>> getAllCartItems();
 

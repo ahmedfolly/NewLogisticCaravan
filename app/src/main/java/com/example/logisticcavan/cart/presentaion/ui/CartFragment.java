@@ -32,6 +32,7 @@ import com.example.logisticcavan.cart.domain.models.CartItem;
 import com.example.logisticcavan.cart.presentaion.CartItemsAdapter;
 import com.example.logisticcavan.cart.presentaion.CartViewModel;
 import com.example.logisticcavan.cart.presentaion.DetectQuantityUtil;
+import com.example.logisticcavan.navigations.commonui.MainActivity;
 import com.example.logisticcavan.orders.addorder.presentation.AddOrderViewModel;
 import com.example.logisticcavan.orders.addorder.presentation.ui.ConfirmOrderBottomFragment;
 import com.example.logisticcavan.orders.getOrders.domain.Order;
@@ -57,7 +58,6 @@ public class CartFragment extends Fragment implements ConfirmOrderBottomFragment
     private CartItemsAdapter cartsAdapter;
     private AuthViewModel authViewModel;
     MaterialButton checkoutBtn;
-    private CartFragmentOpenedCallback cartFragmentOpenedCallback;
     TextView cartFragmentTitle, deliveryAddressText, itemsText;
     CardView locationCard;
     String title = "";
@@ -70,7 +70,6 @@ public class CartFragment extends Fragment implements ConfirmOrderBottomFragment
         addOrderViewModel = new ViewModelProvider(this).get(AddOrderViewModel.class);
         authViewModel = new ViewModelProvider(this).get(AuthViewModel.class);
         cartsAdapter = new CartItemsAdapter(this);
-        cartFragmentOpenedCallback.onCartFragmentOpened();
         DetectQuantityUtil.setUpdateCartItemCallback(this);
     }
 
@@ -128,12 +127,11 @@ public class CartFragment extends Fragment implements ConfirmOrderBottomFragment
     }
 
     @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        if (context instanceof CartFragmentOpenedCallback) {
-            cartFragmentOpenedCallback = (CartFragmentOpenedCallback) context;
-        } else {
-            throw new RuntimeException(context.toString() + " must implement CartFragmentOpenedCallback");
+    public void onResume() {
+        super.onResume();
+        if (getActivity() instanceof MainActivity) {
+            MainActivity mainActivity = (MainActivity) getActivity();
+            mainActivity.onCartFragmentOpened();
         }
     }
 

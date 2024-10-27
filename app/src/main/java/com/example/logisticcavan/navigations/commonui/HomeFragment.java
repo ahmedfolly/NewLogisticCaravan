@@ -1,30 +1,31 @@
 package com.example.logisticcavan.navigations.commonui;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
-import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
+import android.os.Handler;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.logisticcavan.PlaceOrderFragment;
 import com.example.logisticcavan.R;
-import com.example.logisticcavan.restaurants.domain.ProductWithRestaurant;
-import com.example.logisticcavan.restaurants.domain.Restaurant;
+import com.example.logisticcavan.cart.presentaion.CartViewModel;
 import com.example.logisticcavan.restaurants.presentation.CombinedProductsWithRestaurantsViewModel;
 import com.example.logisticcavan.common.base.BaseFragment;
 import com.example.logisticcavan.common.utils.CategoriesListLocal;
@@ -38,6 +39,7 @@ import com.example.logisticcavan.products.getproducts.presentation.ProductsAdapt
 import com.example.logisticcavan.restaurants.presentation.GetRestaurantViewModel;
 import com.example.logisticcavan.restaurants.presentation.GetRestaurantsViewModel;
 import com.example.logisticcavan.restaurants.presentation.RestaurantsAdapter;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -45,7 +47,7 @@ import java.util.stream.Collectors;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class HomeFragment extends BaseFragment implements CategoriesAdapter.OnItemSelected {
+public class HomeFragment extends BaseFragment implements CategoriesAdapter.OnItemSelected{
     private OffersViewModel offersViewModel;
     private GetProductsViewModel productsViewModel;
     private GetCategoryProductsViewModel categoryProductsViewModel;
@@ -60,6 +62,11 @@ public class HomeFragment extends BaseFragment implements CategoriesAdapter.OnIt
     private ProgressBar foodProgressBar, offerLoaderProgress;
     private CombinedProductsWithRestaurantsViewModel combinedProductsWithRestaurantsViewModel;
     private GetRestaurantsViewModel getRestaurantsViewModel;
+    private FrameLayout parent;
+    ImageView openCartScreen;
+    private CartViewModel cartViewModel;
+
+    private HomeFramentOpenedCallback homeFramentOpenedCallback;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -72,7 +79,10 @@ public class HomeFragment extends BaseFragment implements CategoriesAdapter.OnIt
         restaurantViewModel = new ViewModelProvider(this).get(GetRestaurantViewModel.class);
         categoryProductsViewModel = new ViewModelProvider(this).get(GetCategoryProductsViewModel.class);
         getRestaurantsViewModel = new ViewModelProvider(this).get(GetRestaurantsViewModel.class);
+        cartViewModel = new ViewModelProvider(this).get(CartViewModel.class);
         combinedProductsWithRestaurantsViewModel = new ViewModelProvider(this).get(CombinedProductsWithRestaurantsViewModel.class);
+
+//        PlaceOrderFragment.setOrderPlaceCallback(this);
     }
 
     @Override
@@ -89,8 +99,8 @@ public class HomeFragment extends BaseFragment implements CategoriesAdapter.OnIt
         offersContainer = view.findViewById(R.id.offers_container);
         foodProgressBar = view.findViewById(R.id.food_loader_progress_bar);
         offerLoaderProgress = view.findViewById(R.id.offers_loader_progress_bar);
-        ImageView filterList = view.findViewById(R.id.filter_list_id);
-        filterList.setOnClickListener(v -> {
+        openCartScreen = view.findViewById(R.id.cart_icon);
+        openCartScreen.setOnClickListener(v -> {
             navController = Navigation.findNavController(v);
             navController.navigate(R.id.action_homeFragment_to_cartFragment);
         });
@@ -104,6 +114,7 @@ public class HomeFragment extends BaseFragment implements CategoriesAdapter.OnIt
             signOut();
 
         });
+        checkForCartItemsCount();
     }
 
     private void getCategories(View view) {
@@ -132,6 +143,36 @@ public class HomeFragment extends BaseFragment implements CategoriesAdapter.OnIt
         offersContainer.setHasFixedSize(true);
         offersContainer.setLayoutManager(new LinearLayoutManager(view.getContext(), RecyclerView.HORIZONTAL, false));
         offersContainer.setAdapter(adapter);
+    }
+
+    private void checkForCartItemsCount() {
+        cartViewModel.getCartItems();
+        cartViewModel.getCartItemsData().observe(getViewLifecycleOwner(), cartItemsResult -> {
+            cartItemsResult.handle(cartItems -> {
+                        TextView cartCount = requireView().findViewById(R.id.cart_count);
+                        if (cartItems.isEmpty()) {
+                            openCartScreen.setVisibility(View.GONE);
+                            cartCount.setVisibility(View.GONE);
+                        }else {
+                            openCartScreen.setVisibility(View.VISIBLE);
+                            cartCount.setVisibility(View.VISIBLE);
+                            cartCount.setText(String.valueOf(cartItems.size()));
+                        }
+                    },
+                    error -> {
+                    },
+                    () -> {
+                    });
+        });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (getActivity() instanceof MainActivity) {
+            MainActivity mainActivity = (MainActivity) getActivity();
+            mainActivity.onHomeFragmentOpened();
+        }
     }
 
     @SuppressLint("CheckResult")
@@ -163,6 +204,7 @@ public class HomeFragment extends BaseFragment implements CategoriesAdapter.OnIt
 ////        }, error -> {
 ////        }, () -> foodProgressBar.setVisibility(View.VISIBLE)));
 //    }
+
 
     private void getRestaurants() {
         getRestaurantsViewModel.fetchRestaurants();
@@ -232,5 +274,60 @@ public class HomeFragment extends BaseFragment implements CategoriesAdapter.OnIt
 
     List<String> restaurantIds(List<Product> products) {
         return products.stream().map(Product::getResId).collect(Collectors.toList());
+    }
+//
+//    @Override
+//    public void onSuccess() {
+////        new Handler().postDelayed(() -> showTopSnackbar("Order placed successfully"), 100);
+//    }
+//
+//    @Override
+//    public void onError() {
+//
+//    }
+//
+//    @Override
+//    public void onLoading() {
+//
+//    }
+
+    public void showTopSnackbar(String message) {
+        CoordinatorLayout coordinatorLayout = requireActivity().findViewById(R.id.parent_container);
+        Snackbar snackbar = Snackbar.make(coordinatorLayout, "", Snackbar.LENGTH_LONG);
+        View customSnackView = getLayoutInflater().inflate(R.layout.snackbar_layout, null);
+        View snackbarView = snackbar.getView();
+
+        //setup snackbar view
+        setupSnackbarSiew(snackbar, customSnackView, snackbarView);
+        //setup snackbar text
+        setupSnackbarText(message, customSnackView);
+        //setup snackbar settings
+        setupSnackbarSettings(snackbar, snackbarView);
+    }
+
+    private void setupSnackbarSiew(Snackbar snackbar, View customSnackView, View snackbarView) {
+        @SuppressLint("RestrictedApi")
+        Snackbar.SnackbarLayout snackbarLayout = (Snackbar.SnackbarLayout) snackbarView;
+        snackbarLayout.addView(customSnackView, 0);
+    }
+
+    private void setupSnackbarText(String message, View customSnackView) {
+        TextView snackbarText = customSnackView.findViewById(R.id.snackbar_text);
+        snackbarText.setText(message);
+    }
+
+    private void setupSnackbarSettings(Snackbar snackbar, View snackbarView) {
+        snackbar.setBackgroundTint(getResources().getColor(R.color.white, null));
+        CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) snackbarView.getLayoutParams();
+        params.gravity = Gravity.TOP;
+        params.topMargin = 64;
+        snackbarView.setElevation(8);
+        snackbarView.setBackgroundResource(R.drawable.snackbar_background);
+        snackbarView.setLayoutParams(params);
+        snackbar.show();
+    }
+
+    public interface HomeFramentOpenedCallback {
+        void onHomeFragmentOpened();
     }
 }

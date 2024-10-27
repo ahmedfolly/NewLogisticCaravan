@@ -20,7 +20,8 @@ import java.util.Objects;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class MainActivity extends AppCompatActivity implements CartFragment.CartFragmentOpenedCallback {
+public class MainActivity extends AppCompatActivity implements CartFragment.CartFragmentOpenedCallback,
+        HomeFragment.HomeFramentOpenedCallback {
     private BottomNavigationView bottomNavigationView;
     GetRestaurantsViewModel getRestaurantsViewModel;
     GetRestaurantProductsViewModel viewModel;
@@ -34,11 +35,17 @@ public class MainActivity extends AppCompatActivity implements CartFragment.Cart
         bottomNavigationView = findViewById(R.id.bottom_navigation);
 
     }
+
     @Override
     public void onCartFragmentOpened() {
-        bottomNavigationView.animate().translationY(bottomNavigationView.getHeight()).setDuration(300).withEndAction(() -> {
+        bottomNavigationView.animate().alpha(0).setDuration(100).withEndAction(() -> {
             bottomNavigationView.setVisibility(View.GONE);
         });
     }
 
+    @Override
+    public void onHomeFragmentOpened() {
+        bottomNavigationView.setVisibility(View.VISIBLE);
+        bottomNavigationView.setAlpha(1f);
+    }
 }

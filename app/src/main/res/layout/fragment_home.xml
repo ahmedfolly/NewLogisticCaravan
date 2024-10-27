@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="#F5F5F5"
+    android:id="@+id/parent_container"
     tools:context=".navigations.commonui.HomeFragment">
-    <androidx.core.widget.NestedScrollView
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="16dp"
@@ -30,16 +31,33 @@
                     android:hint="Search here..."
                     android:padding="8dp"
                     android:id="@+id/search_box_id"/>
-                <ImageView
+                <RelativeLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/filter"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:src="@drawable/cart_black"
+                        android:layout_centerInParent="true"
+                        android:id="@+id/cart_icon"/>
+                    <TextView
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:textSize="10sp"
+                        android:gravity="center"
+                        android:background="@drawable/badge"
+                        android:textColor="@color/white"
+                        android:textStyle="bold"
+                        android:layout_alignParentBottom="true"
+                        android:layout_toEndOf="@id/cart_icon"
+                        android:id="@+id/cart_count"/>
+                </RelativeLayout>
+
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
                     android:layout_margin="8dp"
-                    android:id="@+id/filter_list_id"/>
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/bell"
+                    android:src="@drawable/bell_black"
                     android:id="@+id/notification_id"/>
             </LinearLayout>
 <!--            <TextView-->
@@ -88,7 +106,6 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    tools:listitem="@layout/food_item"
                     android:id="@+id/food_container"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp" />
@@ -104,8 +121,5 @@
 
 
         </LinearLayout>
-
-
-    </androidx.core.widget.NestedScrollView>
-
-</FrameLayout>
+    </ScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
