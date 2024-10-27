@@ -1,4 +1,4 @@
-package com.example.logisticcavan.notifications.getnotifications.presentaion;
+package com.example.logisticcavan.notifications.presentaion;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.logisticcavan.R;
-import com.example.logisticcavan.notifications.getnotifications.domain.Notification;
+import com.example.logisticcavan.notifications.domain.entity.Notification;
 
 import java.util.List;
 
