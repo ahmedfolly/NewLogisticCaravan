@@ -50,12 +50,7 @@ public class NotificationFragment extends BaseFragment {
 
     private void resultOfGettingNotifications(CompletableFuture<List<Notification>> notifications) {
 
-        notifications.thenAccept(notificationList -> {
-
-            updateUi(notificationList);
-
-        }).exceptionally(throwable -> {
-            Log.e("TAG", "resultOfGettingNotifications: 4 " + throwable.getMessage());
+        notifications.thenAccept(this::updateUi).exceptionally(throwable -> {
             showError(binding.getRoot(), throwable.getMessage());
             return null;
         });
@@ -66,7 +61,7 @@ public class NotificationFragment extends BaseFragment {
             binding.progressBar.setVisibility(View.GONE);
             binding.noNotificationImage.setVisibility(View.VISIBLE);
         } else {
-            Log.e("TAG", "updateUi: " + notificationList.size());
+            //
             binding.notifications.setAdapter(new NotificationsAdapter(notificationList));
             binding.progressBar.setVisibility(View.GONE);
             binding.notifications.setVisibility(View.VISIBLE);
