@@ -6,6 +6,8 @@ import static com.example.logisticcavan.common.utils.Constant.NOTIFICATIONS_List
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.example.logisticcavan.notifications.domain.entity.Notification;
 import com.example.logisticcavan.notifications.domain.repo.NotificationStorageRepository;
 import com.google.firebase.auth.FirebaseAuth;
@@ -79,25 +81,29 @@ public class NotificationStorageRepositoryImp implements NotificationStorageRepo
 
                         if (notificationMaps != null) {
                             for (HashMap<String, Object> map : notificationMaps) {
-                                String message = (String) map.get("message");
-                                String timeStamp = (String) map.get("timestamp");
-                                Notification notification = new Notification(message);
-                                notification.setTimestamp(timeStamp);
-                                notifications.add(notification);
+                                notifications.add(getNotification(map));
                             }
-                            Log.e("TAG", "retrieveNotifications: Found notifications: " + notifications.size());
                             future.complete(notifications);
                         }
                     } else {
-                        Log.e("TAG", "retrieveNotifications: Document does not exist.");
                         future.complete(new ArrayList<>());
                     }
                 })
                 .addOnFailureListener(ex -> {
-                    Log.e("TAG", "retrieveNotifications: Error retrieving notifications", ex);
                     future.completeExceptionally(ex);
                 });
 
         return future;
     }
+
+    @NonNull
+    private  Notification getNotification(HashMap<String, Object> map) {
+        String message = (String) map.get("message");
+        String timeStamp = (String) map.get("timestamp");
+        Notification notification = new Notification(message);
+        notification.setTimestamp(timeStamp);
+        return notification;
+    }
+
+
 }
