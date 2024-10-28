@@ -5,7 +5,7 @@
         android:title="Profile"
         android:icon="@drawable/storefront_24px"/>
     <item
-        android:id="@+id/tray_item"
+        android:id="@+id/userOrdersFragment"
         android:title="Orders"
         android:icon="@drawable/local_shipping_24px"/>
     <item

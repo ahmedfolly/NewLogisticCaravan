@@ -49,6 +49,7 @@
                             android:src="@drawable/storefront_24px" />
 
                         <ImageView
+                            android:id="@+id/shipped_image"
                             android:layout_width="64dp"
                             android:layout_height="64dp"
                             android:padding="10dp"
@@ -62,6 +63,7 @@
                             android:layout_height="64dp"
                             android:layout_gravity="end"
                             android:layout_alignParentEnd="true"
+                            android:id="@+id/delivered_status"
                             android:padding="10dp"
                             android:background="@drawable/status_not_completed"
                             android:src="@drawable/home_white"
@@ -78,6 +80,20 @@
                 android:textSize="15sp"
                 android:textStyle="bold"
                 android:textColor="@color/black"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:id="@+id/user_rate_text"
+                android:text="Give rate"
+                android:gravity="end|center"
+                android:drawableEnd="@drawable/star_24px"
+                android:visibility="gone"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:textColor="@color/primary_color"
                 />
             <View
                 android:layout_width="match_parent"

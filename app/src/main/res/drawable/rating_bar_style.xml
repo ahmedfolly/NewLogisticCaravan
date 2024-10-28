@@ -1,0 +1,22 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Background layer for the empty stars -->
+    <item android:id="@android:id/background">
+        <bitmap
+            android:src="@drawable/ratingbar_full_empty"
+            android:gravity="center" />
+    </item>
+
+    <!-- Progress layer for the filled stars -->
+    <item android:id="@android:id/secondaryProgress">
+        <bitmap
+            android:src="@drawable/ratingbar_full_empty"
+            android:gravity="center" />
+    </item>
+
+    <!-- Current progress layer for the current rating -->
+    <item android:id="@android:id/progress">
+        <bitmap
+            android:src="@drawable/ratingbar_full_filled"
+            android:gravity="center" />
+    </item>
+</layer-list>

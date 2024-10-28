@@ -12,7 +12,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.logisticcavan.R;
 import com.example.logisticcavan.orders.getOrders.domain.Order;
 
+import java.io.ObjectStreamClass;
 import java.util.List;
+import java.util.Map;
 
 public class CourierOrdersAdapter extends RecyclerView.Adapter<CourierOrdersAdapter.OffersVH> {
     List<Order> orders;
@@ -32,12 +34,21 @@ public class CourierOrdersAdapter extends RecyclerView.Adapter<CourierOrdersAdap
     public void onBindViewHolder(@NonNull CourierOrdersAdapter.OffersVH holder, int position) {
         Order order = orders.get(position);
         holder.idOrder.setText(order.getOrderId());
-        holder.clientName.setText(order.getClientName());
-        holder.restaurantName.setText(order.getRestaurantName());
-        Log.e("TAG" , ""+order.getCartItems().size());
-        holder.itemNumber.setText(""+order.getCartItems().size());
+        Map<String,String> customerMap = order.getCustomer();
+        String customerName = customerMap.get("name");
+        holder.clientName.setText(customerName);
+//        holder.restaurantName.setText(order.getRestaurantName());
+        //order items details
+        List<Map<String, Object>> cartItemsMap = order.getCartItems();
+        holder.itemNumber.setText(""+cartItemsMap.size());
+        //restaurant details
+        Map<String, String> restaurant = order.getRestaurant();
+        String restaurantName = restaurant.get("name");
+        holder.restaurantName.setText(restaurantName);
+        //customerdetails
+        //general details
+//        holder.itemNumber.setText(""+order.getCartItems().size());
         holder.itemView.setOnClickListener(view1 -> {
-
         });
     }
 
