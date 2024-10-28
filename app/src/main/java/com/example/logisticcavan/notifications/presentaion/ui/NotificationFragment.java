@@ -61,7 +61,7 @@ public class NotificationFragment extends BaseFragment {
             binding.progressBar.setVisibility(View.GONE);
             binding.noNotificationImage.setVisibility(View.VISIBLE);
         } else {
-            //
+
             binding.notifications.setAdapter(new NotificationsAdapter(notificationList));
             binding.progressBar.setVisibility(View.GONE);
             binding.notifications.setVisibility(View.VISIBLE);
