@@ -8,6 +8,6 @@ import java.util.concurrent.CompletableFuture;
 public interface NotificationStorageRepository {
 
    CompletableFuture<Void> storeNotificationRemotely(Notification notification, String email);
-   CompletableFuture<List<Notification>> getNotifications(Notification notification);
+   CompletableFuture<List<Notification>> getNotifications();
 
 }

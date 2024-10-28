@@ -1,5 +1,6 @@
 package com.example.logisticcavan.notifications.presentaion;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,14 +24,13 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
     @NonNull
     @Override
     public NotificationsAdapter.NotificationsVH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View offerView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_view_order_courier, parent, false);
+        View offerView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_view_notifications, parent, false);
         return new NotificationsVH(offerView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull NotificationsAdapter.NotificationsVH holder, int position) {
         Notification notification = notifications.get(position);
-
         holder.text.setText(notification.getMessage());
         holder.date.setText(notification.getTimestamp());
 
