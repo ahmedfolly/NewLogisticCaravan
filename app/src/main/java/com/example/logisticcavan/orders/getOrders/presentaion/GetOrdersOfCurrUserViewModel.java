@@ -3,7 +3,6 @@ package com.example.logisticcavan.orders.getOrders.presentaion;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-
 import com.example.logisticcavan.common.utils.MyResult;
 import com.example.logisticcavan.orders.getOrders.domain.GetOrdersIdsUseCase;
 import com.example.logisticcavan.orders.getOrders.domain.GetOrdersOfCurrUserUseCase;

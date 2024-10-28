@@ -49,7 +49,6 @@ public class NotificationFragment extends BaseFragment {
     }
 
     private void resultOfGettingNotifications(CompletableFuture<List<Notification>> notifications) {
-
         notifications.thenAccept(this::updateUi).exceptionally(throwable -> {
             showError(binding.getRoot(), throwable.getMessage());
             return null;
@@ -68,6 +67,4 @@ public class NotificationFragment extends BaseFragment {
         }
 
     }
-
-
 }

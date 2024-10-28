@@ -1,14 +1,10 @@
 package com.example.logisticcavan.notifications.data;
 
 
-import static android.Manifest.permission_group.NOTIFICATIONS;
-import static com.example.logisticcavan.common.utils.Constant.NOTIFICATIONS;
 import static com.example.logisticcavan.common.utils.Constant.NOTIFICATIONS_List;
-
 import android.util.Log;
-
 import androidx.annotation.NonNull;
-
+import com.example.logisticcavan.common.utils.Constant;
 import com.example.logisticcavan.notifications.domain.entity.Notification;
 import com.example.logisticcavan.notifications.domain.repo.NotificationStorageRepository;
 import com.google.firebase.auth.FirebaseAuth;
@@ -20,6 +16,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
 import javax.inject.Inject;
@@ -43,7 +40,7 @@ public class NotificationStorageRepositoryImp implements NotificationStorageRepo
 
         CompletableFuture<Void> future = new CompletableFuture<>();
         firebaseFirestore
-                .collection()
+                .collection(Constant.NOTIFICATIONS)
                 .document(email)
                 .update(NOTIFICATIONS_List, FieldValue.arrayUnion(notification))
                 .addOnSuccessListener(aVoid -> {
@@ -55,7 +52,7 @@ public class NotificationStorageRepositoryImp implements NotificationStorageRepo
                     List<Notification> newNotification =new ArrayList<>();
                     newNotification.add(notification);
                     hashMap.put(NOTIFICATIONS_List, newNotification);
-                    firebaseFirestore.collection(NOTIFICATIONS)
+                    firebaseFirestore.collection(Constant.NOTIFICATIONS)
                             .document(email)
                             .set(hashMap)
                             .addOnSuccessListener(aVoid -> {
@@ -72,8 +69,8 @@ public class NotificationStorageRepositoryImp implements NotificationStorageRepo
 
         CompletableFuture<List<Notification>> future = new CompletableFuture<>();
         firebaseFirestore
-                .collection(NOTIFICATIONS)
-                .document(firebaseAuth.getCurrentUser().getEmail())
+                .collection(Constant.NOTIFICATIONS)
+                .document(Objects.requireNonNull(Objects.requireNonNull(firebaseAuth.getCurrentUser()).getEmail()))
                 .get()
                 .addOnSuccessListener(documentSnapshot -> {
                     if (documentSnapshot.exists()) {
