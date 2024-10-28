@@ -2,6 +2,8 @@ package com.example.logisticcavan.orders.addorder.data;
 
 import static com.example.logisticcavan.common.utils.Constant.ORDERS;
 
+import android.util.Log;
+
 import com.example.logisticcavan.common.utils.MyResult;
 import com.example.logisticcavan.orders.addorder.domain.AddOrderRepo;
 import com.example.logisticcavan.orders.getOrders.domain.Order;
@@ -19,6 +21,7 @@ public class AddOrderRepoImp implements AddOrderRepo {
     private final FirebaseFirestore firestore;
     private final FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private final BehaviorSubject<MyResult<String>> subject = BehaviorSubject.create();
+    private final BehaviorSubject<Boolean> setOrderIdToCurrUserSubject = BehaviorSubject.create();
 
     public AddOrderRepoImp(FirebaseFirestore firestore) {
         this.firestore = firestore;
@@ -27,9 +30,11 @@ public class AddOrderRepoImp implements AddOrderRepo {
     public Observable<MyResult<String>> addOrder(Order order) {
         subject.onNext(MyResult.loading());
         firestore.collection(ORDERS)
-                .document(Objects.requireNonNull(mAuth.getCurrentUser()).getUid())
-                .set(getOrderDataToUpload(order))
+                .add(getOrderDataToUpload(order))
                 .addOnSuccessListener(documentReference -> {
+                    String orderId = documentReference.getId();
+                    Log.d("TAG", "addOrder: "+orderId);
+                    addOrderToCurrentUser(orderId);
                     subject.onNext(MyResult.success("Uploaded successfully"));
                 })
                 .addOnFailureListener(e -> {
@@ -38,6 +43,22 @@ public class AddOrderRepoImp implements AddOrderRepo {
 
         return subject.hide();
     }
+
+    public void addOrderToCurrentUser(String orderId) {
+        Map<String,String> orderIdMap = new HashMap<>();
+        orderIdMap.put("orderId",orderId);
+        firestore.collection("users")
+                .document(Objects.requireNonNull(Objects.requireNonNull(mAuth.getCurrentUser()).getEmail()))
+                .collection("Orders")
+                .add(orderIdMap)
+                .addOnSuccessListener(v->{
+                    Log.d("TAG", "addOrderToCurrentUser: order id added to curr user");
+                })
+                .addOnFailureListener(e->{
+                    Log.d("TAG", "addOrderToCurrentUser: "+e.getMessage());
+                });
+    }
+
     private Map<String, Object> getOrderDataToUpload(Order order) {
         Map<String, Object> orderDataToUpload = new HashMap<>();
 //        orderDataToUpload.put("dateCreated", order.getDateCreated());

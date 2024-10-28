@@ -2,9 +2,14 @@ package com.example.logisticcavan.orders.getOrders.di;
 
 import com.example.logisticcavan.orders.getOrders.courier.presentaion.GetCourierOrdersViewModel;
 import com.example.logisticcavan.orders.getOrders.data.CourierOrderRepositoryImpl;
+import com.example.logisticcavan.orders.getOrders.data.GetOrdersOfCurrUserRepoImp;
 import com.example.logisticcavan.orders.getOrders.domain.GetAllOrderUseCaseCase;
 import com.example.logisticcavan.orders.getOrders.domain.GetCourierOrdersBasedStatusUseCase;
+import com.example.logisticcavan.orders.getOrders.domain.GetOrdersIdsUseCase;
+import com.example.logisticcavan.orders.getOrders.domain.GetOrdersOfCurrUser;
+import com.example.logisticcavan.orders.getOrders.domain.GetOrdersOfCurrUserUseCase;
 import com.example.logisticcavan.orders.getOrders.domain.OrderRepository;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import javax.inject.Singleton;
@@ -17,10 +22,22 @@ import dagger.hilt.components.SingletonComponent;
 @Module
 @InstallIn(SingletonComponent.class)
 public class OrderDi {
-
-
-
-
+    @Provides
+    public GetOrdersIdsUseCase provideGetOrdersIdsUseCase(GetOrdersOfCurrUser getOrdersOfCurrUser) {
+        return new GetOrdersIdsUseCase(getOrdersOfCurrUser);
+    }
+    @Provides
+    public GetOrdersOfCurrUserUseCase provideGetOrdersOfCurrUserUseCase(GetOrdersOfCurrUser getOrdersOfCurrUser) {
+        return new GetOrdersOfCurrUserUseCase(getOrdersOfCurrUser);
+    }
+    @Provides
+    public GetOrdersOfCurrUser provideGetOrdersOfCurrUser(FirebaseFirestore firebaseFireStore, FirebaseAuth mAuth) {
+        return new GetOrdersOfCurrUserRepoImp(firebaseFireStore,mAuth);
+    }
+//    @Provides
+//    public FirebaseAuth provideFirebaseAuth() {
+//        return FirebaseAuth.getInstance();
+//    }
 
     @Provides
     public GetCourierOrdersBasedStatusUseCase provideOrderGetCourierOrdersBaseStatusUseCase(OrderRepository orderRepository) {

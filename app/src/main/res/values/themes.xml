@@ -39,6 +39,12 @@
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item> <!-- Make it a circle or adjust as needed -->
     </style>
-
+    <style name="CustomRatingBarStyle" parent="Widget.AppCompat.RatingBar">
+        <item name="android:progressDrawable">@drawable/rating_bar_style</item>
+        <item name="android:numStars">5</item>
+        <item name="android:stepSize">1</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
     <style name="Theme.LogisticCavan" parent="Base.Theme.LogisticCavan" />
 </resources>

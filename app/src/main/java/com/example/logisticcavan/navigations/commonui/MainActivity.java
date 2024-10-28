@@ -6,10 +6,15 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.ui.NavigationUI;
 
 import com.example.logisticcavan.cart.presentaion.CartViewModel;
 import com.example.logisticcavan.cart.presentaion.ui.CartFragment;
 import com.example.logisticcavan.R;
+import com.example.logisticcavan.orders.getOrders.domain.Order;
+import com.example.logisticcavan.orders.getOrders.presentaion.GetOrdersOfCurrUserViewModel;
 import com.example.logisticcavan.products.getproducts.presentation.GetProductsViewModel;
 import com.example.logisticcavan.restaurants.presentation.GetRestaurantProductsViewModel;
 import com.example.logisticcavan.restaurants.presentation.GetRestaurantsViewModel;
@@ -27,13 +32,18 @@ public class MainActivity extends AppCompatActivity implements CartFragment.Cart
     GetRestaurantProductsViewModel viewModel;
     GetProductsViewModel getProductsViewModel;
     CartViewModel cartViewModel;
+    GetOrdersOfCurrUserViewModel getOrdersOfCurrUserViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         bottomNavigationView = findViewById(R.id.bottom_navigation);
-
+        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.host_fragment);
+        assert navHostFragment != null;
+        NavController navController = navHostFragment.getNavController();
+        NavigationUI.setupWithNavController(bottomNavigationView, navController);
     }
 
     @Override
