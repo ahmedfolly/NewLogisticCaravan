@@ -9,7 +9,11 @@
         android:id="@+id/courierHomeFragment"
         android:name="com.example.logisticcavan.orders.getOrders.courier.presentaion.CourierHomeFragment"
         android:label="fragment_courier_home"
-        tools:layout="@layout/fragment_courier_home" />
+        tools:layout="@layout/fragment_courier_home" >
+        <action
+            android:id="@+id/action_courierHomeFragment_to_orderDetailFragment"
+            app:destination="@id/orderDetailFragment" />
+    </fragment>
     <fragment
         android:id="@+id/moreFragment"
         android:name="com.example.logisticcavan.more.presentaion.MoreFragment"
@@ -45,5 +49,14 @@
         <action
             android:id="@+id/action_profileFragment_to_changePasswordFragment"
             app:destination="@id/changePasswordFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/orderDetailFragment"
+        tools:layout="@layout/fragment_order_detail"
+        android:name="com.example.logisticcavan.orders.getOrders.courier.presentaion.OrderDetailFragment"
+        android:label="OrderDetailFragment" >
+        <argument
+            android:name="order"
+            app:argType="com.example.logisticcavan.orders.getOrders.domain.Order" />
     </fragment>
 </navigation>
