@@ -13,8 +13,8 @@ public class Constant {
     public static final String SHIPPED = "Shipped";
     public static final String NOTIFICATIONS = "notifications";
     public static final String NOTIFICATIONS_List = "notificationsList";
-
     public static final String flagFromPlaceOrderScreen = "fromPlaceScreen";
     public static final String DELIVERED = "Delivered";
+
 }
 

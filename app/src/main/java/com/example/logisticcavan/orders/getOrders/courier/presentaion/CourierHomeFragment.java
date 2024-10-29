@@ -13,10 +13,13 @@ import android.widget.PopupMenu;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.example.logisticcavan.R;
 import com.example.logisticcavan.common.base.BaseFragment;
 import com.example.logisticcavan.databinding.FragmentCourierHomeBinding;
+import com.example.logisticcavan.orders.getOrders.OnOrderItemClicked;
 import com.example.logisticcavan.orders.getOrders.domain.Order;
 
 import java.util.List;
@@ -26,10 +29,11 @@ import javax.inject.Inject;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class CourierHomeFragment extends BaseFragment {
+public class CourierHomeFragment extends BaseFragment  implements OnOrderItemClicked {
 
     private CourierOrdersAdapter courierOrdersAdapter;
     private FragmentCourierHomeBinding binding;
+    private NavController navController;
 
 
     @Inject
@@ -47,6 +51,7 @@ public class CourierHomeFragment extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        navController = Navigation.findNavController(view);
         getCourierOrdersViewModel.getOrdersBasedStatus(PENDING);
         observeViewModel();
         setUpClickListener();
@@ -104,7 +109,7 @@ public class CourierHomeFragment extends BaseFragment {
     }
 
     private void updateRecyclerView(List<Order> orders) {
-        courierOrdersAdapter = new CourierOrdersAdapter(orders);
+        courierOrdersAdapter = new CourierOrdersAdapter(orders,this);
         binding.ordersRecycler.setAdapter(courierOrdersAdapter);
         updateUiStatus(true);
 
@@ -122,4 +127,10 @@ public class CourierHomeFragment extends BaseFragment {
 
     }
 
+    @Override
+    public void onOrderClicked(Order order) {
+
+        navController.navigate
+                (CourierHomeFragmentDirections.actionCourierHomeFragmentToOrderDetailFragment(order));
+    }
 }

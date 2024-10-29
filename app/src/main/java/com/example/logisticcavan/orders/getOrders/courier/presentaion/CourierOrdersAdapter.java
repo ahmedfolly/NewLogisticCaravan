@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.logisticcavan.R;
+import com.example.logisticcavan.orders.getOrders.OnOrderItemClicked;
 import com.example.logisticcavan.orders.getOrders.domain.Order;
 
 import java.io.ObjectStreamClass;
@@ -19,8 +20,11 @@ import java.util.Map;
 public class CourierOrdersAdapter extends RecyclerView.Adapter<CourierOrdersAdapter.OffersVH> {
     List<Order> orders;
 
-    public CourierOrdersAdapter(List<Order> orders) {
+
+    private OnOrderItemClicked onOrderItemClicked;
+    public CourierOrdersAdapter(List<Order> orders, OnOrderItemClicked onOrderItemClicked) {
         this.orders = orders;
+        this.onOrderItemClicked = onOrderItemClicked;
     }
 
     @NonNull
@@ -33,22 +37,29 @@ public class CourierOrdersAdapter extends RecyclerView.Adapter<CourierOrdersAdap
     @Override
     public void onBindViewHolder(@NonNull CourierOrdersAdapter.OffersVH holder, int position) {
         Order order = orders.get(position);
-        holder.idOrder.setText(order.getOrderId());
+
         Map<String,String> customerMap = order.getCustomer();
         String customerName = customerMap.get("name");
-        holder.clientName.setText(customerName);
-//        holder.restaurantName.setText(order.getRestaurantName());
+
         //order items details
         List<Map<String, Object>> cartItemsMap = order.getCartItems();
-        holder.itemNumber.setText(""+cartItemsMap.size());
+
         //restaurant details
         Map<String, String> restaurant = order.getRestaurant();
         String restaurantName = restaurant.get("name");
-        holder.restaurantName.setText(restaurantName);
         //customerdetails
+
         //general details
-//        holder.itemNumber.setText(""+order.getCartItems().size());
+        Map<String,Object> generalMap = order.getGeneralDetails();
+        String orderId = generalMap.get("orderId").toString();
+
+        holder.idOrder.setText("#"+orderId.substring(0,5));
+        holder.restaurantName.setText(restaurantName);
+        holder.itemNumber.setText(""+cartItemsMap.size());
+        holder.clientName.setText(customerName);
+
         holder.itemView.setOnClickListener(view1 -> {
+          onOrderItemClicked.onOrderClicked(order);
         });
     }
 
