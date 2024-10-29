@@ -1,5 +1,6 @@
 [versions]
 agp = "8.5.2"
+andratingbar = "1.0.6"
 emptyrecyclerview = "2.8.0"
 firebaseBom = "33.4.0"
 hiltAndroid = "2.51.1"
@@ -27,6 +28,7 @@ firebaseMessaging = "24.0.3"
 
 [libraries]
 #androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomCompiler" }
+andratingbar = { module = "com.github.wdsqjq:AndRatingBar", version.ref = "andratingbar" }
 emptyrecyclerview = { module = "com.github.koji-1009:EmptyRecyclerView", version.ref = "emptyrecyclerview" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroid" }

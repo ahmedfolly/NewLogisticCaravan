@@ -73,6 +73,8 @@ dependencies {
     implementation (libs.rxandroid)
     implementation (libs.emptyrecyclerview)
 
+    implementation (libs.andratingbar)
+
     implementation (libs.room)  // Room runtime
     annotationProcessor(libs.room.compiler) // To generate Room Database classes)
 

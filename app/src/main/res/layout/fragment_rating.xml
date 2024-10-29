@@ -3,15 +3,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".orders.getOrders.presentaion.ui.RatingFragment">
 
-    <RatingBar
+    <per.wsj.library.AndRatingBar
         android:layout_width="wrap_content"
-        android:layout_height="32dp"
-        android:id="@+id/ratingBar"
-        android:rating="0"
-        style="@style/Widget.AppCompat.RatingBar"
-        android:progressDrawable="@drawable/rating_bar_style"
+        android:layout_height="wrap_content"
+        android:numStars="5"
+        android:stepSize="1"
+        app:starDrawable="@drawable/kid_star_filled"
+        app:starColor="#FFD700"
         />
+
 
 </FrameLayout>
