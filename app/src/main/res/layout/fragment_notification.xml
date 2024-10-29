@@ -11,13 +11,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#FFFFFF"
-        android:paddingTop="24dp"
         tools:context=".more.presentaion.AboutAppFragment">
 
         <TextView
             android:id="@+id/textView6"
             android:layout_width="wrap_content"
-            android:layout_height="70dp"
+            android:layout_height="?attr/actionBarSize"
             android:gravity="center"
             android:text="Notifications"
             android:textColor="#D14753"
@@ -32,7 +31,6 @@
             android:id="@+id/view4"
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:layout_marginTop="18dp"
             android:background="#8F8F8F54"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"

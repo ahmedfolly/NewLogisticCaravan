@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,18 +44,18 @@ public class RestaurantDetailsFragment extends Fragment implements RestaurantPro
     private RestaurantProductsAdapter restaurantProductsAdapter;
     private RecyclerView productsContainer;
     private CartViewModel cartViewModel;
+    private ProgressBar loadRestaurantProductsProgress;
 
     public RestaurantDetailsFragment() {
         // Required empty public constructor
     }
 
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getRestaurantProductsViewModel = new ViewModelProvider(this).get(GetRestaurantProductsViewModel.class);
-        restaurantProductsAdapter = new RestaurantProductsAdapter(getParentFragmentManager(),this);
+        restaurantProductsAdapter = new RestaurantProductsAdapter(getParentFragmentManager(), this);
         getProductsViewModel = new ViewModelProvider(this).get(GetProductsViewModel.class);
         cartViewModel = new ViewModelProvider(this).get(CartViewModel.class);
     }
@@ -73,7 +74,8 @@ public class RestaurantDetailsFragment extends Fragment implements RestaurantPro
         Restaurant restaurant = args.getRestaurant();
         productsContainer = view.findViewById(R.id.restaurant_food_container);
         ImageView restaurantImage = view.findViewById(R.id.restaurant_image_details);
-       //restaurant image
+        loadRestaurantProductsProgress = view.findViewById(R.id.load_restaurant_products_progress);
+        //restaurant image
         Glide.with(this)
                 .load(restaurant.getRestaurantImageLink())
                 .into(restaurantImage);
@@ -91,43 +93,50 @@ public class RestaurantDetailsFragment extends Fragment implements RestaurantPro
         restaurantAvailableTime.setText(restaurant.getAvailableTime());
         getRestaurantProducts(restaurant.getRestaurantId());
     }
-    void getRestaurantProducts(String restaurantId){
+
+    void getRestaurantProducts(String restaurantId) {
         getRestaurantProductsViewModel.getRestaurantProducts(restaurantId);
-        getRestaurantProductsViewModel.getProductsLiveData().observe(getViewLifecycleOwner(),productsIdsResult->{
+        getRestaurantProductsViewModel.getProductsLiveData().observe(getViewLifecycleOwner(), productsIdsResult -> {
             productsIdsResult.handle(
-                    productsIds->{
-                        for (String id : productsIds){
-                            Log.d("TAG", "getRestaurantProducts: "+id);
+                    productsIds -> {
+                        for (String id : productsIds) {
+                            Log.d("TAG", "getRestaurantProducts: " + id);
                         }
                         getProductsFromIds(productsIds);
                     },
-                    error->{},
-                    ()->{}
+                    error -> {
+                    },
+                    () -> {
+                    }
             );
         });
     }
-    void setupProductsContainer(){
+
+    void setupProductsContainer() {
         productsContainer.setHasFixedSize(true);
         productsContainer.setLayoutManager(new LinearLayoutManager(requireContext()));
         productsContainer.setAdapter(restaurantProductsAdapter);
     }
-    void getProductsFromIds(List<String> productsIds){
+
+    void getProductsFromIds(List<String> productsIds) {
         getProductsViewModel.fetchProducts(productsIds);
-        getProductsViewModel.getProductsLiveData().observe(getViewLifecycleOwner(),productsResult->{
+        getProductsViewModel.getProductsLiveData().observe(getViewLifecycleOwner(), productsResult -> {
             productsResult.handle(
-                    products->{
+                    products -> {
                         //here submit this list with adapter
                         restaurantProductsAdapter.submitList(products);
                         setupProductsContainer();
-                    },error->{},
-                    ()->{}
+                        loadRestaurantProductsProgress.setVisibility(View.GONE);
+                    }, error -> loadRestaurantProductsProgress.setVisibility(View.VISIBLE),
+                    () -> loadRestaurantProductsProgress.setVisibility(View.VISIBLE)
             );
         });
     }
+
     private Bundle sendArgs(Product product) {
         Bundle bundle = new Bundle();
         bundle.putParcelable("restaurant", args.getRestaurant());
-        bundle.putParcelable("product",product);
+        bundle.putParcelable("product", product);
         return bundle;
     }
 
@@ -138,29 +147,31 @@ public class RestaurantDetailsFragment extends Fragment implements RestaurantPro
         bottomSheetDialogFragment.show(getParentFragmentManager(), bottomSheetDialogFragment.getTag());
         bottomSheetDialogFragment.setCancelable(true);
     }
+
     @Override
-    public void addToCart(Product product,int quantity, double price) {
-        CartItem cartItem = getCartItem(product,quantity, price);
+    public void addToCart(Product product, int quantity, double price) {
+        CartItem cartItem = getCartItem(product, quantity, price);
         //adding to cart operation.
         cartViewModel.getRestaurantIdOfFirstItem(args.getRestaurant().getRestaurantId(), new CartViewModel.GetRestaurantIdCallback() {
             @Override
             public void onSuccess(boolean isExist) {
-                Log.d("TAG", "resId  "+isExist);
-                if (isExist){
+                Log.d("TAG", "resId  " + isExist);
+                if (isExist) {
                     Log.d("TAG", "item found ");
                     addCartItemToCart(cartItem);
-                }else{
+                } else {
                     cartViewModel.getCartCount(new CartViewModel.CartCountCallback() {
                         @Override
                         public void onSuccess(int count) {
                             Log.d("TAG", "main get cart count " + count);
-                            if (count == 0){
+                            if (count == 0) {
                                 Log.d("TAG", "main  add item to empty database ");
                                 addCartItemToCart(cartItem);
-                            }else{
+                            } else {
                                 setupWarningDialog(cartItem);
                             }
                         }
+
                         @Override
                         public void onError(Throwable e) {
 
@@ -169,12 +180,14 @@ public class RestaurantDetailsFragment extends Fragment implements RestaurantPro
 
                 }
             }
+
             @Override
             public void onError(Throwable e) {
 
             }
         });
     }
+
     private void addCartItemToCart(CartItem cartItem) {
 
         cartViewModel.addToCart(cartItem, new CartViewModel.AddToCartResultCallback() {
@@ -182,12 +195,14 @@ public class RestaurantDetailsFragment extends Fragment implements RestaurantPro
             public void onSuccess(boolean isAdded) {
                 Log.d("TAG", "tracking is added: from dialog ");
             }
+
             @Override
             public void onError(Throwable e) {
-                Toast.makeText(getContext(), "Error adding to cart"+e.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Error adding to cart" + e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
+
     private void setupWarningDialog(CartItem cartItem) {
         String restaurantName = args.getRestaurant().getRestaurantName();
         Dialog dialog = new Dialog(requireContext());
@@ -219,7 +234,8 @@ public class RestaurantDetailsFragment extends Fragment implements RestaurantPro
             dialog.dismiss();
         });
     }
-    private CartItem getCartItem(Product product,int quantity, double price) {
+
+    private CartItem getCartItem(Product product, int quantity, double price) {
         CartItem cartItem = new CartItem();
         cartItem.setRestaurantId(args.getRestaurant().getRestaurantId());
         cartItem.setProductName(product.getProductName());

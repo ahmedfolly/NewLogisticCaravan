@@ -7,7 +7,11 @@ import android.util.Log;
 import com.example.logisticcavan.common.utils.MyResult;
 import com.example.logisticcavan.orders.addorder.domain.AddOrderRepo;
 import com.example.logisticcavan.orders.getOrders.domain.Order;
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
@@ -33,9 +37,17 @@ public class AddOrderRepoImp implements AddOrderRepo {
                 .add(getOrderDataToUpload(order))
                 .addOnSuccessListener(documentReference -> {
                     String orderId = documentReference.getId();
-                    Log.d("TAG", "addOrder: "+orderId);
-                    addOrderToCurrentUser(orderId);
-                    subject.onNext(MyResult.success("Uploaded successfully"));
+//                    uploadOrderId(orderId);
+//                    Log.d("TAG", "addOrder: "+orderId);
+//                    addOrderToCurrentUser(orderId);
+//                    subject.onNext(MyResult.success("Uploaded successfully"));
+                    uploadOrderId(orderId).addOnSuccessListener(aVoid -> {
+                        Log.d("TAG", "addOrder: " + orderId);
+                        addOrderToCurrentUser(orderId);
+                        subject.onNext(MyResult.success("Uploaded successfully"));
+                    }).addOnFailureListener(e -> {
+                        subject.onNext(MyResult.error(e));
+                    });
                 })
                 .addOnFailureListener(e -> {
                     subject.onNext(MyResult.error(e));
@@ -44,7 +56,23 @@ public class AddOrderRepoImp implements AddOrderRepo {
         return subject.hide();
     }
 
-    public void addOrderToCurrentUser(String orderId) {
+    private Task<Void> uploadOrderId(String id) {
+        DocumentReference orderRef = firestore.collection(ORDERS).document(id);
+        return orderRef.get().continueWithTask(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot documentSnapshot = task.getResult();
+                if (documentSnapshot.exists()) {
+                    Map<String, Object> gDetailsMap = (Map<String, Object>) documentSnapshot.get("generalDetails");
+                    if (gDetailsMap != null) {
+                        gDetailsMap.put("orderId", id);
+                        // Now update the document with the modified map
+                        return orderRef.update("generalDetails", gDetailsMap);
+                    }
+                }
+            }
+            return Tasks.forException(new Exception("Failed to update order ID"));
+        });
+    }    public void addOrderToCurrentUser(String orderId) {
         Map<String,String> orderIdMap = new HashMap<>();
         orderIdMap.put("orderId",orderId);
         firestore.collection("users")

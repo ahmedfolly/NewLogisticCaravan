@@ -2,8 +2,11 @@ package com.example.logisticcavan.notifications.data;
 
 
 import static com.example.logisticcavan.common.utils.Constant.NOTIFICATIONS_List;
+
 import android.util.Log;
+
 import androidx.annotation.NonNull;
+
 import com.example.logisticcavan.common.utils.Constant;
 import com.example.logisticcavan.notifications.domain.entity.Notification;
 import com.example.logisticcavan.notifications.domain.repo.NotificationStorageRepository;
@@ -49,7 +52,7 @@ public class NotificationStorageRepositoryImp implements NotificationStorageRepo
 
                 }).addOnFailureListener(ex -> {
                     HashMap<String, Object> hashMap = new HashMap<>();
-                    List<Notification> newNotification =new ArrayList<>();
+                    List<Notification> newNotification = new ArrayList<>();
                     newNotification.add(notification);
                     hashMap.put(NOTIFICATIONS_List, newNotification);
                     firebaseFirestore.collection(Constant.NOTIFICATIONS)
@@ -95,7 +98,7 @@ public class NotificationStorageRepositoryImp implements NotificationStorageRepo
     }
 
     @NonNull
-    private  Notification getNotification(HashMap<String, Object> map) {
+    private Notification getNotification(HashMap<String, Object> map) {
         String message = (String) map.get("message");
         String timeStamp = (String) map.get("timestamp");
         Notification notification = new Notification(message);

@@ -100,6 +100,13 @@
 <!--        tools:listitem="@layout/category_item"-->
 <!--        android:id="@+id/categories_container_detail"/>-->
 
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:id="@+id/load_restaurant_products_progress"
+        android:visibility="gone"
+        />
     <androidx.recyclerview.widget.RecyclerView
         android:background="@color/white"
         android:layout_width="match_parent"

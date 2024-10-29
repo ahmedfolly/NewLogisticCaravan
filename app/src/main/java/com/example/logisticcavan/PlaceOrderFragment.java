@@ -110,8 +110,18 @@ public class PlaceOrderFragment extends Fragment {
             public void onSuccess(String message) {
                 Log.d("TAG", "uploadOrder: uploaded");
                 progressBar.setVisibility(View.GONE);
-                NavDirections directions = PlaceOrderFragmentDirections.actionPlaceOrderFragmentToTrakOrderFragment(Constant.flagFromPlaceOrderScreen);
-                navController.navigate(directions);
+                cartViewModel.emptyCart(new CartViewModel.EmptyCartResultCallback() {
+                    @Override
+                    public void onSuccess(boolean isDeleted) {
+                        NavDirections directions = PlaceOrderFragmentDirections.actionPlaceOrderFragmentToTrakOrderFragment(Constant.flagFromPlaceOrderScreen);
+                        navController.navigate(directions);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+                });
             }
 
             @Override

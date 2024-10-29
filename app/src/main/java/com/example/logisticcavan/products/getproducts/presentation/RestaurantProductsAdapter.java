@@ -44,7 +44,7 @@ public class RestaurantProductsAdapter extends ListAdapter<Product, RestaurantPr
         holder.productPrice.setText(product.getProductPrice()+" SR");
         Glide.with(holder.itemView)
                 .load(product.getProductImageLink())
-                .apply(RequestOptions.bitmapTransform(new RoundedCorners(10)))
+                .apply(RequestOptions.bitmapTransform(new RoundedCorners(18)))
                 .into(holder.productImage);
 //        holder.productGradients.setText(product.getProductGradients());
         holder.itemView.setOnClickListener(v->{

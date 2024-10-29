@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 public class UserOrdersAdapter extends RecyclerView.Adapter<UserOrdersAdapter.UserOrderViewHolder> {
-    private List<Order> orders;
+    private final List<Order> orders;
     private NavController navController;
 
     public UserOrdersAdapter(List<Order> orders) {
@@ -76,13 +76,12 @@ public class UserOrdersAdapter extends RecyclerView.Adapter<UserOrdersAdapter.Us
         return orders.size();
     }
 
-    public class UserOrderViewHolder extends RecyclerView.ViewHolder{
+    public static class UserOrderViewHolder extends RecyclerView.ViewHolder{
         TextView restaurantName;
         TextView itemNumber;
         TextView status;
         public UserOrderViewHolder(@NonNull View itemView) {
             super(itemView);
-
             restaurantName = itemView.findViewById(R.id.restaurant_name_user_orders);
             itemNumber = itemView.findViewById(R.id.items_count_user_orders);
             status = itemView.findViewById(R.id.user_order_status);
