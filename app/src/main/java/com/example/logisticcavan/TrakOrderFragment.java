@@ -6,12 +6,14 @@ import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import android.os.Handler;
 import android.util.Log;
@@ -84,6 +86,12 @@ public class TrakOrderFragment extends Fragment {
             changeBackground(deliveredImage,2000);
             statusDesc.setText("Your order is already delivered!\n We hope you enjoyed your meal!");
         }
+        ImageView backToHome = view.findViewById(R.id.back_to_home);
+        backToHome.setOnClickListener(v->{
+            navController = findNavController(view);
+            navController.navigate(R.id.action_trakOrderFragment_to_homeFragment);
+        });
+        onBackBtnPressed();
     }
 
     private void changeBackground(ImageView imageView,int duration){
@@ -144,5 +152,18 @@ public class TrakOrderFragment extends Fragment {
         snackbarView.setBackgroundResource(R.drawable.snackbar_background);
         snackbarView.setLayoutParams(params);
         snackbar.show();
+    }
+
+    void onBackBtnPressed(){
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                // Get the NavController
+                NavController navController =findNavController(requireView());
+
+                // Navigate to the specific destination
+                navController.navigate(R.id.action_trakOrderFragment_to_homeFragment); // Replace with your target destination ID
+            }
+        });
     }
 }

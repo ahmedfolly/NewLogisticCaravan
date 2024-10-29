@@ -101,6 +101,9 @@
         <action
             android:id="@+id/action_trakOrderFragment_to_ratingFragment"
             app:destination="@id/ratingFragment" />
+        <action
+            android:id="@+id/action_trakOrderFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
     </fragment>
     <fragment
         android:id="@+id/userOrdersFragment"
@@ -116,4 +119,20 @@
         android:name="com.example.logisticcavan.orders.getOrders.presentaion.ui.RatingFragment"
         android:label="fragment_rating"
         tools:layout="@layout/fragment_rating" />
+    <fragment
+        android:id="@+id/notificationFragment2"
+        android:name="com.example.logisticcavan.notifications.presentaion.ui.NotificationFragment"
+        android:label="NotificationFragment" />
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.logisticcavan.more.presentaion.ProfileFragment"
+        android:label="ProfileFragment" >
+        <action
+            android:id="@+id/action_profileFragment_to_changePasswordFragment"
+            app:destination="@id/changePasswordFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/changePasswordFragment"
+        android:name="com.example.logisticcavan.more.presentaion.ChangePasswordFragment"
+        android:label="ChangePasswordFragment" />
 </navigation>

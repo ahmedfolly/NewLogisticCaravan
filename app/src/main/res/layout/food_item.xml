@@ -8,8 +8,8 @@
     android:layout_margin="8dp"
     >
     <ImageView
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="96dp"
+        android:layout_height="83dp"
         android:layout_margin="8dp"
         android:scaleType="fitXY"
         android:id="@+id/food_image_details_id" />

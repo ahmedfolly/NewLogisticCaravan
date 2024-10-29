@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#F5F5F5"
     android:id="@+id/parent_container"
     tools:context=".navigations.commonui.HomeFragment">
@@ -22,6 +22,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
                 android:gravity="center">
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="0dp"
@@ -53,12 +55,12 @@
                         android:id="@+id/cart_count"/>
                 </RelativeLayout>
 
-                <ImageView
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_margin="8dp"
-                    android:src="@drawable/bell_black"
-                    android:id="@+id/notification_id"/>
+<!--                <ImageView-->
+<!--                    android:layout_width="32dp"-->
+<!--                    android:layout_height="32dp"-->
+<!--                    android:layout_margin="8dp"-->
+<!--                    android:src="@drawable/bell_black"-->
+<!--                    android:id="@+id/notification_id"/>-->
             </LinearLayout>
 <!--            <TextView-->
 <!--                android:layout_width="match_parent"-->
@@ -74,9 +76,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     tools:listitem="@layout/offer_item"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:clipToPadding="false"
+                    android:orientation="horizontal"
                     android:id="@+id/offers_container"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp" />
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="8dp"
+              />
                 <com.google.android.material.progressindicator.CircularProgressIndicator
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -98,6 +105,7 @@
                 android:textColor="@color/black"
                 android:textStyle="bold"
                 android:textSize="20sp"
+                android:layout_marginStart="8dp"
                 android:text="Food &amp; Drinks"
                 />
             <RelativeLayout
@@ -107,6 +115,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/food_container"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:clipToPadding="false"
+                    android:orientation="horizontal"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp" />
                 <com.google.android.material.progressindicator.CircularProgressIndicator

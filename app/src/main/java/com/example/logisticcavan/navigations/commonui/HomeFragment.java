@@ -10,7 +10,9 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SnapHelper;
 
 import android.os.Handler;
 import android.view.Gravity;
@@ -109,12 +111,17 @@ public class HomeFragment extends BaseFragment implements CategoriesAdapter.OnIt
 //        getProducts();
         setupProductsContainer(view, restaurantsAdapter);
         getRestaurants();
-        view.findViewById(R.id.notification_id).setOnClickListener(view1 -> {
-
-            signOut();
-
-        });
+//        view.findViewById(R.id.notification_id).setOnClickListener(view1 -> {
+//
+//            signOut();
+//
+//        });
         checkForCartItemsCount();
+
+        LinearSnapHelper linearSnapHelper = new LinearSnapHelper();
+        if (offersContainer.getOnFlingListener() == null) {
+            linearSnapHelper.attachToRecyclerView(offersContainer);
+        }
     }
 
     private void getCategories(View view) {
@@ -143,6 +150,7 @@ public class HomeFragment extends BaseFragment implements CategoriesAdapter.OnIt
         offersContainer.setHasFixedSize(true);
         offersContainer.setLayoutManager(new LinearLayoutManager(view.getContext(), RecyclerView.HORIZONTAL, false));
         offersContainer.setAdapter(adapter);
+
     }
 
     private void checkForCartItemsCount() {
@@ -329,5 +337,10 @@ public class HomeFragment extends BaseFragment implements CategoriesAdapter.OnIt
 
     public interface HomeFramentOpenedCallback {
         void onHomeFragmentOpened();
+    }
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        offersContainer.setAdapter(null); // Clear adapter to prevent memory leaks
     }
 }
