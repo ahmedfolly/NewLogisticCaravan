@@ -1,19 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".orders.getOrders.presentaion.ui.RatingFragment">
+    tools:context=".rating.addandgetrating.presentation.ui.AddRatingFragment">
+
+    <ImageView
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@drawable/arrow_back_ios_24px"
+        android:layout_margin="16dp"
+        android:id="@+id/back_btn"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="How was you order?"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:textSize="20sp"
+        android:layout_marginTop="32dp"
+        />
 
     <per.wsj.library.AndRatingBar
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:numStars="5"
         android:stepSize="1"
         app:starDrawable="@drawable/kid_star_filled"
         app:starColor="#FFD700"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:id="@+id/rating_bar"
+        android:rating="1"
         />
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="100dp"
+        android:layout_margin="16dp"
+        android:hint="Leave us your review...">
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="100dp"
+            android:id="@+id/review_text"
+            android:maxLines="6"/>
+    </com.google.android.material.textfield.TextInputLayout>
 
-
-</FrameLayout>
+    <com.google.android.material.button.MaterialButton
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:text="Submit"
+        android:layout_marginStart="64dp"
+        android:layout_marginEnd="64dp"
+        android:layout_marginTop="32dp"
+        app:backgroundTint="#244D60"
+        android:textSize="20sp"
+        app:shapeAppearanceOverlay="@style/CustomShapeAppearance"
+        android:id="@+id/submit_rate_btn"/>
+</LinearLayout>

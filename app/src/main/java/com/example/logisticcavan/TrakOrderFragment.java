@@ -13,6 +13,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
+import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
 import android.os.Handler;
@@ -77,9 +78,12 @@ public class TrakOrderFragment extends Fragment {
         }if (flag.equals(Constant.DELIVERED)){
             rateText.setVisibility(View.VISIBLE);
             rateText.setOnClickListener(v->{
+                String restaurantId = args.getRestaurantId();
+                String orderId = args.getOrderId();
                 //here open rate fragment
                 navController = findNavController(view);
-                navController.navigate(R.id.action_trakOrderFragment_to_ratingFragment);
+                NavDirections action = TrakOrderFragmentDirections.actionTrakOrderFragmentToRatingFragment(restaurantId,orderId);
+                navController.navigate(action);
             });
             setProgressSmoothly(100);
             changeBackground(shippedImage,1250);

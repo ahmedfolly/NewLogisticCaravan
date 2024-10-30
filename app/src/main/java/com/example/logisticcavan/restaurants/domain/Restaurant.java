@@ -12,6 +12,24 @@ public class Restaurant implements Parcelable {
     private String restaurantLogoLink="";
     private String availableTime="";
     private String deliveryTime="";
+    int totalReviewers = 0;
+    int totalStars = 0;
+
+    public int getTotalReviewers() {
+        return totalReviewers;
+    }
+
+    public void setTotalReviewers(int totalReviewers) {
+        this.totalReviewers = totalReviewers;
+    }
+
+    public int getTotalStars() {
+        return totalStars;
+    }
+
+    public void setTotalStars(int totalStars) {
+        this.totalStars = totalStars;
+    }
 
     public String getRestaurantLogoLink() {
         return restaurantLogoLink;

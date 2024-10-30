@@ -12,9 +12,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.SnapHelper;
 
-import android.os.Handler;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,8 +23,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.logisticcavan.PlaceOrderFragment;
 import com.example.logisticcavan.R;
+import com.example.logisticcavan.SharedViewModel;
 import com.example.logisticcavan.cart.presentaion.CartViewModel;
 import com.example.logisticcavan.restaurants.presentation.CombinedProductsWithRestaurantsViewModel;
 import com.example.logisticcavan.common.base.BaseFragment;
@@ -68,7 +66,11 @@ public class HomeFragment extends BaseFragment implements CategoriesAdapter.OnIt
     ImageView openCartScreen;
     private CartViewModel cartViewModel;
 
+    private SharedViewModel sharedViewModel;
+
     private HomeFramentOpenedCallback homeFramentOpenedCallback;
+
+    private boolean isRatingSubmitted = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -83,6 +85,7 @@ public class HomeFragment extends BaseFragment implements CategoriesAdapter.OnIt
         getRestaurantsViewModel = new ViewModelProvider(this).get(GetRestaurantsViewModel.class);
         cartViewModel = new ViewModelProvider(this).get(CartViewModel.class);
         combinedProductsWithRestaurantsViewModel = new ViewModelProvider(this).get(CombinedProductsWithRestaurantsViewModel.class);
+        sharedViewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
 
 //        PlaceOrderFragment.setOrderPlaceCallback(this);
     }
@@ -111,17 +114,22 @@ public class HomeFragment extends BaseFragment implements CategoriesAdapter.OnIt
 //        getProducts();
         setupProductsContainer(view, restaurantsAdapter);
         getRestaurants();
-//        view.findViewById(R.id.notification_id).setOnClickListener(view1 -> {
-//
-//            signOut();
-//
-//        });
         checkForCartItemsCount();
 
         LinearSnapHelper linearSnapHelper = new LinearSnapHelper();
         if (offersContainer.getOnFlingListener() == null) {
             linearSnapHelper.attachToRecyclerView(offersContainer);
         }
+
+        if (!isRatingSubmitted){
+            sharedViewModel.isRatingSubmitted().observe(getViewLifecycleOwner(),isSummitted->{
+                if(isSummitted){
+                    showTopSnackbar();
+                    isRatingSubmitted = true;
+                }
+            });
+        }
+
     }
 
     private void getCategories(View view) {
@@ -299,16 +307,14 @@ public class HomeFragment extends BaseFragment implements CategoriesAdapter.OnIt
 //
 //    }
 
-    public void showTopSnackbar(String message) {
+    public void showTopSnackbar() {
         CoordinatorLayout coordinatorLayout = requireActivity().findViewById(R.id.parent_container);
         Snackbar snackbar = Snackbar.make(coordinatorLayout, "", Snackbar.LENGTH_LONG);
-        View customSnackView = getLayoutInflater().inflate(R.layout.snackbar_layout, null);
+        View customSnackView = getLayoutInflater().inflate(R.layout.feedback_submitted_snackbar_layout, null);
         View snackbarView = snackbar.getView();
 
         //setup snackbar view
         setupSnackbarSiew(snackbar, customSnackView, snackbarView);
-        //setup snackbar text
-        setupSnackbarText(message, customSnackView);
         //setup snackbar settings
         setupSnackbarSettings(snackbar, snackbarView);
     }
@@ -319,21 +325,21 @@ public class HomeFragment extends BaseFragment implements CategoriesAdapter.OnIt
         snackbarLayout.addView(customSnackView, 0);
     }
 
-    private void setupSnackbarText(String message, View customSnackView) {
-        TextView snackbarText = customSnackView.findViewById(R.id.snackbar_text);
-        snackbarText.setText(message);
-    }
 
+
+    @SuppressLint("UseCompatLoadingForDrawables")
     private void setupSnackbarSettings(Snackbar snackbar, View snackbarView) {
-        snackbar.setBackgroundTint(getResources().getColor(R.color.white, null));
+        snackbar.setBackgroundTint(getResources().getColor(R.color.primary_color, null));
         CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) snackbarView.getLayoutParams();
+        snackbarView.setBackgroundResource(R.drawable.feedback_submitted_snackbar_bg);
         params.gravity = Gravity.TOP;
         params.topMargin = 64;
         snackbarView.setElevation(8);
-        snackbarView.setBackgroundResource(R.drawable.snackbar_background);
         snackbarView.setLayoutParams(params);
         snackbar.show();
     }
+
+
 
     public interface HomeFramentOpenedCallback {
         void onHomeFragmentOpened();

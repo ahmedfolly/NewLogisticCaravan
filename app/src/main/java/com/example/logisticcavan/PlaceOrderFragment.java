@@ -113,7 +113,7 @@ public class PlaceOrderFragment extends Fragment {
                 cartViewModel.emptyCart(new CartViewModel.EmptyCartResultCallback() {
                     @Override
                     public void onSuccess(boolean isDeleted) {
-                        NavDirections directions = PlaceOrderFragmentDirections.actionPlaceOrderFragmentToTrakOrderFragment(Constant.flagFromPlaceOrderScreen);
+                        NavDirections directions = PlaceOrderFragmentDirections.actionPlaceOrderFragmentToTrakOrderFragment(Constant.flagFromPlaceOrderScreen,"","");
                         navController.navigate(directions);
                     }
 

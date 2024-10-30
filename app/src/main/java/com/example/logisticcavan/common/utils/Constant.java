@@ -16,5 +16,6 @@ public class Constant {
     public static final String flagFromPlaceOrderScreen = "fromPlaceScreen";
     public static final String DELIVERED = "Delivered";
 
+    public static final String FLAG_FROM_RATING_SCREEN = "flag";
 }
 

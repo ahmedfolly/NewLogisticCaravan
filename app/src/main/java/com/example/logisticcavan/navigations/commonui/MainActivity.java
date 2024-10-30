@@ -1,11 +1,9 @@
 package com.example.logisticcavan.navigations.commonui;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
@@ -13,20 +11,17 @@ import androidx.navigation.ui.NavigationUI;
 import com.example.logisticcavan.cart.presentaion.CartViewModel;
 import com.example.logisticcavan.cart.presentaion.ui.CartFragment;
 import com.example.logisticcavan.R;
-import com.example.logisticcavan.orders.getOrders.domain.Order;
 import com.example.logisticcavan.orders.getOrders.presentaion.GetOrdersOfCurrUserViewModel;
 import com.example.logisticcavan.products.getproducts.presentation.GetProductsViewModel;
 import com.example.logisticcavan.restaurants.presentation.GetRestaurantProductsViewModel;
 import com.example.logisticcavan.restaurants.presentation.GetRestaurantsViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.util.Objects;
-
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
 public class MainActivity extends AppCompatActivity implements CartFragment.CartFragmentOpenedCallback,
-        HomeFragment.HomeFramentOpenedCallback {
+        HomeFragment.HomeFramentOpenedCallback{
     private BottomNavigationView bottomNavigationView;
     GetRestaurantsViewModel getRestaurantsViewModel;
     GetRestaurantProductsViewModel viewModel;
@@ -44,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements CartFragment.Cart
         assert navHostFragment != null;
         NavController navController = navHostFragment.getNavController();
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
+
     }
 
     @Override
@@ -58,4 +54,5 @@ public class MainActivity extends AppCompatActivity implements CartFragment.Cart
         bottomNavigationView.setVisibility(View.VISIBLE);
         bottomNavigationView.setAlpha(1f);
     }
+
 }
