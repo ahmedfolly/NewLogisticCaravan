@@ -7,6 +7,7 @@ import com.example.logisticcavan.common.base.BaseViewModel;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionStage;
 
 import javax.inject.Inject;
 
@@ -29,4 +30,7 @@ public class ChattingViewModel extends BaseViewModel {
    }
 
 
+    public CompletionStage<Void> sendMessage(Message message, String chatId) {
+
+   return sendMessageUseCase.execute(message, chatId);}
 }

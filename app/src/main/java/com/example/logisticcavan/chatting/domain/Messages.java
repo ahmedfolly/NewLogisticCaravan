@@ -14,4 +14,7 @@ public class Messages {
     public void setMessages(List<Message> messages) {
         this.messages = messages;
     }
+    public  void  setMessage(Message message){
+        this.messages.add(message);
+    }
 }
