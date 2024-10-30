@@ -1,9 +1,10 @@
 package com.example.logisticcavan.chatting.presentaion;
 
+import static com.example.logisticcavan.common.utils.Constant.COURIER;
+
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +12,11 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.example.logisticcavan.R;
+import com.example.logisticcavan.auth.domain.useCase.GetUserInfoLocallyUseCase;
 import com.example.logisticcavan.chatting.domain.Message;
 import com.example.logisticcavan.common.base.BaseFragment;
 import com.example.logisticcavan.databinding.FragmentChattingBinding;
@@ -28,11 +32,12 @@ public class ChattingFragment extends BaseFragment {
 
     @Inject
     public ChattingViewModel viewModel;
+    @Inject
+    GetUserInfoLocallyUseCase getUserInfoLocallyUseCase;
     private FragmentChattingBinding binding;
-    private ChattingAdapter adapter;
-    private String chatId;
-    private String name;
-
+    private ChattingAdapter chattingAdapter;
+    private String chatId, userType, name, userId;
+    private NavController navController;
 
 
     @Override
@@ -46,42 +51,46 @@ public class ChattingFragment extends BaseFragment {
     }
 
     private void setUpClickListeners() {
+        binding.iconBack.setOnClickListener(v -> {
+            navController.popBackStack();
+        });
+
+
         binding.sendButton.setOnClickListener(v -> {
             String text = binding.messageEditText.getText().toString();
-            Message message = new Message("text",text);
+            Message message = new Message(userId, text);
             sendMessage(message,chatId);
 
         });
     }
 
-    private void sendMessage(Message message, String chatId) {
-        viewModel.sendMessage(message, chatId);
 
-//                .whenComplete((aVoid, throwable) -> {
-//            if (throwable != null) {
-//                Log.e("TAG", "sendMessage: " + throwable.getMessage());
-//                showError(binding.getRoot(), throwable.getMessage());
-//            }else {
-//                Log.e("TAG", "sendMessage: success");
-//            }
-//        });
+    private void sendMessage(Message message, String chatId) {
+        viewModel.sendMessage(message, chatId)
+                .whenComplete((aVoid, throwable) -> {
+                    if (throwable != null) {
+                        showError(binding.getRoot(), throwable.getMessage());
+                    } else {
+                        binding.messageEditText.setText("");
+                        getMessages();
+                    }
+                });
     }
 
 
     private void initData() {
+        userId = getUserInfoLocallyUseCase.getUserInfo().getId();
+        userType = getUserInfoLocallyUseCase.getUserInfo().getType();
         chatId = ChattingFragmentArgs.fromBundle(getArguments()).getOrderId();
         name = ChattingFragmentArgs.fromBundle(getArguments()).getName();
         binding.name.setText(name);
-        Log.e("TAG", "onViewCreated: " + chatId + " " + name);
     }
 
     private void  getMessages(){
     viewModel.getMessages(chatId).whenComplete((messages, throwable) -> {
         if (throwable != null) {
-            Log.e("TAG", "  viewModel.getMessages: if  " + throwable.getMessage());
             showError(binding.getRoot(), throwable.getMessage());
         } else {
-            Log.e("TAG", "  viewModel.getMessages: else  " + messages.size());
             if (messages.size() == 0) {
                 updateUi(false);
             } else {
@@ -93,8 +102,9 @@ public class ChattingFragment extends BaseFragment {
 
 }
     private void setUpRecyclerView(List<Message> messages) {
-//                adapter = new ChattingAdapter(messages);
-//                binding.recyclerView.setAdapter(adapter);
+        chattingAdapter = new ChattingAdapter(messages, userId);
+        binding.recyclerView.setAdapter(chattingAdapter);
+        binding.recyclerView.scrollToPosition(messages.size() - 1);
         updateUi(true);
     }
 
@@ -138,8 +148,19 @@ public class ChattingFragment extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        navController = Navigation.findNavController(view);
         initData();
+        changeTextBasedUser();
         getMessages();
-
     }
+
+    private void changeTextBasedUser() {
+
+        if (userType.equals(COURIER)) {
+            binding.title.setText("Your Customer");
+            binding.text1.setText("Need to get in touch with your customer?");
+            binding.text2.setText("Start conversation with customer about your order");
+        }
+    }
+
 }
