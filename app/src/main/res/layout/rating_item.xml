@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="8dp"
+    android:layout_margin="8dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/user_name_rating"
+        android:textSize="18sp"
+        android:text="Ahmed folly"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+        <per.wsj.library.AndRatingBar
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:id="@+id/rating_bar_ratings"
+            app:starDrawable="@drawable/kid_star_filled"
+            app:starColor="#FFD700"
+            android:isIndicator="true"
+            android:layout_margin="8dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/rating_date"
+            android:textSize="15sp"
+            android:text="30/10/2024"
+            android:textColor="@color/grey_color"
+            />
+    </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/review_text_ratings"
+        android:textSize="18sp"
+        android:layout_marginTop="8dp"
+        android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus condimentum, purus non laoreet lacinia, lectus enim blandit felis, et luctus leo tellus porttitor urna. Nam tellus sapien, pretium nec nisl vitae, tincidunt dapibus eros. Donec tristique cursus lorem eu suscipit."
+        />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/grey_color"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"/>
+</LinearLayout>

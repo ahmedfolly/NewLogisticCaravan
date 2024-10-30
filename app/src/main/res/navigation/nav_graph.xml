@@ -22,6 +22,9 @@
         <action
             android:id="@+id/action_homeFragment_to_restaurantDetailsFragment"
             app:destination="@id/restaurantDetailsFragment" />
+
+
+
     </fragment>
     <fragment
         android:id="@+id/foodDetailFragment"
@@ -54,6 +57,9 @@
         <argument
             android:name="restaurant"
             app:argType="com.example.logisticcavan.restaurants.domain.Restaurant" />
+        <action
+            android:id="@+id/action_restaurantDetailsFragment_to_ratingsFragment"
+            app:destination="@id/ratingsFragment" />
     </fragment>
     <fragment
         android:id="@+id/placeOrderFragment"
@@ -104,6 +110,12 @@
         <action
             android:id="@+id/action_trakOrderFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
+        <argument
+            android:name="restaurantId"
+            app:argType="string" />
+        <argument
+            android:name="OrderId"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/userOrdersFragment"
@@ -116,9 +128,19 @@
     </fragment>
     <fragment
         android:id="@+id/ratingFragment"
-        android:name="com.example.logisticcavan.orders.getOrders.presentaion.ui.RatingFragment"
+        android:name="com.example.logisticcavan.rating.addandgetrating.presentation.ui.AddRatingFragment"
         android:label="fragment_rating"
-        tools:layout="@layout/fragment_rating" />
+        tools:layout="@layout/fragment_rating" >
+        <argument
+            android:name="restaurantId"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_ratingFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+        <argument
+            android:name="orderId"
+            app:argType="string" />
+    </fragment>
     <fragment
         android:id="@+id/notificationFragment2"
         android:name="com.example.logisticcavan.notifications.presentaion.ui.NotificationFragment"
@@ -150,4 +172,14 @@
         android:id="@+id/aboutAppFragment"
         android:name="com.example.logisticcavan.more.presentaion.AboutAppFragment"
         android:label="AboutAppFragment" />
+    <fragment
+        android:id="@+id/ratingsFragment"
+        android:name="com.example.logisticcavan.rating.addandgetrating.presentation.ui.RatingsFragment"
+        android:label="fragment_ratings"
+        tools:layout="@layout/fragment_ratings" >
+
+        <argument
+            android:name="restaurant"
+            app:argType="com.example.logisticcavan.restaurants.domain.Restaurant" />
+    </fragment>
 </navigation>

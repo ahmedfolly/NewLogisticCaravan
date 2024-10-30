@@ -1,5 +1,7 @@
 package com.example.logisticcavan;
 
+import static androidx.navigation.fragment.FragmentKt.findNavController;
+
 import android.app.Dialog;
 import android.os.Bundle;
 
@@ -7,6 +9,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.NavDirections;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -45,6 +49,8 @@ public class RestaurantDetailsFragment extends Fragment implements RestaurantPro
     private RecyclerView productsContainer;
     private CartViewModel cartViewModel;
     private ProgressBar loadRestaurantProductsProgress;
+
+    private NavController navController;
 
     public RestaurantDetailsFragment() {
         // Required empty public constructor
@@ -92,6 +98,13 @@ public class RestaurantDetailsFragment extends Fragment implements RestaurantPro
         TextView restaurantAvailableTime = view.findViewById(R.id.restaurant_available_time_detail);
         restaurantAvailableTime.setText(restaurant.getAvailableTime());
         getRestaurantProducts(restaurant.getRestaurantId());
+
+        TextView ratingText = view.findViewById(R.id.restaurant_rating_text_detail);
+        navController = findNavController(this);
+        ratingText.setOnClickListener(v->{
+            NavDirections action = RestaurantDetailsFragmentDirections.actionRestaurantDetailsFragmentToRatingsFragment(restaurant);
+            navController.navigate(action);
+        });
     }
 
     void getRestaurantProducts(String restaurantId) {
