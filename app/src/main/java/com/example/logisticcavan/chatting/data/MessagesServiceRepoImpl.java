@@ -1,12 +1,11 @@
 package com.example.logisticcavan.chatting.data;
 
-import android.util.Log;
-
 import com.example.logisticcavan.chatting.domain.Message;
 import com.example.logisticcavan.chatting.domain.Messages;
 import com.example.logisticcavan.chatting.domain.MessagesServiceRepo;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -15,6 +14,7 @@ import javax.inject.Inject;
 public class MessagesServiceRepoImpl implements MessagesServiceRepo {
 
     private FirebaseFirestore firebaseFirestore;
+    private Messages messages;
 
     @Inject
     public MessagesServiceRepoImpl(FirebaseFirestore firebaseFirestore) {
@@ -22,26 +22,55 @@ public class MessagesServiceRepoImpl implements MessagesServiceRepo {
     }
 
     @Override
-    public CompletableFuture<Void> sendMessage(String message, String chatId) {
-        return null;
+    public CompletableFuture<Void> sendMessage(Message message, String chatId) {
+        CompletableFuture<Void> future = new CompletableFuture<>();
+        messages.setMessage(message);
+        firebaseFirestore
+                .collection("chats")
+                .document(chatId).set(messages)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        future.complete(null);
+                    } else {
+                        future.completeExceptionally(task.getException());
+                    }
+                });
+        return future;
     }
 
     @Override
     public CompletableFuture<List<Message>> getMessages(String chatId) {
         CompletableFuture<List<Message>> future = new CompletableFuture<>();
-        firebaseFirestore.collection("chats").document(chatId)
-                .get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                Log.e("TAG", "getMessages: " + task.getResult().toObject(Messages.class).getMessages());
-                List<Message> messages = task.getResult().toObject(Messages.class).getMessages();
-                future.complete(messages);
-            } else {
-                Log.e("TAG", "getMessages: " + task.getException());
-                future.completeExceptionally(task.getException());
-            }
-        });
+        firebaseFirestore
+                .collection("chats")
+                .document(chatId)
+                .addSnapshotListener((value, error) -> {
+                    if (error != null) {
+                        messages = new Messages();
+                        messages.setMessages(new ArrayList<>());
+                        future.completeExceptionally(error);
+
+                    } else {
+                        if (value != null) {
+                            messages = value.toObject(Messages.class);
+                            if (messages != null) {
+                                future.complete(messages.getMessages());
+                            } else {
+                                initMessages(future);
+                            }
+                        } else {
+                            initMessages(future);
+                        }
+                    }
+                });
         return future;
 
+    }
+
+    private void initMessages(CompletableFuture<List<Message>> future) {
+        messages = new Messages();
+        messages.setMessages(new ArrayList<>());
+        future.complete(messages.getMessages());
     }
 
 }

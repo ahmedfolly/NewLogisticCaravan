@@ -48,9 +48,11 @@ public class CourierOrderRepositoryImpl implements OrderRepository {
         CompletableFuture<List<Order>> future = new CompletableFuture<>();
          firebaseFirestore.collection(ORDERS).addSnapshotListener(((value, error) -> {
              if(error != null){
+                 Log.e("error", error.getMessage());
                  future.completeExceptionally(error);
              }else {
                  if (value != null) {
+                     Log.e("value", value.toString());
                      List<Order> list = value.toObjects(Order.class);
                    future.complete(list);
                  }

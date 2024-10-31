@@ -5,7 +5,7 @@ import java.util.concurrent.CompletableFuture;
 
 public interface MessagesServiceRepo {
 
-    CompletableFuture<Void> sendMessage(String message, String chatId);
+    CompletableFuture<Void> sendMessage(Message message, String chatId);
 
     CompletableFuture<List<Message>> getMessages(String chatId);
 

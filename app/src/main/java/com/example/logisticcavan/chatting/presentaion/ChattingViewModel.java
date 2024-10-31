@@ -29,4 +29,7 @@ public class ChattingViewModel extends BaseViewModel {
    }
 
 
+    public CompletableFuture<Void> sendMessage(Message message, String chatId) {
+        return sendMessageUseCase.execute(message, chatId);
+    }
 }

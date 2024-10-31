@@ -116,6 +116,9 @@
         <argument
             android:name="OrderId"
             app:argType="string" />
+        <action
+            android:id="@+id/action_trakOrderFragment_to_chattingFragment"
+            app:destination="@id/chattingFragment" />
     </fragment>
     <fragment
         android:id="@+id/userOrdersFragment"
@@ -182,4 +185,17 @@
             android:name="restaurant"
             app:argType="com.example.logisticcavan.restaurants.domain.Restaurant" />
     </fragment>
+    <fragment
+        android:id="@+id/chattingFragment"
+        tools:layout="@layout/fragment_chatting"
+        android:name="com.example.logisticcavan.chatting.presentaion.ChattingFragment"
+        android:label="ChattingFragment" >
+        <argument
+            android:name="name"
+            app:argType="string" />
+        <argument
+            android:name="orderId"
+            app:argType="string" />
+    </fragment>
+
 </navigation>

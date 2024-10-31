@@ -1,5 +1,9 @@
 package com.example.logisticcavan.orders.getOrders.courier.presentaion;
 
+import static com.example.logisticcavan.common.utils.Constant.DELIVERED;
+import static com.example.logisticcavan.common.utils.Constant.PENDING;
+import static com.example.logisticcavan.common.utils.Constant.SHIPPED;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -66,26 +70,31 @@ public class OrderDetailFragment extends BaseFragment {
         binding.date.setText(deliveryTime.get("date"));
         binding.time.setText(deliveryTime.get("time"));
         binding.deliveryId.setText("#"+orderId.substring(0,5));
-
-
         setTextButton(orderStatus);
         if(orderStatus.equals("pending")){
-
 
     }
 }
 
+    private void navigateToChangeStatusFragment() {
+
+    }
+
     private void setTextButton(String orderStatus) {
      String text = "";
       switch (orderStatus){
-          case "Pending":
-             text = "Update Status";
+          case PENDING:
+              text = "Start delivery";
       break;
-      case "Delivered":{
-          text = "Delivered";
-          binding.startDelivery.setEnabled(false);
+          case DELIVERED: {
+              text = "Update Status";
           break;
       }
+          case SHIPPED: {
+              text = "Shipped";
+              binding.startDelivery.setEnabled(false);
+              break;
+          }
 
           default:
            text ="Start delivery";
