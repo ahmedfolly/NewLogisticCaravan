@@ -1,8 +1,9 @@
 package com.example.logisticcavan.orders.getOrders.courier.presentaion;
 
-import static com.example.logisticcavan.common.utils.Constant.SHIPPED;
 import static com.example.logisticcavan.common.utils.Constant.PENDING;
+import static com.example.logisticcavan.common.utils.Constant.SHIPPED;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -12,7 +13,6 @@ import android.widget.PopupMenu;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
@@ -59,6 +59,36 @@ public class CourierHomeFragment extends BaseFragment  implements OnOrderItemCli
 
     private void setUpClickListener() {
         binding.cartIcon.setOnClickListener(this::showFilterMenu);
+        binding.activeOrders.setOnClickListener(this::activeClicked);
+        binding.deliveredOrders.setOnClickListener(this::deliveredClicked);
+        binding.expiredProducts.setOnClickListener(this::expiredClicked);
+    }
+
+    private void activeClicked(View view) {
+        changeTexts(view);
+    }
+
+    private void changeTexts(View view) {
+        if (view.getId() == R.id.active_orders) {
+            binding.textView18.setText("Scheduled Active Orders");
+            binding.textView18.setTextColor(Color.parseColor("#ECD211"));
+
+        } else if (view.getId() == R.id.delivered_orders) {
+            binding.textView18.setText("Delivered Orders");
+            binding.textView18.setTextColor(Color.parseColor("#5AD058"));
+        } else {
+
+        }
+    }
+
+    private void deliveredClicked(View view) {
+        changeTexts(view);
+
+    }
+
+    private void expiredClicked(View view) {
+        changeTexts(view);
+
     }
 
     private void showFilterMenu(View v) {
