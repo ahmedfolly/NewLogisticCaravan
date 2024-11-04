@@ -50,9 +50,12 @@ public class UserOrdersAdapter extends RecyclerView.Adapter<UserOrdersAdapter.Us
         String status = (String) gDetails.get("status");
         String orderId = (String) gDetails.get("orderId");
         holder.status.setText(status);
+        //courier details
+        Map<String,String> courier = order.getCourier();
+        String courierName = courier.get("name");
         holder.itemView.setOnClickListener(v->{
             navController = findNavController(holder.itemView);
-            NavDirections action = UserOrdersFragmentDirections.actionUserOrdersFragmentToTrakOrderFragment(status,restaurantId,orderId);
+            NavDirections action = UserOrdersFragmentDirections.actionUserOrdersFragmentToTrakOrderFragment(status,restaurantId,orderId,courierName);
             navController.navigate(action);
         });
         if (status != null) {

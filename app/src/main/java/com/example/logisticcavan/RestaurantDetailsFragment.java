@@ -257,6 +257,7 @@ public class RestaurantDetailsFragment extends Fragment implements RestaurantPro
         cartItem.setQuantity(quantity);
         cartItem.setRestaurantName(args.getRestaurant().getRestaurantName());
         cartItem.setProductId(product.getProductID());
+        cartItem.setCategoryName(product.getProductCategory());
         return cartItem;
     }
 

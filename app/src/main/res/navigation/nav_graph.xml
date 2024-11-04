@@ -119,6 +119,9 @@
         <action
             android:id="@+id/action_trakOrderFragment_to_chattingFragment"
             app:destination="@id/chattingFragment" />
+        <argument
+            android:name="courierName"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/userOrdersFragment"
@@ -197,5 +200,6 @@
             android:name="orderId"
             app:argType="string" />
     </fragment>
+
 
 </navigation>

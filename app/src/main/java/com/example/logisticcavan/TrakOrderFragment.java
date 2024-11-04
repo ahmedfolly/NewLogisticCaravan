@@ -5,7 +5,6 @@ import static androidx.navigation.Navigation.findNavController;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,8 +13,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDirections;
-import androidx.navigation.Navigation;
-
 import android.os.Handler;
 import android.util.Log;
 import android.view.Gravity;
@@ -24,15 +21,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
+import com.example.logisticcavan.auth.presentation.AuthViewModel;
 import com.example.logisticcavan.common.utils.Constant;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.android.material.snackbar.Snackbar;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class TrakOrderFragment extends Fragment {
 
     private LinearProgressIndicator statusProgress;
     private NavController navController;
+    private AuthViewModel authViewModel;
 
     public TrakOrderFragment() {
         // Required empty public constructor
@@ -41,7 +42,7 @@ public class TrakOrderFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        authViewModel = new ViewModelProvider(this).get(AuthViewModel.class);
     }
 
     @Override
@@ -55,9 +56,12 @@ public class TrakOrderFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        navController = findNavController(view);
+
         TrakOrderFragmentArgs args = TrakOrderFragmentArgs.fromBundle(getArguments());
         TextView statusDesc = view.findViewById(R.id.status_desc);
         String flag = args.getFlag();
+        String courierName = args.getCourierName();
         statusProgress = view.findViewById(R.id.status_progress);
         ImageView shippedImage = view.findViewById(R.id.shipped_image);
         ImageView deliveredImage = view.findViewById(R.id.delivered_status);
@@ -92,9 +96,14 @@ public class TrakOrderFragment extends Fragment {
         }
         ImageView backToHome = view.findViewById(R.id.back_to_home);
         backToHome.setOnClickListener(v->{
-            navController = findNavController(view);
             navController.navigate(R.id.action_trakOrderFragment_to_homeFragment);
         });
+        ImageView chatCourier = view.findViewById(R.id.chat_courier);
+        chatCourier.setOnClickListener(v->{
+            NavDirections action = TrakOrderFragmentDirections.actionTrakOrderFragmentToChattingFragment(courierName,args.getOrderId());
+            navController.navigate(action);
+        });
+
         onBackBtnPressed();
     }
 
@@ -159,7 +168,7 @@ public class TrakOrderFragment extends Fragment {
     }
 
     void onBackBtnPressed(){
-        requireActivity().getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
                 // Get the NavController

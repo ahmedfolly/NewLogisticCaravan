@@ -67,11 +67,9 @@ public class GetOrdersOfCurrUserRepoImp implements GetOrdersOfCurrUser {
                             emitter.onComplete();
                             return;
                         }
-                        assert v != null;
                         for (DocumentSnapshot documentSnapshot : v.getDocuments()){
                             String orderId = documentSnapshot.getString("orderId");
                             orderIds.add(orderId);
-                            Log.d("TAG", "getOrdersIds: "+orderId);
                         }
                         emitter.onNext(orderIds);
                         emitter.onComplete();

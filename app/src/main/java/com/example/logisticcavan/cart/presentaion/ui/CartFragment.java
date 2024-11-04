@@ -97,7 +97,7 @@ public class CartFragment extends Fragment implements ConfirmOrderBottomFragment
         setupCartItemsContainer();
         navController = findNavController(this);
         checkoutBtn.setOnClickListener(v -> {
-            String villaNum = villaNumberEd.getText().toString();
+            String villaNum = Objects.requireNonNull(villaNumberEd.getText()).toString();
             if (!TextUtils.isEmpty(villaNum)) {
                 cartViewModel.fetchTotalPrice();
                 cartViewModel.getTotalPriceData().observe(getViewLifecycleOwner(), price -> {
@@ -291,6 +291,7 @@ public class CartFragment extends Fragment implements ConfirmOrderBottomFragment
             Map<String, Object> cartItemsMap = new HashMap<>();
             cartItemsMap.put("productName", cartItem.getProductName());
             cartItemsMap.put("quantity", cartItem.getQuantity());
+            cartItemsMap.put("category",cartItem.getCategoryName());
             carItemsList.add(cartItemsMap);
         }
         return carItemsList;
