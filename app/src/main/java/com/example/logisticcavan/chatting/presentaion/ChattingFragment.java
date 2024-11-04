@@ -91,7 +91,7 @@ public class ChattingFragment extends BaseFragment {
         if (throwable != null) {
             showError(binding.getRoot(), throwable.getMessage());
         } else {
-            if (messages.size() == 0) {
+            if (messages.isEmpty()) {
                 updateUi(false);
             } else {
                 setUpRecyclerView(messages);

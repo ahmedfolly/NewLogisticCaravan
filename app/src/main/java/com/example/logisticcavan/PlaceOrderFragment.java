@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDirections;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -113,7 +112,7 @@ public class PlaceOrderFragment extends Fragment {
                 cartViewModel.emptyCart(new CartViewModel.EmptyCartResultCallback() {
                     @Override
                     public void onSuccess(boolean isDeleted) {
-                        NavDirections directions = PlaceOrderFragmentDirections.actionPlaceOrderFragmentToTrakOrderFragment(Constant.flagFromPlaceOrderScreen,"","");
+                        NavDirections directions = PlaceOrderFragmentDirections.actionPlaceOrderFragmentToTrakOrderFragment(Constant.flagFromPlaceOrderScreen,"","","");
                         navController.navigate(directions);
                     }
 

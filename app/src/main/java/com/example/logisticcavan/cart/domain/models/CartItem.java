@@ -1,9 +1,6 @@
 package com.example.logisticcavan.cart.domain.models;
-
-
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-
 @Entity(tableName = "cart_table")
 public class CartItem {
     @PrimaryKey(autoGenerate = true)
@@ -15,11 +12,20 @@ public class CartItem {
     private int quantity;
     private String productId;
     private String restaurantName;
+    private String categoryName;
 
     public CartItem() {
     }
 
-    public CartItem(int id, String restaurantId, String productName, String productImageLink, double price, int quantity, String productId, String restaurantName) {
+
+    public CartItem(int id,
+                    String restaurantId,
+                    String productName,
+                    String productImageLink,
+                    double price, int quantity,
+                    String productId,
+                    String restaurantName,
+                    String categoryName) {
         this.id = id;
         this.restaurantId = restaurantId;
         this.productName = productName;
@@ -28,8 +34,16 @@ public class CartItem {
         this.quantity = quantity;
         this.productId = productId;
         this.restaurantName = restaurantName;
+        this.categoryName = categoryName;
     }
 
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
     public String getRestaurantName() {
         return restaurantName;
     }

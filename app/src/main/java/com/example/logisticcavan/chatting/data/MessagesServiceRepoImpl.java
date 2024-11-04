@@ -49,7 +49,6 @@ public class MessagesServiceRepoImpl implements MessagesServiceRepo {
                         messages = new Messages();
                         messages.setMessages(new ArrayList<>());
                         future.completeExceptionally(error);
-
                     } else {
                         if (value != null) {
                             messages = value.toObject(Messages.class);
