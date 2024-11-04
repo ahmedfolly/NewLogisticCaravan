@@ -32,23 +32,36 @@ public class GetRecommendationsRepoImp implements GetRecommendationsRepo {
     public Observable<MyResult<List<Product>>> getRecommendations() {
         return Observable.create(emitter -> {
             emitter.onNext(MyResult.loading());
-            getTopCategories(topCategories -> firebaseFirestore.collection("Products").whereIn("productCategory", topCategories).addSnapshotListener((v, e) -> {
-                if (e != null) {
-                    emitter.onNext(MyResult.error(e));
-                    emitter.onComplete();
-                } else {
-                    assert v != null;
-                    List<Product> products = v.toObjects(Product.class);
-                    Log.d("TAG", "getRecommendations: " + products.size());
-                    emitter.onNext(MyResult.success(products));
-                }
-            }));
+            getTopCategories(topCategories ->
+                    {
+                        if (topCategories != null) {
+                            firebaseFirestore.collection("Products")
+                                    .whereIn("productCategory", topCategories)
+                                    .addSnapshotListener((v, e) -> {
+                                        if (e != null) {
+                                            emitter.onNext(MyResult.error(e));
+                                            emitter.onComplete();
+                                        } else {
+                                            assert v != null;
+                                            List<Product> products = v.toObjects(Product.class);
+                                            Log.d("TAG", "getRecommendations: " + products.size());
+                                            emitter.onNext(MyResult.success(products));
+                                        }
+                                    });
+                        } else {
+                            emitter.onNext(MyResult.success(new ArrayList<>()));
+                        }
+                    }
+            );
         });
     }
 
     public void getTopCategories(TopCategoriesCallback callback) {
         List<String> topCategoriesNames = new ArrayList<>();
         rawRecommendations(rawRecommendations -> {
+            if (rawRecommendations == null) {
+                return;
+            }
             List<Map<String, Object>> sortedRecommendations = sortlist(rawRecommendations);
             List<Map<String, Object>> topCategories = sortedRecommendations.size() > 5
                     ? sortedRecommendations.subList(0, 5)
@@ -56,21 +69,23 @@ public class GetRecommendationsRepoImp implements GetRecommendationsRepo {
             for (Map<String, Object> m : topCategories) {
                 topCategoriesNames.add((String) m.get("category"));
             }
-           callback.onSuccess(topCategoriesNames);
+            callback.onSuccess(topCategoriesNames);
         });
     }
 
     private List<Map<String, Object>> sortlist(List<Map<String, Object>> rawRecommendations) {
-        rawRecommendations.sort((m1, m2) -> {
-            long frequency = (long) m1.get("frequency");
-            long frequency2 = (long) m2.get("frequency");
-            return Long.compare(frequency2, frequency);//descending order
-        });
-        return rawRecommendations;
+        if (!rawRecommendations.isEmpty()) {
+            rawRecommendations.sort((m1, m2) -> {
+                long frequency = (long) m1.get("frequency");
+                long frequency2 = (long) m2.get("frequency");
+                return Long.compare(frequency2, frequency);//descending order
+            });
+            return rawRecommendations;
+        }
+        return new ArrayList<>();
     }
 
     private void rawRecommendations(RawRecommendationsCallback callback) {
-        CompletableFuture<List<Map<String, Object>>> future = new CompletableFuture<>();
         firebaseFirestore.collection("users")
                 .document(userEmail())
                 .get()

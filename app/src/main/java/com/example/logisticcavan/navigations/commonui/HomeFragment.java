@@ -26,6 +26,8 @@ import android.widget.Toast;
 import com.example.logisticcavan.R;
 import com.example.logisticcavan.SharedViewModel;
 import com.example.logisticcavan.cart.presentaion.CartViewModel;
+import com.example.logisticcavan.products.recommendations.presentation.RecommendationAdapter;
+import com.example.logisticcavan.products.recommendations.presentation.RecommendationViewModel;
 import com.example.logisticcavan.restaurants.presentation.CombinedProductsWithRestaurantsViewModel;
 import com.example.logisticcavan.common.base.BaseFragment;
 import com.example.logisticcavan.common.utils.CategoriesListLocal;
@@ -47,7 +49,7 @@ import java.util.stream.Collectors;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class HomeFragment extends BaseFragment implements CategoriesAdapter.OnItemSelected{
+public class HomeFragment extends BaseFragment implements CategoriesAdapter.OnItemSelected {
     private OffersViewModel offersViewModel;
     private GetProductsViewModel productsViewModel;
     private GetCategoryProductsViewModel categoryProductsViewModel;
@@ -71,6 +73,9 @@ public class HomeFragment extends BaseFragment implements CategoriesAdapter.OnIt
     private HomeFramentOpenedCallback homeFramentOpenedCallback;
 
     private boolean isRatingSubmitted = false;
+    private RecommendationAdapter recommendationAdapter;
+    private RecommendationViewModel recommendationViewModel;
+    private RecyclerView recommendedContainer;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -86,7 +91,8 @@ public class HomeFragment extends BaseFragment implements CategoriesAdapter.OnIt
         cartViewModel = new ViewModelProvider(this).get(CartViewModel.class);
         combinedProductsWithRestaurantsViewModel = new ViewModelProvider(this).get(CombinedProductsWithRestaurantsViewModel.class);
         sharedViewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
-
+        recommendationViewModel = new ViewModelProvider(this).get(RecommendationViewModel.class);
+        recommendationAdapter = new RecommendationAdapter();
 //        PlaceOrderFragment.setOrderPlaceCallback(this);
     }
 
@@ -100,6 +106,7 @@ public class HomeFragment extends BaseFragment implements CategoriesAdapter.OnIt
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        recommendedContainer = view.findViewById(R.id.recommended_container);
         productsContainer = view.findViewById(R.id.food_container);
         offersContainer = view.findViewById(R.id.offers_container);
         foodProgressBar = view.findViewById(R.id.food_loader_progress_bar);
@@ -121,15 +128,15 @@ public class HomeFragment extends BaseFragment implements CategoriesAdapter.OnIt
             linearSnapHelper.attachToRecyclerView(offersContainer);
         }
 
-        if (!isRatingSubmitted){
-            sharedViewModel.isRatingSubmitted().observe(getViewLifecycleOwner(),isSummitted->{
-                if(isSummitted){
+        if (!isRatingSubmitted) {
+            sharedViewModel.isRatingSubmitted().observe(getViewLifecycleOwner(), isSummitted -> {
+                if (isSummitted) {
                     showTopSnackbar();
                     isRatingSubmitted = true;
                 }
             });
         }
-
+        getRecommendedProducts();
     }
 
     private void getCategories(View view) {
@@ -169,7 +176,7 @@ public class HomeFragment extends BaseFragment implements CategoriesAdapter.OnIt
                         if (cartItems.isEmpty()) {
                             openCartScreen.setVisibility(View.GONE);
                             cartCount.setVisibility(View.GONE);
-                        }else {
+                        } else {
                             openCartScreen.setVisibility(View.VISIBLE);
                             cartCount.setVisibility(View.VISIBLE);
                             cartCount.setText(String.valueOf(cartItems.size()));
@@ -291,21 +298,6 @@ public class HomeFragment extends BaseFragment implements CategoriesAdapter.OnIt
     List<String> restaurantIds(List<Product> products) {
         return products.stream().map(Product::getResId).collect(Collectors.toList());
     }
-//
-//    @Override
-//    public void onSuccess() {
-////        new Handler().postDelayed(() -> showTopSnackbar("Order placed successfully"), 100);
-//    }
-//
-//    @Override
-//    public void onError() {
-//
-//    }
-//
-//    @Override
-//    public void onLoading() {
-//
-//    }
 
     public void showTopSnackbar() {
         CoordinatorLayout coordinatorLayout = requireActivity().findViewById(R.id.parent_container);
@@ -325,7 +317,28 @@ public class HomeFragment extends BaseFragment implements CategoriesAdapter.OnIt
         snackbarLayout.addView(customSnackView, 0);
     }
 
+    private void getRecommendedProducts() {
+        recommendationViewModel.getProducts().observe(getViewLifecycleOwner(), result -> {
+            result.handle(products -> {
+                recommendationAdapter.submitList(products);
+                setupRecommendedContainer(products);
+            }, error -> {
+            }, () -> {
+            });
+        });
 
+    }
+
+    private void setupRecommendedContainer(List<Product> productList) {
+        if (!productList.isEmpty()) {
+            TextView recommendedText = requireView().findViewById(R.id.recommened_text);
+            recommendedText.setVisibility(View.VISIBLE);
+            recommendedContainer.setVisibility(View.VISIBLE);
+            recommendedContainer.setHasFixedSize(true);
+            recommendedContainer.setLayoutManager(new LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false));
+            recommendedContainer.setAdapter(recommendationAdapter);
+        }
+    }
 
     @SuppressLint("UseCompatLoadingForDrawables")
     private void setupSnackbarSettings(Snackbar snackbar, View snackbarView) {
@@ -340,10 +353,10 @@ public class HomeFragment extends BaseFragment implements CategoriesAdapter.OnIt
     }
 
 
-
     public interface HomeFramentOpenedCallback {
         void onHomeFragmentOpened();
     }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
