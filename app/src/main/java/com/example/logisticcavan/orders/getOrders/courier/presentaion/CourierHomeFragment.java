@@ -1,15 +1,19 @@
 package com.example.logisticcavan.orders.getOrders.courier.presentaion;
 
+import static com.example.logisticcavan.common.utils.Constant.DELIVERED;
 import static com.example.logisticcavan.common.utils.Constant.PENDING;
 import static com.example.logisticcavan.common.utils.Constant.SHIPPED;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.PopupMenu;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,6 +27,7 @@ import com.example.logisticcavan.orders.getOrders.OnOrderItemClicked;
 import com.example.logisticcavan.orders.getOrders.domain.Order;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -52,20 +57,90 @@ public class CourierHomeFragment extends BaseFragment  implements OnOrderItemCli
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         navController = Navigation.findNavController(view);
-        getCourierOrdersViewModel.getAllOrders();
+        getCourierOrdersViewModel.getOrdersBasedStatus(PENDING);
         observeViewModel();
+        setUpSpinner();
         setUpClickListener();
     }
 
+    private void setUpSpinner() {
+     binding.filterSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+         @Override
+         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+             String selectedItem = parent.getItemAtPosition(position).toString();
+             updateUiBasedSelection(selectedItem);
+
+         }
+
+         private void updateUiBasedSelection(String selectedItem) {
+
+          switch (selectedItem){
+              case "Filter by beach":
+                  break;
+              case "All beaches":{
+                  isThereOrders(getCourierOrdersViewModel.listOrders.getValue());
+                  break;
+              }
+              case "Seasehell island": {
+
+                  break;
+
+              }
+              case "Breeze island":
+
+                  break;
+
+              case "Palm island":
+
+                  break;
+
+              case "Masts island":
+
+                  break;
+
+              case "Wave island":
+
+                  break;
+
+                  case "Pearl island":
+
+                  break;
+          }
+
+         }
+
+         @Override
+         public void onNothingSelected(AdapterView<?> parent) {
+             // Optional: handle if no item is selected
+         }
+     });
+    }
+
+    private  String getLocation(Order order){
+        Map<String, String> location = order.getLocation();
+        return  location.get("beach");
+    }
+
+
+
+
     private void setUpClickListener() {
         binding.cartIcon.setOnClickListener(this::showFilterMenu);
+
         binding.activeOrders.setOnClickListener(this::activeClicked);
+        binding.shippedOrders.setOnClickListener(this::shippedClicked);
         binding.deliveredOrders.setOnClickListener(this::deliveredClicked);
         binding.expiredProducts.setOnClickListener(this::expiredClicked);
     }
 
     private void activeClicked(View view) {
         changeTexts(view);
+        getCourierOrdersViewModel.getOrdersBasedStatus(PENDING);
+    }
+    private void shippedClicked(View view) {
+        changeTexts(view);
+        getCourierOrdersViewModel.getOrdersBasedStatus(SHIPPED);
     }
 
     private void changeTexts(View view) {
@@ -73,22 +148,25 @@ public class CourierHomeFragment extends BaseFragment  implements OnOrderItemCli
             binding.textView18.setText("Scheduled Active Orders");
             binding.textView18.setTextColor(Color.parseColor("#ECD211"));
 
+        } else if (view.getId() == R.id.shipped_orders) {
+            binding.textView18.setText("Shipped Orders");
+            binding.textView18.setTextColor(Color.parseColor("#E55763"));
         } else if (view.getId() == R.id.delivered_orders) {
             binding.textView18.setText("Delivered Orders");
             binding.textView18.setTextColor(Color.parseColor("#5AD058"));
-        } else {
+        }else {
 
         }
     }
 
     private void deliveredClicked(View view) {
         changeTexts(view);
-
+        getCourierOrdersViewModel.getOrdersBasedStatus(DELIVERED);
     }
 
-    private void expiredClicked(View view) {
-        changeTexts(view);
 
+
+    private void expiredClicked(View view) {
     }
 
     private void showFilterMenu(View v) {
@@ -98,7 +176,6 @@ public class CourierHomeFragment extends BaseFragment  implements OnOrderItemCli
 
         popupMenu.setOnMenuItemClickListener(item -> {
             int itemId = item.getItemId();
-            updateUiStatus(false);
             if (itemId == R.id.filter_by_all) {
                 getCourierOrdersViewModel.getAllOrders();
                 return true;
@@ -119,9 +196,9 @@ public class CourierHomeFragment extends BaseFragment  implements OnOrderItemCli
     private void observeViewModel() {
 
         getCourierOrdersViewModel.listOrders.observe(getViewLifecycleOwner(), orders -> {
-            if (!orders.isEmpty()) {
-                updateRecyclerView(orders);
-            }
+            isThereOrders(orders);
+            binding.progressBar.setVisibility(View.GONE);
+
         });
 
         getCourierOrdersViewModel.showSuccessMessage.observe(getViewLifecycleOwner(), successMessage -> {
@@ -138,21 +215,28 @@ public class CourierHomeFragment extends BaseFragment  implements OnOrderItemCli
 
     }
 
+    private void isThereOrders(List<Order> orders) {
+        if (!orders.isEmpty()) {
+            Log.e("TAG", "observeViewModel: " + orders.size());
+            updateRecyclerView(orders);
+            binding.data.setVisibility(View.VISIBLE);
+            binding.noData.setVisibility(View.GONE);
+        }else {
+            binding.data.setVisibility(View.GONE);
+            binding.noData.setVisibility(View.VISIBLE);
+        }
+    }
+
     private void updateRecyclerView(List<Order> orders) {
         courierOrdersAdapter = new CourierOrdersAdapter(orders,this);
         binding.ordersRecycler.setAdapter(courierOrdersAdapter);
-        updateUiStatus(true);
-
-
     }
 
     private void updateUiStatus(boolean status) {
     if (status){
-        binding.ordersRecycler.setVisibility(View.VISIBLE);
         binding.progressBar.setVisibility(View.GONE);
     }else {
         binding.progressBar.setVisibility(View.VISIBLE);
-        binding.ordersRecycler.setVisibility(View.GONE);
     }
 
     }

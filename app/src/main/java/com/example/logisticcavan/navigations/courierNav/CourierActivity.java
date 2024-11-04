@@ -26,8 +26,6 @@ public class CourierActivity extends AppCompatActivity {
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         NavController navController = Navigation.findNavController(this, R.id.host_fragment_courier);
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
-
-
         hundelNavigation(bottomNavigationView, navController);
 
     }
@@ -36,7 +34,6 @@ public class CourierActivity extends AppCompatActivity {
         bottomNavigationView.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
             if (itemId == R.id.courierHomeFragment) {
-                navController.navigate(R.id.homeFragment);
                 navController.popBackStack(R.id.courierHomeFragment, false);
                 navController.navigate(R.id.courierHomeFragment);
                 return true;

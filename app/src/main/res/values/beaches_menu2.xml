@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="filter_beaches">
+        <item>Filter by beach</item>
+        <item>All beaches</item>
+        <item>Seasehell island</item>
+        <item>Breeze island</item>
+        <item>Palm island</item>
+        <item>Masts island</item>
+        <item>Wave island</item>
+        <item>Pearl island</item>
+    </string-array>
+</resources>
