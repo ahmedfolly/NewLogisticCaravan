@@ -1,133 +1,168 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/parent_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#F5F5F5"
-    android:id="@+id/parent_container"
     tools:context=".navigations.commonui.HomeFragment">
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="16dp"
         android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        >
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
-                android:gravity="center">
+                android:gravity="center"
+                android:orientation="horizontal">
+
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/search_box_id"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="50dp"
+                    android:layout_weight="1"
                     android:background="@drawable/corner_border_black"
                     android:hint="Search here..."
-                    android:padding="8dp"
-                    android:id="@+id/search_box_id"/>
+                    android:padding="8dp" />
+
                 <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
+
                     <ImageView
+                        android:id="@+id/cart_icon"
                         android:layout_width="32dp"
                         android:layout_height="32dp"
-                        android:src="@drawable/cart_black"
                         android:layout_centerInParent="true"
-                        android:id="@+id/cart_icon"/>
+                        android:src="@drawable/cart_black" />
+
                     <TextView
+                        android:id="@+id/cart_count"
                         android:layout_width="15dp"
                         android:layout_height="15dp"
-                        android:textSize="10sp"
-                        android:gravity="center"
-                        android:background="@drawable/badge"
-                        android:textColor="@color/white"
-                        android:textStyle="bold"
                         android:layout_alignParentBottom="true"
                         android:layout_toEndOf="@id/cart_icon"
-                        android:id="@+id/cart_count"/>
+                        android:background="@drawable/badge"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:textSize="10sp"
+                        android:textStyle="bold" />
                 </RelativeLayout>
 
-<!--                <ImageView-->
-<!--                    android:layout_width="32dp"-->
-<!--                    android:layout_height="32dp"-->
-<!--                    android:layout_margin="8dp"-->
-<!--                    android:src="@drawable/bell_black"-->
-<!--                    android:id="@+id/notification_id"/>-->
+                <!--                <ImageView-->
+                <!--                    android:layout_width="32dp"-->
+                <!--                    android:layout_height="32dp"-->
+                <!--                    android:layout_margin="8dp"-->
+                <!--                    android:src="@drawable/bell_black"-->
+                <!--                    android:id="@+id/notification_id"/>-->
             </LinearLayout>
-<!--            <TextView-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:textStyle="bold"-->
-<!--                android:textColor="@color/black"-->
-<!--                android:textSize="20sp"-->
-<!--                android:layout_marginTop="8dp" />-->
+
+            <TextView
+                android:id="@+id/recommened_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:visibility="gone"
+                android:text="Recommended for you"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recommended_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:visibility="gone"
+                tools:listitem="@layout/recommended_item_layout" />
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-                <androidx.recyclerview.widget.RecyclerView
+
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    tools:listitem="@layout/offer_item"
-                    android:paddingStart="8dp"
-                    android:paddingEnd="8dp"
-                    android:clipToPadding="false"
-                    android:orientation="horizontal"
+                    android:layout_marginStart="8dp"
+                    android:text="Offers"
+                    android:id="@+id/offers_text"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+                <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/offers_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:layout_marginBottom="8dp"
-              />
+                    android:clipToPadding="false"
+                    android:orientation="horizontal"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:layout_below="@id/offers_text"
+                    tools:listitem="@layout/offer_item" />
+
                 <com.google.android.material.progressindicator.CircularProgressIndicator
+                    android:id="@+id/offers_loader_progress_bar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/offers_loader_progress_bar"
-                    android:visibility="gone"
+                    android:layout_centerInParent="true"
                     android:indeterminate="true"
-                    android:layout_centerInParent="true"/>
+                    android:visibility="gone" />
             </RelativeLayout>
 
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/categories_container_id"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:listitem="@layout/category_item"
                 android:visibility="gone"
-                android:id="@+id/categories_container_id"/>
+                tools:listitem="@layout/category_item" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                android:textSize="20sp"
                 android:layout_marginStart="8dp"
                 android:text="Food &amp; Drinks"
-                />
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
                 <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/food_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/food_container"
-                    android:paddingStart="8dp"
-                    android:paddingEnd="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
                     android:clipToPadding="false"
                     android:orientation="horizontal"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp" />
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp" />
+
                 <com.google.android.material.progressindicator.CircularProgressIndicator
+                    android:id="@+id/food_loader_progress_bar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/food_loader_progress_bar"
-                    android:visibility="gone"
+                    android:layout_centerInParent="true"
                     android:indeterminate="true"
-                    android:layout_centerInParent="true"/>
+                    android:visibility="gone" />
 
             </RelativeLayout>
 

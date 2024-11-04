@@ -48,21 +48,21 @@ public class MainActivity extends AppCompatActivity implements CartFragment.Cart
         assert navHostFragment != null;
         NavController navController = navHostFragment.getNavController();
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
-        recommendationsViewModel = new ViewModelProvider(this).get(RecommendationViewModel.class);
-
-        recommendationsViewModel.getProducts().observe(this, myResult -> {
-            myResult.handle(
-                    products -> {
-                        for (Product p : products) {
-                            Log.d("TAG", "onCreate: "+p.getProductName());
-                        }
-                    },
-                    error -> {
-                    },
-                    () -> {
-                    }
-            );
-        });
+//        recommendationsViewModel = new ViewModelProvider(this).get(RecommendationViewModel.class);
+//
+//        recommendationsViewModel.getProducts().observe(this, myResult -> {
+//            myResult.handle(
+//                    products -> {
+//                        for (Product p : products) {
+//                            Log.d("TAG", "onCreate: "+p.getProductName());
+//                        }
+//                    },
+//                    error -> {
+//                    },
+//                    () -> {
+//                    }
+//            );
+//        });
     }
 
     @Override
