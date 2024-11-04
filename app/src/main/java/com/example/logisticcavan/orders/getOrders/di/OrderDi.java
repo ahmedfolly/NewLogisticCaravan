@@ -5,6 +5,7 @@ import com.example.logisticcavan.orders.getOrders.data.CourierOrderRepositoryImp
 import com.example.logisticcavan.orders.getOrders.data.GetOrdersOfCurrUserRepoImp;
 import com.example.logisticcavan.orders.getOrders.domain.GetAllOrderUseCaseCase;
 import com.example.logisticcavan.orders.getOrders.domain.GetCourierOrdersBasedStatusUseCase;
+import com.example.logisticcavan.orders.getOrders.domain.GetOrdersBasedBeach;
 import com.example.logisticcavan.orders.getOrders.domain.GetOrdersIdsUseCase;
 import com.example.logisticcavan.orders.getOrders.domain.GetOrdersOfCurrUser;
 import com.example.logisticcavan.orders.getOrders.domain.GetOrdersOfCurrUserUseCase;
@@ -43,6 +44,10 @@ public class OrderDi {
     public GetCourierOrdersBasedStatusUseCase provideOrderGetCourierOrdersBaseStatusUseCase(OrderRepository orderRepository) {
         return new GetCourierOrdersBasedStatusUseCase(orderRepository);
     }
+   @Provides
+    public GetOrdersBasedBeach provideGetOrdersBasedBeach(OrderRepository orderRepository) {
+        return new GetOrdersBasedBeach(orderRepository);
+    }
 
     @Provides
     public GetAllOrderUseCaseCase provideGetAllOrderUseCaseCase(OrderRepository orderRepository) {
@@ -62,8 +67,8 @@ public class OrderDi {
 
     @Provides
     @Singleton
-    public GetCourierOrdersViewModel provideGetCourierOrdersViewModel(GetCourierOrdersBasedStatusUseCase getCourierOrdersBasedStatusUseCase,GetAllOrderUseCaseCase getAllOrderUseCaseCase){
-        return new GetCourierOrdersViewModel(getCourierOrdersBasedStatusUseCase,getAllOrderUseCaseCase);
+    public GetCourierOrdersViewModel provideGetCourierOrdersViewModel(GetCourierOrdersBasedStatusUseCase getCourierOrdersBasedStatusUseCase,GetAllOrderUseCaseCase getAllOrderUseCaseCase,GetOrdersBasedBeach getOrdersBasedBeach){
+        return new GetCourierOrdersViewModel(getCourierOrdersBasedStatusUseCase,getAllOrderUseCaseCase,getOrdersBasedBeach);
     }
 
 

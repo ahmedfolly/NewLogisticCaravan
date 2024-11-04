@@ -1,5 +1,6 @@
 package com.example.logisticcavan.orders.getOrders.data;
 
+import static com.example.logisticcavan.common.utils.Constant.BEACH;
 import static com.example.logisticcavan.common.utils.Constant.ORDERS;
 import static com.example.logisticcavan.common.utils.Constant.STATUS;
 
@@ -58,6 +59,23 @@ public class CourierOrderRepositoryImpl implements OrderRepository {
                  }
              }
          }));
+        return future;
+    }
+
+    @Override
+    public CompletableFuture<List<Order>> getOrdersBasedBeach(String beach) {
+        CompletableFuture<List<Order>> future = new CompletableFuture<>();
+
+        firebaseFirestore.collection(ORDERS).whereEqualTo(BEACH, beach).addSnapshotListener((value, error) -> {
+            if (error != null) {
+                future.completeExceptionally(error);
+            } else {
+                if (value != null) {
+                    future.complete(value.toObjects(Order.class));
+                }
+            }
+        });
+
         return future;
     }
 

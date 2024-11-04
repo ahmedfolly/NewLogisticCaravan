@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.example.logisticcavan.common.base.BaseViewModel;
 import com.example.logisticcavan.orders.getOrders.domain.GetAllOrderUseCaseCase;
 import com.example.logisticcavan.orders.getOrders.domain.GetCourierOrdersBasedStatusUseCase;
+import com.example.logisticcavan.orders.getOrders.domain.GetOrdersBasedBeach;
 import com.example.logisticcavan.orders.getOrders.domain.Order;
 
 import java.util.List;
@@ -22,15 +23,17 @@ public class GetCourierOrdersViewModel extends BaseViewModel {
 
     private GetCourierOrdersBasedStatusUseCase getCourierOrdersBasedStatusUseCase;
     private GetAllOrderUseCaseCase getAllOrderUseCaseCase;
+    private GetOrdersBasedBeach getOrdersBasedBeach;
 
     private MutableLiveData<List<Order>> _listOrders = new MutableLiveData<>();
     public LiveData<List<Order>> listOrders = _listOrders;
 
 
     @Inject
-    public GetCourierOrdersViewModel(GetCourierOrdersBasedStatusUseCase getCourierOrdersBasedStatusUseCase, GetAllOrderUseCaseCase getAllOrderUseCaseCase) {
+    public GetCourierOrdersViewModel(GetCourierOrdersBasedStatusUseCase getCourierOrdersBasedStatusUseCase, GetAllOrderUseCaseCase getAllOrderUseCaseCase, GetOrdersBasedBeach getOrdersBasedBeach) {
         this.getCourierOrdersBasedStatusUseCase = getCourierOrdersBasedStatusUseCase;
         this.getAllOrderUseCaseCase = getAllOrderUseCaseCase;
+        this.getOrdersBasedBeach = getOrdersBasedBeach;
     }
 
 

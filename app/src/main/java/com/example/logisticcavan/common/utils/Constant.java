@@ -9,6 +9,7 @@ public class Constant {
     public static final String PREF_NAME  = "my_app_prefs";
     public static final String ORDERS = "Orders";
     public static final String STATUS = "generalDetails.status";
+    public static final String BEACH = "location.beach";
 
     public static final String PENDING = "Pending";
     public static final String SHIPPED = "Shipped";

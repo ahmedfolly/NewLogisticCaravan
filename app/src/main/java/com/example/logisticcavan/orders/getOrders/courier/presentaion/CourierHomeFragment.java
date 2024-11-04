@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.PopupMenu;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -28,6 +27,8 @@ import com.example.logisticcavan.orders.getOrders.domain.Order;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
@@ -39,7 +40,7 @@ public class CourierHomeFragment extends BaseFragment  implements OnOrderItemCli
     private CourierOrdersAdapter courierOrdersAdapter;
     private FragmentCourierHomeBinding binding;
     private NavController navController;
-
+    private List<Order> currentOrders;
 
     @Inject
     GetCourierOrdersViewModel getCourierOrdersViewModel;
@@ -63,6 +64,8 @@ public class CourierHomeFragment extends BaseFragment  implements OnOrderItemCli
         setUpClickListener();
     }
 
+
+
     private void setUpSpinner() {
      binding.filterSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
          @Override
@@ -76,58 +79,58 @@ public class CourierHomeFragment extends BaseFragment  implements OnOrderItemCli
          private void updateUiBasedSelection(String selectedItem) {
 
           switch (selectedItem){
+              
               case "Filter by beach":
                   break;
-              case "All beaches":{
+              case "All beaches": {
                   isThereOrders(getCourierOrdersViewModel.listOrders.getValue());
                   break;
               }
+
               case "Seasehell island": {
-
+                  filterDataByBeach("Seasehell island");
                   break;
-
               }
-              case "Breeze island":
 
+              case "Breeze island": {
+                  filterDataByBeach("Breeze island");
                   break;
+              }
 
-              case "Palm island":
-
+              case "Palm island": {
+                  filterDataByBeach("Palm island");
                   break;
-
-              case "Masts island":
-
+              }
+              case "Masts island": {
+                  filterDataByBeach("Masts island");
                   break;
-
-              case "Wave island":
-
+              }
+              case "Wave island": {
+                  filterDataByBeach("Wave island");
                   break;
+              }
 
-                  case "Pearl island":
-
+              case "Pearl island": {
+                  filterDataByBeach("Pearl island");
                   break;
+              }
+
           }
 
          }
 
          @Override
          public void onNothingSelected(AdapterView<?> parent) {
-             // Optional: handle if no item is selected
          }
      });
     }
 
-    private  String getLocation(Order order){
-        Map<String, String> location = order.getLocation();
-        return  location.get("beach");
-    }
 
 
 
 
     private void setUpClickListener() {
         binding.cartIcon.setOnClickListener(this::showFilterMenu);
-
         binding.activeOrders.setOnClickListener(this::activeClicked);
         binding.shippedOrders.setOnClickListener(this::shippedClicked);
         binding.deliveredOrders.setOnClickListener(this::deliveredClicked);
@@ -196,6 +199,7 @@ public class CourierHomeFragment extends BaseFragment  implements OnOrderItemCli
     private void observeViewModel() {
 
         getCourierOrdersViewModel.listOrders.observe(getViewLifecycleOwner(), orders -> {
+            currentOrders = orders;
             isThereOrders(orders);
             binding.progressBar.setVisibility(View.GONE);
 
@@ -216,6 +220,7 @@ public class CourierHomeFragment extends BaseFragment  implements OnOrderItemCli
     }
 
     private void isThereOrders(List<Order> orders) {
+
         if (!orders.isEmpty()) {
             Log.e("TAG", "observeViewModel: " + orders.size());
             updateRecyclerView(orders);
@@ -240,6 +245,22 @@ public class CourierHomeFragment extends BaseFragment  implements OnOrderItemCli
     }
 
     }
+
+    private void filterDataByBeach(String beach) {
+
+        List<Order> filteredList = currentOrders.stream()
+                .filter(order -> isThereLocation(order, beach))
+                .collect(Collectors.toList());
+        isThereOrders(filteredList);
+
+    }
+
+    private boolean isThereLocation(Order order, String beach) {
+        Map<String, String> location = order.getLocation();
+        String beach1 = location.get("beach");
+        return Objects.equals(beach1, beach);
+    }
+
 
     @Override
     public void onOrderClicked(Order order) {
