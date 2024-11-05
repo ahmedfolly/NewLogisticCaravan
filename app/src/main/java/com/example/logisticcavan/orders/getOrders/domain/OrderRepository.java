@@ -7,5 +7,6 @@ public interface OrderRepository {
 
      CompletableFuture<List<Order>> getCourierOrdersBasedStatus(String status);
      CompletableFuture<List<Order>> getAllOrders();
-
+     CompletableFuture<List<Order>> getOrdersBasedBeach(String beach);
 }
+
