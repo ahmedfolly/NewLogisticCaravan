@@ -50,6 +50,7 @@
                         android:textColor="@color/black"
                         android:textStyle="bold"
                         android:text="kalsjfklj"
+                        android:textAlignment="viewStart"
                         android:textSize="18sp"/>
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -63,7 +64,7 @@
                             android:id="@+id/restaurant_available_time_detail"
                             android:textColor="@color/grey_color"
                             android:textStyle="bold"
-                            android:text="fklsafkllkasjdfkl"
+                            android:textAlignment="viewStart"
                             android:textSize="15sp"/>
                         <TextView
                             android:drawableEnd="@drawable/star_24px"
@@ -72,7 +73,7 @@
                             android:id="@+id/restaurant_rating_text_detail"
                             android:textColor="@color/primary_color"
                             android:textStyle="bold"
-                            android:text="Rating"
+                            android:text="@string/rating_restaurant_details"
                             android:textSize="15sp"/>
                     </LinearLayout>
 
@@ -88,7 +89,7 @@
        android:drawablePadding="8dp"
        android:layout_height="wrap_content"
        android:background="@drawable/text_background"
-       android:text="Group order"
+       android:text="@string/group_order"
        android:textStyle="bold"
        android:id="@+id/group_order_detail"
        android:textSize="18sp"

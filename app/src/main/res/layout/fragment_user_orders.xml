@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/title_text"
             android:textColor="@color/primary_color"
-            android:text="My orders"
+            android:text="@string/orders_title"
             android:textSize="20sp"
             android:gravity="center"
             android:textStyle="bold"/>

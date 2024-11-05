@@ -28,6 +28,7 @@ import com.bumptech.glide.Glide;
 import com.example.logisticcavan.cart.domain.models.CartItem;
 import com.example.logisticcavan.cart.presentaion.CartViewModel;
 import com.example.logisticcavan.cart.presentaion.ui.AddOrderBottomSheet;
+import com.example.logisticcavan.navigations.commonui.MainActivity;
 import com.example.logisticcavan.products.getproducts.domain.Product;
 import com.example.logisticcavan.products.getproducts.presentation.GetProductsViewModel;
 import com.example.logisticcavan.products.getproducts.presentation.RestaurantProductsAdapter;
@@ -261,5 +262,13 @@ public class RestaurantDetailsFragment extends Fragment implements RestaurantPro
         return cartItem;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (getActivity() instanceof MainActivity) {
+            MainActivity mainActivity = (MainActivity) getActivity();
+            mainActivity.disappearBottomNav();
+        }
+    }
 
 }

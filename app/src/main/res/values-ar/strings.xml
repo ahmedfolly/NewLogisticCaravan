@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="recommended_text">ترشيحاتنا لك</string>
+    <string name="offers_text">عروضنا</string>
+    <string name="restaurants_text">مطاعم</string>
+    <string name="orders_title">طلباتي</string>
+    <string name="pending_text">طلبك قيد التحضير حالياً وسيتجه إليك قريباً! سيتم إشعارك حالما يصبح جاهزاً في طريقه إليك</string>
+    <string name="shipped_text">تم تجهيز طلبك وجاري إعداده للشحن</string>
+    <string name="delieverd_text">"تم وصول طلبك! نتمني أن تكون قد استمتعت بوجبتك "</string>
+    <string name="courier_name">عامل التوصيل</string>
+    <string name="rating">تقييم</string>
+    <string name="rating_restaurant_details">تقييمات</string>
+    <string name="group_order">طلب مجموعة</string>
+</resources>

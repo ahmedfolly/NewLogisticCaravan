@@ -24,7 +24,8 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="wrap_content"
+        android:minHeight="200dp"
         app:cardCornerRadius="16dp"
         android:layout_margin="16dp"
         android:layout_gravity="bottom"
@@ -101,7 +102,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 android:id="@+id/user_rate_text"
-                android:text="Give rate"
+                android:text="@string/rating"
                 android:gravity="end|center"
                 android:drawableEnd="@drawable/star_24px"
                 android:visibility="gone"
@@ -129,18 +130,18 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Your courier"
+                        android:text="@string/courier_name"
                         android:textStyle="bold"
                         android:textSize="20sp"
                         android:textColor="@color/black"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="fasdf"
-                        android:textStyle="bold"
-                        android:textSize="15sp"
-                        android:id="@+id/courier_name_status"
-                        android:textColor="@color/grey_color"/>
+<!--                    <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:text="fasdf"-->
+<!--                        android:textStyle="bold"-->
+<!--                        android:textSize="15sp"-->
+<!--                        android:id="@+id/courier_name_status"-->
+<!--                        android:textColor="@color/grey_color"/>-->
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="wrap_content"

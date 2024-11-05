@@ -23,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.example.logisticcavan.auth.presentation.AuthViewModel;
 import com.example.logisticcavan.common.utils.Constant;
+import com.example.logisticcavan.navigations.commonui.MainActivity;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -52,7 +53,6 @@ public class TrakOrderFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_trak_order, container, false);
     }
 
-    @SuppressLint("SetTextI18n")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -68,17 +68,17 @@ public class TrakOrderFragment extends Fragment {
         TextView rateText= view.findViewById(R.id.user_rate_text);
         if (flag.equals(Constant.flagFromPlaceOrderScreen)) {
             listenForUploadStatus();
-            statusDesc.setText("Your order is currently being prepared and will be on its way soon! You will be notified once it’s ready and on the way to you.");
+            statusDesc.setText(R.string.pending_text);
             setProgressSmoothly(50);
         }
         if (flag.equals(Constant.PENDING)){
             setProgressSmoothly(50);
-            statusDesc.setText("Your order is currently being prepared and will be on its way soon! You will be notified once it’s ready and on the way to you.");
+            statusDesc.setText(R.string.pending_text);
         }
         if (flag.equals(Constant.SHIPPED)){
             setProgressSmoothly(100);
             changeBackground(shippedImage,1250);
-            statusDesc.setText("Your order is shipped! The order is on the road to you.");
+            statusDesc.setText(R.string.shipped_text);
         }if (flag.equals(Constant.DELIVERED)){
             rateText.setVisibility(View.VISIBLE);
             rateText.setOnClickListener(v->{
@@ -92,7 +92,7 @@ public class TrakOrderFragment extends Fragment {
             setProgressSmoothly(100);
             changeBackground(shippedImage,1250);
             changeBackground(deliveredImage,2000);
-            statusDesc.setText("Your order is already delivered!\n We hope you enjoyed your meal!");
+            statusDesc.setText(R.string.delieverd_text);
         }
         ImageView backToHome = view.findViewById(R.id.back_to_home);
         backToHome.setOnClickListener(v->{
@@ -178,5 +178,13 @@ public class TrakOrderFragment extends Fragment {
                 navController.navigate(R.id.action_trakOrderFragment_to_homeFragment); // Replace with your target destination ID
             }
         });
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (getActivity() instanceof MainActivity) {
+            MainActivity mainActivity = (MainActivity) getActivity();
+            mainActivity.disappearBottomNav();
+        }
     }
 }
