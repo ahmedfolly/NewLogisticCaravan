@@ -1,10 +1,11 @@
-package com.example.logisticcavan.orders.getOrders.courier.presentaion;
+package com.example.logisticcavan.orders.updateStatusOrder.presentaion;
 
 import static com.example.logisticcavan.common.utils.Constant.DELIVERED;
 import static com.example.logisticcavan.common.utils.Constant.PENDING;
 import static com.example.logisticcavan.common.utils.Constant.SHIPPED;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,24 +17,34 @@ import androidx.navigation.Navigation;
 
 import com.example.logisticcavan.common.base.BaseFragment;
 import com.example.logisticcavan.databinding.FragmentOrderDetailBinding;
+import com.example.logisticcavan.orders.getOrders.courier.presentaion.ItemListener;
+import com.example.logisticcavan.orders.getOrders.courier.presentaion.StringListAdapter;
 import com.example.logisticcavan.orders.getOrders.domain.Order;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.inject.Inject;
 
-public class OrderDetailFragment extends BaseFragment {
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
+public class OrderDetailFragment extends BaseFragment implements ItemListener {
+
+   @Inject
+   UpdateOrderStatusViewModel updateOrderStatusViewModel;
 
     private FragmentOrderDetailBinding binding;
-    String orderId,customerName;
+    String orderId,customerName,orderStatus;
     NavController navController;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         binding = FragmentOrderDetailBinding.inflate(inflater, container, false);
-
         return binding.getRoot();
+
     }
 
     @Override
@@ -46,38 +57,51 @@ public class OrderDetailFragment extends BaseFragment {
     }
 
     private void setUpClickListeners() {
+
+
      binding.iconMessage.setOnClickListener(view -> {
           navController.navigate(OrderDetailFragmentDirections.actionOrderDetailFragmentToChattingFragment(customerName,orderId));
+     });
+
+     binding.startDelivery.setOnClickListener(view -> {
+         navigateToBottomSheet();
      });
 
     }
 
     private void setUpUiData(Order order) {
         Map<String,String> customerMap = order.getCustomer();
-         customerName = customerMap.get("name");
 
         List<Map<String, Object>> cartItemsMap = order.getCartItems();
         Map<String,Object> generaDetails = order.getGeneralDetails();
-
         Map<String, String> location = order.getLocation();
         Map<String, String> deliveryTime = order.getDeliveryTime();
-        Map<String, String> restaurant = order.getRestaurant();
-        String restaurantName = restaurant.get("name");
-         orderId = generaDetails.get("orderId").toString();
-        String orderStatus = generaDetails.get("status").toString();
 
+        orderStatus = generaDetails.get("status").toString();
+        orderId = generaDetails.get("orderId").toString();
+        customerName = customerMap.get("name");
         binding.address.setText(location.get("beach")+", Villa"+location.get("villaNum"));
         binding.date.setText(deliveryTime.get("date"));
         binding.time.setText(deliveryTime.get("time"));
         binding.deliveryId.setText("#"+orderId.substring(0,5));
         setTextButton(orderStatus);
-        if(orderStatus.equals("pending")){
+        setUpCartItems(cartItemsMap);
 
-    }
+
 }
 
-    private void navigateToChangeStatusFragment() {
+    private void setUpCartItems(List<Map<String, Object>> cartItemsMap) {
+        List<String> cartItems = new ArrayList<>();
+        cartItemsMap.forEach(item->{
+            cartItems.add("x"+item.get("quantity")+" "+item.get("productName"));
+        });
+       binding.recyclerViewItems.setAdapter(new StringListAdapter(cartItems));
+    }
 
+    private void navigateToBottomSheet() {
+        UpdateOrderStatusFragment fragment = new UpdateOrderStatusFragment();
+        fragment.init(orderStatus,this);
+        fragment.show(getParentFragmentManager(), UpdateOrderStatusFragment.class.getSimpleName());
     }
 
     private void setTextButton(String orderStatus) {
@@ -101,4 +125,10 @@ public class OrderDetailFragment extends BaseFragment {
       }
     binding.startDelivery.setText(text);
     }
+
+    @Override
+    public void onItemClick(String status) {
+     Log.e("TAG", "onItemClick: "+status );
+      updateOrderStatusViewModel.updateOrderStatus(orderId,status);
     }
+}

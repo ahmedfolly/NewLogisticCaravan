@@ -53,7 +53,7 @@
     <fragment
         android:id="@+id/orderDetailFragment"
         tools:layout="@layout/fragment_order_detail"
-        android:name="com.example.logisticcavan.orders.getOrders.courier.presentaion.OrderDetailFragment"
+        android:name="com.example.logisticcavan.orders.updateStatusOrder.presentaion.OrderDetailFragment"
         android:label="OrderDetailFragment" >
         <argument
             android:name="order"
