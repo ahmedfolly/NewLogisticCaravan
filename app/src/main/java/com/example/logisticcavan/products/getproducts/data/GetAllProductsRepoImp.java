@@ -35,7 +35,7 @@ public class GetAllProductsRepoImp implements GetProductsRepo {
                             assert value != null;
                             List<Product> products = value.toObjects(Product.class);
 
-                            setProductId(products);
+                            setProductId(products, value);
                             emitter.onNext(MyResult.success(products));
                             Log.d("TAG", "getAllProducts: " + products.size());
                         }
