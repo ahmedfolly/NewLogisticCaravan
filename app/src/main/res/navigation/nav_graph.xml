@@ -22,7 +22,9 @@
         <action
             android:id="@+id/action_homeFragment_to_restaurantDetailsFragment"
             app:destination="@id/restaurantDetailsFragment" />
-
+        <action
+            android:id="@+id/action_homeFragment_to_caravanFragment"
+            app:destination="@id/caravanFragment" />
 
 
     </fragment>
@@ -200,6 +202,11 @@
             android:name="orderId"
             app:argType="string" />
     </fragment>
+    <fragment
+        android:id="@+id/caravanFragment"
+        android:name="com.example.logisticcavan.caravan.presentation.CaravanFragment"
+        android:label="fragment_caravan"
+        tools:layout="@layout/fragment_caravan" />
 
 
 </navigation>

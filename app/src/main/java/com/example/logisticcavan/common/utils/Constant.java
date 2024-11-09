@@ -3,6 +3,8 @@ package com.example.logisticcavan.common.utils;
 public class Constant {
 
     public static final String USERS  = "users";
+    public static final String CARAVAN  = "caravan";
+    public static final String PRODUCTS  = "products";
     public static final String CUSTOMER  = "customer";
     public static final String COURIER  = "courier";
     public static final String RESTAURANT  = "restaurant";
@@ -15,6 +17,10 @@ public class Constant {
     public static final String SHIPPED = "Shipped";
     public static final String DELIVERED = "Delivered";
 
+    public static final String GROCERY = "grocery";
+    public static final String BAKERY = "bakery";
+    public static final String PHARMACY = "pharmacy";
+    public static final String DRINKS = "drinks";
     public static final String NOTIFICATIONS = "notifications";
     public static final String NOTIFICATIONS_List = "notificationsList";
     public static final String flagFromPlaceOrderScreen = "fromPlaceScreen";

@@ -65,7 +65,7 @@ public class HomeFragment extends BaseFragment implements CategoriesAdapter.OnIt
     private CombinedProductsWithRestaurantsViewModel combinedProductsWithRestaurantsViewModel;
     private GetRestaurantsViewModel getRestaurantsViewModel;
     private FrameLayout parent;
-    ImageView openCartScreen;
+    ImageView openCartScreen, caravanItems;
     private CartViewModel cartViewModel;
 
     private SharedViewModel sharedViewModel;
@@ -110,12 +110,19 @@ public class HomeFragment extends BaseFragment implements CategoriesAdapter.OnIt
         productsContainer = view.findViewById(R.id.food_container);
         offersContainer = view.findViewById(R.id.offers_container);
         foodProgressBar = view.findViewById(R.id.food_loader_progress_bar);
+        caravanItems = view.findViewById(R.id.caravan);
         offerLoaderProgress = view.findViewById(R.id.offers_loader_progress_bar);
         openCartScreen = view.findViewById(R.id.cart_icon);
         openCartScreen.setOnClickListener(v -> {
             navController = Navigation.findNavController(v);
             navController.navigate(R.id.action_homeFragment_to_cartFragment);
         });
+
+        caravanItems.setOnClickListener(v -> {
+            navController = Navigation.findNavController(v);
+            navController.navigate(R.id.action_homeFragment_to_caravanFragment);
+        });
+
         getCategories(view);
         getOffers(view);
 //        getProducts();

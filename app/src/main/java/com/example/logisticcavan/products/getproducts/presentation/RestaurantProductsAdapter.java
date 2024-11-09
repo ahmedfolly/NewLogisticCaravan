@@ -25,6 +25,8 @@ import com.example.logisticcavan.products.getproducts.domain.Product;
 public class RestaurantProductsAdapter extends ListAdapter<Product, RestaurantProductsAdapter.ProductViewHolder> {
     private FragmentManager fragmentManager;
     private FoodItemClickListener foodItemClickListener;
+
+
     public RestaurantProductsAdapter(FragmentManager fragmentManager, FoodItemClickListener foodItemClickListener) {
         super(new RestaurantProductsDiffUtil());
         this.fragmentManager = fragmentManager;

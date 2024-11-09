@@ -24,18 +24,18 @@ public class UpdateOrderStatusRepo {
     public CompletableFuture<Void> updateOrderStatus(String orderId, String newStatus) {
         CompletableFuture<Void> future = new CompletableFuture<>();
         firebaseFirestore
-                .collection("orders")
+                .collection("Orders")
                 .document(orderId)
-                .update("generalDetails", newStatus)
+                .update("generalDetails.status", newStatus)
                 .addOnSuccessListener(aVoid -> {
                     Log.e("Firestore", "Order status updated successfully.");
                     future.complete(null);
                 })
+
                 .addOnFailureListener(e -> {
                     Log.e("Firestore", "Failed to update order status", e);
                     future.completeExceptionally(e);
                 });
-
 
         return future;
 

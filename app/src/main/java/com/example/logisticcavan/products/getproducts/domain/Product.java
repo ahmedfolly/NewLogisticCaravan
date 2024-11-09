@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 
 
 public class Product implements Parcelable {
+
     private String productName = "";
     private String productCategory = "";
     private String productImageLink = "";
@@ -15,6 +16,14 @@ public class Product implements Parcelable {
 
     private String foodDesc = "";
     private String productID = "";
+
+    private Long expirationData = 0L;
+    private Long removalDate = 0L;
+    private String statusExpiration = "";
+
+
+
+
 
     public Product() {
     }
@@ -27,6 +36,11 @@ public class Product implements Parcelable {
         resId = in.readString();
         foodDesc = in.readString();
         productID = in.readString();
+
+        //new
+        expirationData = in.readLong();
+        removalDate = in.readLong();
+        statusExpiration = in.readString();
     }
 
     public static final Creator<Product> CREATOR = new Creator<Product>() {
@@ -111,5 +125,35 @@ public class Product implements Parcelable {
         parcel.writeString(resId);
         parcel.writeString(foodDesc);
         parcel.writeString(productID);
+
+        //new
+        parcel.writeLong(expirationData);
+        parcel.writeLong(removalDate);
+        parcel.writeString(statusExpiration);
+
+    }
+
+    public Long getExpirationData() {
+        return expirationData;
+    }
+
+    public void setExpirationData(Long expirationData) {
+        this.expirationData = expirationData;
+    }
+
+    public Long getRemovalDate() {
+        return removalDate;
+    }
+
+    public void setRemovalDate(Long removalDate) {
+        this.removalDate = removalDate;
+    }
+
+    public String getStatusExpiration() {
+        return statusExpiration;
+    }
+
+    public void setStatusExpiration(String statusExpiration) {
+        this.statusExpiration = statusExpiration;
     }
 }
