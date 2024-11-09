@@ -17,7 +17,6 @@ public class CartItem {
     public CartItem() {
     }
 
-
     public CartItem(int id,
                     String restaurantId,
                     String productName,
@@ -44,6 +43,7 @@ public class CartItem {
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
     }
+
     public String getRestaurantName() {
         return restaurantName;
     }
