@@ -72,10 +72,10 @@ public class FoodDetailFragment extends Fragment implements AddOrderBottomSheet.
         visitRestaurantBtn.setText("Visit " + args.getProductWithRestaurant().getRestaurant().getRestaurantName());
         MaterialButton orderFoodBtn = view.findViewById(R.id.order_food_btn_id);
         orderFoodBtn.setOnClickListener(v -> {
-            AddOrderBottomSheet bottomSheetDialogFragment = new AddOrderBottomSheet(this);
-            bottomSheetDialogFragment.setArguments(sendArgs());
-            bottomSheetDialogFragment.show(getParentFragmentManager(), bottomSheetDialogFragment.getTag());
-            bottomSheetDialogFragment.setCancelable(true);
+//            AddOrderBottomSheet bottomSheetDialogFragment = new AddOrderBottomSheet(this,);
+//            bottomSheetDialogFragment.setArguments(sendArgs());
+//            bottomSheetDialogFragment.show(getParentFragmentManager(), bottomSheetDialogFragment.getTag());
+//            bottomSheetDialogFragment.setCancelable(true);
         });
 
     }

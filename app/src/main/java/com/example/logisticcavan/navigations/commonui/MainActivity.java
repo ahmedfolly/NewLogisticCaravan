@@ -1,19 +1,30 @@
 package com.example.logisticcavan.navigations.commonui;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 import com.example.logisticcavan.R;
+import com.example.logisticcavan.common.utils.MyResult;
+import com.example.logisticcavan.sharedcart.domain.model.SharedCart;
+import com.example.logisticcavan.sharedcart.domain.model.SharedProduct;
+import com.example.logisticcavan.sharedcart.presentation.AddToSharedCartViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.Timestamp;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
 public class MainActivity extends AppCompatActivity{
     private BottomNavigationView bottomNavigationView;
+    AddToSharedCartViewModel addToSharedCartViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +36,8 @@ public class MainActivity extends AppCompatActivity{
         assert navHostFragment != null;
         NavController navController = navHostFragment.getNavController();
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
+        addToSharedCartViewModel = new ViewModelProvider(this).get(AddToSharedCartViewModel.class);
+
     }
     public void disappearBottomNav(){
         bottomNavigationView.animate().alpha(0).setDuration(300).withEndAction(() -> {
