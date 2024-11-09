@@ -161,6 +161,7 @@ public class RestaurantDetailsFragment extends Fragment implements RestaurantPro
         bottomSheetDialogFragment.setCancelable(true);
     }
 
+
     @Override
     public void addToCart(Product product, int quantity, double price) {
         CartItem cartItem = getCartItem(product, quantity, price);
