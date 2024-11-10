@@ -7,17 +7,24 @@ import static com.example.logisticcavan.common.utils.Constant.GROCERY;
 import static com.example.logisticcavan.common.utils.Constant.PHARMACY;
 import static com.example.logisticcavan.common.utils.Constant.PRODUCTS;
 
+import android.app.Dialog;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.logisticcavan.R;
 import com.example.logisticcavan.caravan.domain.model.Products;
+import com.example.logisticcavan.cart.domain.models.CartItem;
+import com.example.logisticcavan.cart.presentaion.CartViewModel;
 import com.example.logisticcavan.cart.presentaion.ui.AddOrderBottomSheet;
 import com.example.logisticcavan.databinding.FragmentCaravanBinding;
 import com.example.logisticcavan.products.getproducts.domain.Product;
@@ -28,6 +35,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import javax.inject.Inject;
 
@@ -39,6 +47,7 @@ public class CaravanFragment extends Fragment implements RestaurantProductsAdapt
 
     private FragmentCaravanBinding binding;
     private RestaurantProductsAdapter restaurantProductsAdapter;
+    private CartViewModel cartViewModel;
 
 
     @Inject
@@ -50,6 +59,8 @@ public class CaravanFragment extends Fragment implements RestaurantProductsAdapt
                              Bundle savedInstanceState) {
 
         binding = FragmentCaravanBinding.inflate(inflater, container, false);
+        cartViewModel = new ViewModelProvider(this).get(CartViewModel.class);
+
         setUpClickListener();
         viewModel.getCaravanProducts();
         observeViewModel();
@@ -121,10 +132,85 @@ public class CaravanFragment extends Fragment implements RestaurantProductsAdapt
 
 
 
-
     @Override
     public void addToCart(Product product, int quantity, double price) {
+        CartItem cartItem = getCartItem(product, quantity, price);
+        cartViewModel.getCartCount(new CartViewModel.CartCountCallback() {
+            @Override
+            public void onSuccess(int count) {
+                Log.d("TAG", "main get cart count " + count);
+                if (count == 0) {
+                    Log.d("TAG", "main  add item to empty database ");
+                    addCartItemToCart(cartItem);
+                } else {
+                    setupWarningDialog(cartItem);
+                }
+            }
 
+            @Override
+            public void onError(Throwable e) {
+
+            }
+        });
+    }
+
+    private void addCartItemToCart(CartItem cartItem) {
+
+        cartViewModel.addToCart(cartItem, new CartViewModel.AddToCartResultCallback() {
+            @Override
+            public void onSuccess(boolean isAdded) {
+                Log.d("TAG", "tracking is added: from dialog ");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Toast.makeText(getContext(), "Error adding to cart" + e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void setupWarningDialog(CartItem cartItem) {
+        Dialog dialog = new Dialog(requireContext());
+        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawableResource(R.drawable.curved_borders);
+        dialog.setContentView(R.layout.warn_add_to_cart_dialog);
+        TextView dialogMessage = dialog.findViewById(R.id.dialog_message);
+        dialogMessage.setText("A new order will clear your cart with " + "\"" + "Caravan" + "\"" + ".");
+        Button continueBtn = dialog.findViewById(R.id.continue_btn);
+        Button cancelBtn = dialog.findViewById(R.id.cancel_btn);
+        dialog.show();
+        cancelBtn.setOnClickListener(v -> {
+            dialog.dismiss();
+        });
+        continueBtn.setOnClickListener(v -> {
+            cartViewModel.emptyCart(new CartViewModel.EmptyCartResultCallback() {
+                @Override
+                public void onSuccess(boolean isDeleted) {
+                    Log.d("TAG", "tracking is deleted: from dialog ");
+                    addCartItemToCart(cartItem);
+                    dialog.dismiss();
+                }
+
+                @Override
+                public void onError(Throwable e) {
+                    dialog.dismiss();
+                    Toast.makeText(getContext(), "Error deleting cart " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+            dialog.dismiss();
+        });
+    }
+
+    private CartItem getCartItem(Product product, int quantity, double price) {
+        CartItem cartItem = new CartItem();
+        cartItem.setRestaurantId("caravanId");
+        cartItem.setProductName(product.getProductName());
+        cartItem.setProductImageLink(product.getProductImageLink());
+        cartItem.setPrice(price);
+        cartItem.setQuantity(quantity);
+        cartItem.setRestaurantName("caravan");
+        cartItem.setProductId(product.getProductID());
+        cartItem.setCategoryName(product.getProductCategory());
+        return cartItem;
     }
 
     @Override
