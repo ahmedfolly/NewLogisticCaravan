@@ -129,7 +129,7 @@ public class CaravanFragment extends Fragment implements RestaurantProductsAdapt
 
     @Override
     public void onFoodItemClick(Product product) {
-        AddOrderBottomSheet bottomSheetDialogFragment = new AddOrderBottomSheet(this);
+        AddOrderBottomSheet bottomSheetDialogFragment = new AddOrderBottomSheet(this,null);
         bottomSheetDialogFragment.setArguments(sendArgs(product));
         bottomSheetDialogFragment.show(getParentFragmentManager(), bottomSheetDialogFragment.getTag());
         bottomSheetDialogFragment.setCancelable(true);
