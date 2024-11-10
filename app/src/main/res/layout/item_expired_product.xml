@@ -4,43 +4,41 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:padding="8dp"
     android:layout_height="wrap_content">
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
-            android:id="@+id/textView20"
+            android:id="@+id/productID"
             android:layout_width="0dp"
             android:gravity="center"
-
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="TextView"
+            android:text="Product ID"
             tools:layout_editor_absoluteY="10dp" />
 
         <TextView
-            android:id="@+id/textView21"
+            android:id="@+id/expirationDate"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:gravity="center"
             android:layout_height="wrap_content"
-            android:text="TextView"
+            android:text="04/06/2024 "
             tools:layout_editor_absoluteX="89dp"
             tools:layout_editor_absoluteY="128dp" />
 
         <TextView
-            android:id="@+id/textView22"
+            android:id="@+id/removalDate"
             android:layout_width="0dp"
             android:gravity="center"
-
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="TextView"
+            android:text="Removal Date"
             tools:layout_editor_absoluteX="87dp"
             tools:layout_editor_absoluteY="241dp" />
     </LinearLayout>
-
 
     <TextView
         android:id="@+id/textView23"
@@ -48,7 +46,14 @@
         android:layout_height="wrap_content"
         android:text="Status: Product has been removed"
         android:textColor="#FF1313"
+        android:layout_marginTop="8dp"
         android:layout_gravity="center"
         tools:layout_editor_absoluteX="111dp"
         tools:layout_editor_absoluteY="361dp" />
+    <View
+        android:layout_width="wrap_content"
+        android:background="#dfdfdf"
+        android:layout_marginTop="8dp"
+
+        android:layout_height="2dp"/>
 </LinearLayout>
