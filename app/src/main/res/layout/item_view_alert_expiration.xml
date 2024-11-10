@@ -6,8 +6,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_marginBottom="8dp"
-    android:background="@drawable/corner_border_black"
-    android:padding="@dimen/margin_large"
+    android:background="@drawable/corner_med_four"
+    android:padding="8dp"
     android:layout_height="wrap_content">
 
     <TextView
@@ -25,6 +25,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Expiry date: 01/11/2024"
+        android:textColor="#9E1E1E"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
