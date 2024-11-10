@@ -14,6 +14,9 @@ public class CartItem {
     private String restaurantName;
     private String categoryName;
 
+
+
+
     public CartItem() {
     }
 
