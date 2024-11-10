@@ -131,7 +131,7 @@ public class CartFragment extends Fragment implements ConfirmOrderBottomFragment
         super.onResume();
         if (getActivity() instanceof MainActivity) {
             MainActivity mainActivity = (MainActivity) getActivity();
-            mainActivity.onCartFragmentOpened();
+            mainActivity.disappearBottomNav();
         }
     }
 

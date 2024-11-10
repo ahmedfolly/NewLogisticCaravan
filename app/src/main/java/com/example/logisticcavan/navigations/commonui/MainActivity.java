@@ -3,40 +3,28 @@ package com.example.logisticcavan.navigations.commonui;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
-
-import com.example.logisticcavan.cart.presentaion.CartViewModel;
-import com.example.logisticcavan.cart.presentaion.ui.CartFragment;
 import com.example.logisticcavan.R;
-import com.example.logisticcavan.orders.getOrders.presentaion.GetOrdersOfCurrUserViewModel;
-import com.example.logisticcavan.products.getproducts.domain.Product;
-import com.example.logisticcavan.products.getproducts.presentation.GetProductsViewModel;
-import com.example.logisticcavan.products.recommendations.data.GetRecommendationsRepoImp;
-import com.example.logisticcavan.products.recommendations.presentation.RecommendationViewModel;
-import com.example.logisticcavan.restaurants.presentation.GetRestaurantProductsViewModel;
-import com.example.logisticcavan.restaurants.presentation.GetRestaurantsViewModel;
+import com.example.logisticcavan.common.utils.MyResult;
+import com.example.logisticcavan.sharedcart.domain.model.SharedCart;
+import com.example.logisticcavan.sharedcart.domain.model.SharedProduct;
+import com.example.logisticcavan.sharedcart.presentation.AddToSharedCartViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.Timestamp;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class MainActivity extends AppCompatActivity implements CartFragment.CartFragmentOpenedCallback,
-        HomeFragment.HomeFramentOpenedCallback {
+public class MainActivity extends AppCompatActivity{
     private BottomNavigationView bottomNavigationView;
-    GetRestaurantsViewModel getRestaurantsViewModel;
-    GetRestaurantProductsViewModel viewModel;
-    GetProductsViewModel getProductsViewModel;
-    CartViewModel cartViewModel;
-    GetOrdersOfCurrUserViewModel getOrdersOfCurrUserViewModel;
-
-    RecommendationViewModel recommendationsViewModel;
+    AddToSharedCartViewModel addToSharedCartViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,34 +36,16 @@ public class MainActivity extends AppCompatActivity implements CartFragment.Cart
         assert navHostFragment != null;
         NavController navController = navHostFragment.getNavController();
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
-//        recommendationsViewModel = new ViewModelProvider(this).get(RecommendationViewModel.class);
-//
-//        recommendationsViewModel.getProducts().observe(this, myResult -> {
-//            myResult.handle(
-//                    products -> {
-//                        for (Product p : products) {
-//                            Log.d("TAG", "onCreate: "+p.getProductName());
-//                        }
-//                    },
-//                    error -> {
-//                    },
-//                    () -> {
-//                    }
-//            );
-//        });
-    }
+        addToSharedCartViewModel = new ViewModelProvider(this).get(AddToSharedCartViewModel.class);
 
-    @Override
-    public void onCartFragmentOpened() {
-        bottomNavigationView.animate().alpha(0).setDuration(100).withEndAction(() -> {
+    }
+    public void disappearBottomNav(){
+        bottomNavigationView.animate().alpha(0).setDuration(300).withEndAction(() -> {
             bottomNavigationView.setVisibility(View.GONE);
         });
     }
-
-    @Override
-    public void onHomeFragmentOpened() {
+    public void showBottomNav(){
         bottomNavigationView.setVisibility(View.VISIBLE);
         bottomNavigationView.setAlpha(1f);
     }
-
 }

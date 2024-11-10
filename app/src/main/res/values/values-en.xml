@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="recommended_text" translatable="true">Recommended for you</string>
+    <string name="offers_text" translatable="true">Offers</string>
+    <string name="restaurants_text" translatable="true">Restaurants</string>
+</resources>

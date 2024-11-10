@@ -26,12 +26,13 @@
             android:textSize="15sp"
             android:textColor="@color/black"
             android:textStyle="bold"
-            android:text="jlfaksfkl"/>
+            android:textAlignment="viewStart"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/food_gradients_details_id"
             android:textSize="12sp"
+            android:textAlignment="viewStart"
             android:textColor="@color/grey_color"
             android:text="asdfowpe fweio jfsajkf wojf j"/>
         <TextView
@@ -39,6 +40,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/food_price_details_id"
             android:textSize="15sp"
+            android:textAlignment="viewStart"
             android:textColor="@color/black"
             android:textStyle="bold"
             />

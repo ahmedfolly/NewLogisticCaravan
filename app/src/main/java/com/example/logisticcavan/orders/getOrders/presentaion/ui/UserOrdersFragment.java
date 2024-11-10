@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.logisticcavan.R;
+import com.example.logisticcavan.navigations.commonui.MainActivity;
 import com.example.logisticcavan.orders.getOrders.domain.Order;
 import com.example.logisticcavan.orders.getOrders.presentaion.GetOrdersOfCurrUserViewModel;
 import com.example.logisticcavan.orders.getOrders.presentaion.UserOrdersAdapter;
@@ -66,4 +67,6 @@ public class UserOrdersFragment extends Fragment {
         userOrdersContainer.setLayoutManager(new LinearLayoutManager(requireContext()));
         userOrdersContainer.setAdapter(userOrdersAdapter);
     }
+
+
 }

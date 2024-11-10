@@ -25,14 +25,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.logisticcavan.auth.presentation.AuthViewModel;
 import com.example.logisticcavan.cart.domain.models.CartItem;
 import com.example.logisticcavan.cart.presentaion.CartViewModel;
 import com.example.logisticcavan.cart.presentaion.ui.AddOrderBottomSheet;
+import com.example.logisticcavan.common.utils.MyResult;
+import com.example.logisticcavan.navigations.commonui.MainActivity;
 import com.example.logisticcavan.products.getproducts.domain.Product;
 import com.example.logisticcavan.products.getproducts.presentation.GetProductsViewModel;
 import com.example.logisticcavan.products.getproducts.presentation.RestaurantProductsAdapter;
 import com.example.logisticcavan.restaurants.domain.Restaurant;
 import com.example.logisticcavan.restaurants.presentation.GetRestaurantProductsViewModel;
+import com.example.logisticcavan.sharedcart.domain.model.SharedProduct;
+import com.example.logisticcavan.sharedcart.presentation.AddToSharedCartViewModel;
 
 import java.util.List;
 import java.util.Objects;
@@ -40,7 +45,10 @@ import java.util.Objects;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class RestaurantDetailsFragment extends Fragment implements RestaurantProductsAdapter.FoodItemClickListener, AddOrderBottomSheet.AddToCartCallback {
+public class RestaurantDetailsFragment extends Fragment
+        implements RestaurantProductsAdapter.FoodItemClickListener,
+        AddOrderBottomSheet.AddToCartCallback,
+AddOrderBottomSheet.AddToSharedCartCallback{
 
     private RestaurantDetailsFragmentArgs args;
     GetProductsViewModel getProductsViewModel;
@@ -51,6 +59,8 @@ public class RestaurantDetailsFragment extends Fragment implements RestaurantPro
     private ProgressBar loadRestaurantProductsProgress;
 
     private NavController navController;
+    private AddToSharedCartViewModel addToSharedCartViewModel;
+    private AuthViewModel authViewModel;
 
     public RestaurantDetailsFragment() {
         // Required empty public constructor
@@ -64,6 +74,8 @@ public class RestaurantDetailsFragment extends Fragment implements RestaurantPro
         restaurantProductsAdapter = new RestaurantProductsAdapter(getParentFragmentManager(), this);
         getProductsViewModel = new ViewModelProvider(this).get(GetProductsViewModel.class);
         cartViewModel = new ViewModelProvider(this).get(CartViewModel.class);
+        addToSharedCartViewModel = new ViewModelProvider(this).get(AddToSharedCartViewModel.class);
+        authViewModel = new ViewModelProvider(this).get(AuthViewModel.class);
     }
 
     @Override
@@ -155,7 +167,7 @@ public class RestaurantDetailsFragment extends Fragment implements RestaurantPro
 
     @Override
     public void onFoodItemClick(Product product) {
-        AddOrderBottomSheet bottomSheetDialogFragment = new AddOrderBottomSheet(this);
+        AddOrderBottomSheet bottomSheetDialogFragment = new AddOrderBottomSheet(this,this);
         bottomSheetDialogFragment.setArguments(sendArgs(product));
         bottomSheetDialogFragment.show(getParentFragmentManager(), bottomSheetDialogFragment.getTag());
         bottomSheetDialogFragment.setCancelable(true);
@@ -262,5 +274,34 @@ public class RestaurantDetailsFragment extends Fragment implements RestaurantPro
         return cartItem;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (getActivity() instanceof MainActivity) {
+            MainActivity mainActivity = (MainActivity) getActivity();
+            mainActivity.disappearBottomNav();
+        }
+    }
 
+    @Override
+    public void addToSharedCart(String productId, int quantity) {
+        SharedProduct sharedProduct = new SharedProduct();
+        sharedProduct.setAddedBy(getUserName());
+        sharedProduct.setProductId(productId);
+        sharedProduct.setQuantity(quantity);
+        addToSharedCartViewModel.addToSharedCart(sharedProduct, new AddToSharedCartViewModel.AddToSharedCartCallback() {
+            @Override
+            public void onSuccess(MyResult<Boolean> result) {
+                Log.d("TAG", "product added to shared cart ");
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+                Log.d("TAG", "there is an error in adding product to shared cart ");
+            }
+        });
+    }
+    private String getUserName(){
+        return authViewModel.getUserInfoLocally().getName();
+    }
 }

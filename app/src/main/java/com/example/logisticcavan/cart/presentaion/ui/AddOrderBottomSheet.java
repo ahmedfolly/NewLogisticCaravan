@@ -21,13 +21,17 @@ import com.example.logisticcavan.cart.presentaion.DetectQuantityUtil;
 import com.example.logisticcavan.products.getproducts.domain.Product;
 import com.example.logisticcavan.restaurants.domain.ProductWithRestaurant;
 import com.example.logisticcavan.restaurants.domain.Restaurant;
+import com.example.logisticcavan.sharedcart.domain.model.SharedCart;
+import com.example.logisticcavan.sharedcart.domain.model.SharedProduct;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 public class AddOrderBottomSheet extends BottomSheetDialogFragment {
     private AddToCartCallback addToCartCallback;
+    private AddToSharedCartCallback addToSharedCartCallback;
 
-    public AddOrderBottomSheet(AddToCartCallback addToCartCallback) {
+    public AddOrderBottomSheet(AddToCartCallback addToCartCallback,AddToSharedCartCallback addToSharedCartCallback) {
         this.addToCartCallback = addToCartCallback;
+        this.addToSharedCartCallback = addToSharedCartCallback;
     }
 
     @Override
@@ -68,10 +72,11 @@ public class AddOrderBottomSheet extends BottomSheetDialogFragment {
         DetectQuantityUtil.increaseOrderItemQuantity("order", null, increaseOrderQuantityBtn, totalPriceTxt, orderQuantity, price);
         DetectQuantityUtil.decreaseOrderItemQuantity("order", null, decreaseOrderQuantityBtn, totalPriceTxt, orderQuantity, price);
         addToCart(view, product, orderQuantity, totalPriceTxt);
+
+        addProductToSharedCart(product.getProductID(), orderQuantity);
     }
 
     private void addToCart(View view, Product product, TextView quantityText, TextView totalPriceTxt) {
-
         CardView addToCartBtn = view.findViewById(R.id.add_product_to_cart);
         addToCartBtn.setOnClickListener(v -> {
             int quantity = Integer.parseInt(quantityText.getText().toString());
@@ -80,8 +85,19 @@ public class AddOrderBottomSheet extends BottomSheetDialogFragment {
             dismiss();
         });
     }
+    private void addProductToSharedCart( String productId, TextView quantityText) {
+        ImageView addToSharedCartBtn = requireView().findViewById(R.id.add_to_group_order);
+        addToSharedCartBtn.setOnClickListener(v -> {
+            int quantity = Integer.parseInt(quantityText.getText().toString());
 
+            addToSharedCartCallback.addToSharedCart(productId, quantity);
+            dismiss();
+        });
+    }
     public interface AddToCartCallback {
         void addToCart(Product product, int quantity, double price);
     }
+   public interface AddToSharedCartCallback{
+        void addToSharedCart(String productId, int quantity);
+   }
 }

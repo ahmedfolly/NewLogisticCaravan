@@ -201,7 +201,7 @@ public class HomeFragment extends BaseFragment implements CategoriesAdapter.OnIt
         super.onResume();
         if (getActivity() instanceof MainActivity) {
             MainActivity mainActivity = (MainActivity) getActivity();
-            mainActivity.onHomeFragmentOpened();
+            mainActivity.showBottomNav();
         }
     }
 

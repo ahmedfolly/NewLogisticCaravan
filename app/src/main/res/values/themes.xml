@@ -5,7 +5,7 @@
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
         <!--        <item name="colorPrimary">#B8E55763</item>-->
         <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="fontFamily">@font/afacad_bold</item>
+        <item name="fontFamily">@font/cairo_bold</item>
         <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>
     </style>
     <style name="SpinnerTheme" parent="android:Widget.Spinner">

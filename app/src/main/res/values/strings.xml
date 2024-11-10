@@ -1,5 +1,13 @@
 <resources>
-    <string name="app_name">Logistic Cavan</string>
+    <string name="app_name" translatable="false">Logistic Cavan</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
+    <string name="orders_title">My Orders</string>
+    <string name="pending_text">Your order is currently being prepared and will be on its way soon! You will be notified once it’s ready and on the way to you.</string>
+    <string name="shipped_text">Your order is shipped! The order is on the road to you.</string>
+    <string name="delieverd_text">Your order is already delivered!\\n We hope you enjoyed your meal!</string>
+    <string name="courier_name">" Courier"</string>
+    <string name="rating">Give rate</string>
+    <string name="rating_restaurant_details">Rating</string>
+    <string name="group_order">Group order</string>
 </resources>
