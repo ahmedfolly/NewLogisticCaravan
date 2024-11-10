@@ -43,7 +43,8 @@ import dagger.hilt.android.AndroidEntryPoint;
 
 
 @AndroidEntryPoint
-public class CaravanFragment extends Fragment implements RestaurantProductsAdapter.FoodItemClickListener, AddOrderBottomSheet.AddToCartCallback {
+public class CaravanFragment extends Fragment implements RestaurantProductsAdapter.FoodItemClickListener, AddOrderBottomSheet.AddToCartCallback ,
+        AddOrderBottomSheet.AddToSharedCartCallback{
 
     private FragmentCaravanBinding binding;
     private RestaurantProductsAdapter restaurantProductsAdapter;
@@ -215,7 +216,7 @@ public class CaravanFragment extends Fragment implements RestaurantProductsAdapt
 
     @Override
     public void onFoodItemClick(Product product) {
-        AddOrderBottomSheet bottomSheetDialogFragment = new AddOrderBottomSheet(this);
+        AddOrderBottomSheet bottomSheetDialogFragment = new AddOrderBottomSheet(this,this);
         bottomSheetDialogFragment.setArguments(sendArgs(product));
         bottomSheetDialogFragment.show(getParentFragmentManager(), bottomSheetDialogFragment.getTag());
         bottomSheetDialogFragment.setCancelable(true);
@@ -310,4 +311,8 @@ public class CaravanFragment extends Fragment implements RestaurantProductsAdapt
         return productList;
     }
 
+    @Override
+    public void addToSharedCart(String productId, int quantity) {
+
+    }
 }
