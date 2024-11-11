@@ -41,15 +41,14 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/textView23"
+        android:id="@+id/status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Status: Product has been removed"
         android:textColor="#FF1313"
         android:layout_marginTop="8dp"
         android:layout_gravity="center"
-        tools:layout_editor_absoluteX="111dp"
-        tools:layout_editor_absoluteY="361dp" />
+        />
     <View
         android:layout_width="wrap_content"
         android:background="#dfdfdf"

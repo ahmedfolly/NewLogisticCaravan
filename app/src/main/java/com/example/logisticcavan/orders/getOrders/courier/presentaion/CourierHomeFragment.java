@@ -130,7 +130,6 @@ public class CourierHomeFragment extends BaseFragment  implements OnOrderItemCli
 
 
     private void setUpClickListener() {
-        binding.cartIcon.setOnClickListener(this::showFilterMenu);
         binding.activeOrders.setOnClickListener(this::activeClicked);
         binding.shippedOrders.setOnClickListener(this::shippedClicked);
         binding.deliveredOrders.setOnClickListener(this::deliveredClicked);
@@ -170,29 +169,8 @@ public class CourierHomeFragment extends BaseFragment  implements OnOrderItemCli
 
 
     private void expiredClicked(View view) {
-    }
+        navController.navigate(CourierHomeFragmentDirections.actionCourierHomeFragmentToExpiredProductsFragment());
 
-    private void showFilterMenu(View v) {
-        PopupMenu popupMenu = new PopupMenu(requireContext(), v);
-        MenuInflater inflater = popupMenu.getMenuInflater();
-        inflater.inflate(R.menu.filter_courier_order_menu, popupMenu.getMenu());
-
-        popupMenu.setOnMenuItemClickListener(item -> {
-            int itemId = item.getItemId();
-            if (itemId == R.id.filter_by_all) {
-                getCourierOrdersViewModel.getAllOrders();
-                return true;
-            } else if (itemId == R.id.filter_by_pending) {
-                getCourierOrdersViewModel.getOrdersBasedStatus(PENDING);
-                return true;
-            } else if (itemId == R.id.filter_by_completed) {
-                getCourierOrdersViewModel.getOrdersBasedStatus(SHIPPED);
-                return true;
-            }
-            return false;
-        });
-
-        popupMenu.show();
     }
 
 
@@ -237,14 +215,6 @@ public class CourierHomeFragment extends BaseFragment  implements OnOrderItemCli
         binding.ordersRecycler.setAdapter(courierOrdersAdapter);
     }
 
-    private void updateUiStatus(boolean status) {
-    if (status){
-        binding.progressBar.setVisibility(View.GONE);
-    }else {
-        binding.progressBar.setVisibility(View.VISIBLE);
-    }
-
-    }
 
     private void filterDataByBeach(String beach) {
 
@@ -264,7 +234,6 @@ public class CourierHomeFragment extends BaseFragment  implements OnOrderItemCli
 
     @Override
     public void onOrderClicked(Order order) {
-
         navController.navigate
                 (CourierHomeFragmentDirections.actionCourierHomeFragmentToOrderDetailFragment(order));
     }

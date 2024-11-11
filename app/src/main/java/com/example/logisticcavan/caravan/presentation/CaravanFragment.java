@@ -235,18 +235,17 @@ public class CaravanFragment extends Fragment implements RestaurantProductsAdapt
 
 
 
-
-
-
     private void addItems() {
         Products products = new Products(list());
-
         FirebaseFirestore.getInstance()
                 .collection(CARAVAN)
                 .document(PRODUCTS)
                 .set(products).addOnCanceledListener(() -> {
                 });
     }
+
+
+
     private List<Product> list() {
         List<Product> productList = new ArrayList<>();
 
@@ -311,8 +310,11 @@ public class CaravanFragment extends Fragment implements RestaurantProductsAdapt
         return productList;
     }
 
+    
     @Override
     public void addToSharedCart(String productId, int quantity) {
 
     }
+
+
 }

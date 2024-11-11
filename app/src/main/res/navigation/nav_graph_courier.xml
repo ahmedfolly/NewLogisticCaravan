@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_courierHomeFragment_to_orderDetailFragment"
             app:destination="@id/orderDetailFragment" />
+        <action
+            android:id="@+id/action_courierHomeFragment_to_expiredProductsFragment"
+            app:destination="@id/expiredProductsFragment" />
     </fragment>
     <fragment
         android:id="@+id/moreFragment"
@@ -74,4 +77,8 @@
             android:name="orderId"
             app:argType="string" />
     </fragment>
+    <fragment
+        android:id="@+id/expiredProductsFragment"
+        android:name="com.example.logisticcavan.getExpiredProducts.presentaion.ExpiredProductsFragment"
+        android:label="ExpiredProductsFragment" />
 </navigation>
