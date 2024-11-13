@@ -2,6 +2,7 @@ package com.example.logisticcavan.getExpiredProducts.di;
 
 import com.example.logisticcavan.caravan.domain.useCase.GetCaravanProductsUseCase;
 import com.example.logisticcavan.getExpiredProducts.presentaion.ExpiredProductsViewModel;
+import com.example.logisticcavan.updateStatusCaravanProduct.domain.UpdateStatusCaravanProductUseCase;
 
 import javax.inject.Singleton;
 
@@ -19,8 +20,8 @@ public class Di {
 
     @Provides
     @Singleton
-    ExpiredProductsViewModel provideViewModel(GetCaravanProductsUseCase getCaravanProductsUseCase){
-        return new ExpiredProductsViewModel(getCaravanProductsUseCase);
+    ExpiredProductsViewModel provideViewModel(GetCaravanProductsUseCase getCaravanProductsUseCase, UpdateStatusCaravanProductUseCase updateStatusCaravanProductUseCase){
+        return new ExpiredProductsViewModel(getCaravanProductsUseCase,updateStatusCaravanProductUseCase);
     }
 
 

@@ -8,7 +8,13 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.logisticcavan.caravan.domain.useCase.GetCaravanProductsUseCase;
 import com.example.logisticcavan.products.getproducts.domain.Product;
+import com.example.logisticcavan.updateStatusCaravanProduct.domain.UpdateStatusCaravanProductUseCase;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,7 +25,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel;
 @HiltViewModel
 public
 class ExpiredProductsViewModel extends ViewModel {
+
     private GetCaravanProductsUseCase getCaravanProductsUseCase;
+    private UpdateStatusCaravanProductUseCase updateStatusCaravanProductUseCase;
 
     private MutableLiveData<List<Product>> _expiredProducts = new MutableLiveData<>();
     LiveData<List<Product>> expiredProducts = _expiredProducts;
@@ -28,8 +36,9 @@ class ExpiredProductsViewModel extends ViewModel {
     LiveData<List<Product>> expireSoon = _expireSoon;
 
     @Inject
-    public  ExpiredProductsViewModel(GetCaravanProductsUseCase getCaravanProductsUseCase) {
+    public  ExpiredProductsViewModel(GetCaravanProductsUseCase getCaravanProductsUseCase, UpdateStatusCaravanProductUseCase updateStatusCaravanProductUseCase) {
         this.getCaravanProductsUseCase = getCaravanProductsUseCase;
+        this.updateStatusCaravanProductUseCase = updateStatusCaravanProductUseCase;
     }
 
 
@@ -70,26 +79,51 @@ class ExpiredProductsViewModel extends ViewModel {
     }
 
     private boolean willExpireSoon(Product product) {
-        long currentTime = System.currentTimeMillis();
-        long oneDayInMillis = 24 * 60 * 60 * 1000;
-
-        long afterTomorr = currentTime + (oneDayInMillis * 2);
-
-        long fivee = currentTime + (oneDayInMillis * 5);
-        Log.e("TAG", "currentTime: " + currentTime);
-        Log.e("TAG", "afterTomorr: " + afterTomorr);
-        Log.e("TAG", "fivee: " + fivee);
-        Log.e("TAG", "oneDayInMillis: " + oneDayInMillis);
         long expirationDate = product.getExpirationData();
 
-        long rangeStart = expirationDate - oneDayInMillis ;
-//        Log.e("TAG", "rangeStart: " + rangeStart);
+        long currentTime = System.currentTimeMillis();
+       if (currentTime >= expirationDate){
+           Log.e("TAG" , "itr");
+           return  false;
+       }
+        long oneDayInMillis = 24 * 60 * 60 * 1000;
 
-        long rangeEnd = expirationDate - (5 * oneDayInMillis) ;
-//        Log.e("TAG", "rangeEnd: " + rangeEnd);
+        long day1 = currentTime + oneDayInMillis ;
+        long day2 = currentTime + (oneDayInMillis * 2);
+        long day3 = currentTime + (oneDayInMillis * 3);
+        long day4 = currentTime + (oneDayInMillis * 4);
+        long day5 = currentTime + (oneDayInMillis * 5);
+
+        Log.e("TAG", "currentTime: " + currentTime);
+        Log.e("TAG", "day1: " + day1);
+        Log.e("TAG", "day2: " + day2);
+        Log.e("TAG", "day3: " + day3);
+        Log.e("TAG", "day4: " + day4);
+        Log.e("TAG", "day5: " + day5);
+
+        long  rangeStart = expirationDate - (5 * oneDayInMillis) ;
+        long  rangeEnd = expirationDate - oneDayInMillis ;
+
+//        Log.e("TAG", "currentTime: " + stringDate(currentTime));
+//        Log.e("TAG", "expirationDate: " + stringDate(expirationDate));
+//        Log.e("TAG", "rangeEnd: " + stringDate(rangeEnd));
+//        Log.e("TAG", "rangeStart: " + stringDate(rangeStart));
 
         return currentTime >= rangeStart && currentTime <= rangeEnd;
 
     }
 
+    private String stringDate(Long timestamp){
+        LocalDateTime dateTime =
+                LocalDateTime.ofInstant(Instant.ofEpochMilli(timestamp), ZoneId.systemDefault());
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        return dateTime.format(formatter);
+    }
+
+
+    public void updateProductStatus(String productID, long timeStamp) {
+        updateStatusCaravanProductUseCase.execute(productID,timeStamp);
+
+    }
 }

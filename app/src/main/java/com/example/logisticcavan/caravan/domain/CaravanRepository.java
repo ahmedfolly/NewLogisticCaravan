@@ -8,4 +8,5 @@ import java.util.concurrent.CompletableFuture;
 public interface CaravanRepository {
 
     CompletableFuture<List<Product>> getCaravanProducts();
+
 }

@@ -10,10 +10,9 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="@dimen/margin_large"
         android:layout_marginTop="30dp"
+        android:padding="@dimen/margin_large"
         tools:context=".getExpiredProducts.presentaion.ExpiredProductsFragment">
-
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -25,6 +24,7 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
+
             <com.google.android.material.progressindicator.CircularProgressIndicator
                 android:id="@+id/progress_bar"
                 android:layout_width="wrap_content"
@@ -37,12 +37,12 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.5" />
+
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/containerExpiredProducts"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:paddingBottom="@dimen/margin_large"
-                android:visibility="gone"
-                android:id="@+id/containerExpiredProducts"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -94,6 +94,8 @@
                     android:id="@+id/recyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:visibility="gone"
+
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -122,6 +124,15 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="3dp"
+
+            android:background="#dfdfdf"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout2"
@@ -133,10 +144,9 @@
             app:layout_constraintStart_toStartOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/containerAlert"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/containerAlert"
-                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -175,6 +185,7 @@
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerView1"
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_marginTop="@dimen/margin_large"
@@ -187,21 +198,23 @@
                     tools:listitem="@layout/item_view_alert_expiration" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+
             <TextView
                 android:id="@+id/noAlert"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="No Data"
-                android:visibility="gone"
                 android:textColor="@color/black"
                 android:textSize="16dp"
                 android:textStyle="bold"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.5" />
+
             <com.google.android.material.progressindicator.CircularProgressIndicator
                 android:id="@+id/progress_Alert"
                 android:layout_width="wrap_content"

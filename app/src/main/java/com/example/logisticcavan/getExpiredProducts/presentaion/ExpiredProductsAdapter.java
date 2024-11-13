@@ -41,8 +41,6 @@ private  ProductListener productListener;
         holder.productID.setText(product.getProductID());
         Log.e("TAG", "getExpirationData: " + product.getExpirationData());
         holder.expirationDate.setText(stringDate(product.getExpirationData()));
-
-
         updateStatus(holder, product);
 
         holder.itemView.setOnClickListener(view -> {
