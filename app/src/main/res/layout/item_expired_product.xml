@@ -35,9 +35,8 @@
             android:gravity="center"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="Removal Date"
-            tools:layout_editor_absoluteX="87dp"
-            tools:layout_editor_absoluteY="241dp" />
+            android:text="-----"
+            />
     </LinearLayout>
 
     <TextView

@@ -24,6 +24,9 @@ public class ExpiredProductsFragment extends Fragment implements  ExpiredProduct
 
     @Inject
     ExpiredProductsViewModel viewModel;
+
+    private ExpireProductsSoonAdapter expireProductsSoonAdapter;
+    private ExpiredProductsAdapter  expiredProductsAdapter;
     private FragmentExpiredProductsBinding binding;
 
     @Override
@@ -49,14 +52,32 @@ public class ExpiredProductsFragment extends Fragment implements  ExpiredProduct
                 updateUiExpiredProducts(products);
             }
             binding.progressBar.setVisibility(View.GONE);
+        }); 
+        
+        viewModel.expireSoon.observe(getViewLifecycleOwner(), products -> {
+            if (products.isEmpty()) {
+                binding.noAlert.setVisibility(View.VISIBLE);
+            } else {
+                updateUiExpireSoon(products);
+            }
+            binding.progressAlert.setVisibility(View.GONE);
         });
     }
 
-    private void updateUiExpiredProducts(List<Product> products) {
-        ExpiredProductsAdapter adapter = new ExpiredProductsAdapter(products,this);
+    private void updateUiExpiredProducts (List<Product> products) {
+        expiredProductsAdapter = new ExpiredProductsAdapter(products,this);
         binding.containerExpiredProducts.setVisibility(View.VISIBLE);
-        binding.recyclerView.setAdapter(adapter);
+        binding.recyclerView.setAdapter(expiredProductsAdapter);
+
     }
+
+
+    private void updateUiExpireSoon(List<Product> products) {
+        expireProductsSoonAdapter = new ExpireProductsSoonAdapter(products);
+        binding.containerAlert.setVisibility(View.VISIBLE);
+        binding.recyclerView1.setAdapter(expireProductsSoonAdapter);
+    }
+
 
 
     @Override

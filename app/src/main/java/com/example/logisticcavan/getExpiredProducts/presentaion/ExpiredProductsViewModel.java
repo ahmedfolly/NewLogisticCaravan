@@ -21,9 +21,11 @@ public
 class ExpiredProductsViewModel extends ViewModel {
     private GetCaravanProductsUseCase getCaravanProductsUseCase;
 
-    private MutableLiveData<List<Product>> _expiredProducts = new MutableLiveData<List<Product>>();
+    private MutableLiveData<List<Product>> _expiredProducts = new MutableLiveData<>();
     LiveData<List<Product>> expiredProducts = _expiredProducts;
 
+    private MutableLiveData<List<Product>> _expireSoon = new MutableLiveData<>();
+    LiveData<List<Product>> expireSoon = _expireSoon;
 
     @Inject
     public  ExpiredProductsViewModel(GetCaravanProductsUseCase getCaravanProductsUseCase) {
@@ -36,7 +38,7 @@ class ExpiredProductsViewModel extends ViewModel {
 
                 .thenAccept(products -> {
                    getExpiredProducts(products);
-                   getWhatWillExpiredSoon(products);
+                   getWhatWillExpireSoon(products);
 
                 })
 
@@ -50,16 +52,44 @@ class ExpiredProductsViewModel extends ViewModel {
 
     }
 
-    private void getWhatWillExpiredSoon(List<Product> products) {
+    private void getWhatWillExpireSoon(List<Product> products) {
+        Log.e("TAG", "getWhatWillExpireSoon: ");
         List<Product> filteredProducts = products;
-
+        filteredProducts = filteredProducts.stream().filter(this::willExpireSoon).collect(Collectors.toList());
+        Log.e("TAG", "getWhatWillExpireSoon: " + filteredProducts.size());
+        _expireSoon.setValue(filteredProducts);
     }
 
     private void getExpiredProducts(List<Product> products) {
+        Log.e("TAG", "getExpiredProducts: ");
+
         List<Product> filteredProducts = products;
         filteredProducts = filteredProducts.stream().filter( product -> product.getExpirationData() <= System.currentTimeMillis()).collect(Collectors.toList());
         Log.e("TAG", "getExpiredProducts: " + filteredProducts.size());
         _expiredProducts.setValue(filteredProducts);
+    }
+
+    private boolean willExpireSoon(Product product) {
+        long currentTime = System.currentTimeMillis();
+        long oneDayInMillis = 24 * 60 * 60 * 1000;
+
+        long afterTomorr = currentTime + (oneDayInMillis * 2);
+
+        long fivee = currentTime + (oneDayInMillis * 5);
+        Log.e("TAG", "currentTime: " + currentTime);
+        Log.e("TAG", "afterTomorr: " + afterTomorr);
+        Log.e("TAG", "fivee: " + fivee);
+        Log.e("TAG", "oneDayInMillis: " + oneDayInMillis);
+        long expirationDate = product.getExpirationData();
+
+        long rangeStart = expirationDate - oneDayInMillis ;
+//        Log.e("TAG", "rangeStart: " + rangeStart);
+
+        long rangeEnd = expirationDate - (5 * oneDayInMillis) ;
+//        Log.e("TAG", "rangeEnd: " + rangeEnd);
+
+        return currentTime >= rangeStart && currentTime <= rangeEnd;
+
     }
 
 }

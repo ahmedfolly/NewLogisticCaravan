@@ -1,5 +1,6 @@
 package com.example.logisticcavan.getExpiredProducts.presentaion;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,25 +39,28 @@ private  ProductListener productListener;
     public void onBindViewHolder(@NonNull ExpiredProductsAdapter.ProductsVH holder, int position) {
         Product product = products.get(position);
         holder.productID.setText(product.getProductID());
+        Log.e("TAG", "getExpirationData: " + product.getExpirationData());
         holder.expirationDate.setText(stringDate(product.getExpirationData()));
 
 
         updateStatus(holder, product);
-        holder.removalDate.setText(stringDate(product.getRemovalDate()));
 
         holder.itemView.setOnClickListener(view -> {
             productListener.onProductClick(product);
         });
     }
 
-    private static void updateStatus(@NonNull ProductsVH holder, Product product) {
-        if (product.getRemovalDate().equals(0)){
+    private void updateStatus(@NonNull ProductsVH holder, Product product) {
+        if (product.getRemovalDate() == 0L){
             holder.status.setText("Status: Product is still on shelf");
-
+            Log.e("TAG","updateStatus: Product is still on shelf" );
         }else {
+            Log.e("TAG","Status: Product has been removed" );
+            holder.removalDate.setText(stringDate(product.getRemovalDate()));
             holder.itemView.setEnabled(false);
             holder.status.setText("Status: Product has been removed");
         }
+
     }
 
     @Override
