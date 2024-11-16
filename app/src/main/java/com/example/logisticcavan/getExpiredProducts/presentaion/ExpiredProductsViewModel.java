@@ -16,6 +16,7 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
@@ -123,7 +124,12 @@ class ExpiredProductsViewModel extends ViewModel {
 
 
     public void updateProductStatus(String productID, long timeStamp) {
-        updateStatusCaravanProductUseCase.execute(productID,timeStamp);
-
+        CompletableFuture<Void> future = updateStatusCaravanProductUseCase.execute(productID,timeStamp);
+        future.thenAccept(sd -> {
+            getCaravanProducts();
+        }).exceptionally( df ->{
+            getCaravanProducts();
+            return null;
+        });
     }
 }

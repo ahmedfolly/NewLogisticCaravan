@@ -55,7 +55,7 @@ private  ProductListener productListener;
         }else {
             Log.e("TAG","Status: Product has been removed" );
             holder.removalDate.setText(stringDate(product.getRemovalDate()));
-            holder.itemView.setEnabled(false);
+//            holder.itemView.setEnabled(false);
             holder.status.setText("Status: Product has been removed");
         }
 
