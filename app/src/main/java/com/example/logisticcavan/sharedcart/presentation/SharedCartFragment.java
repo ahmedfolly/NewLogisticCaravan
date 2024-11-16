@@ -37,7 +37,7 @@ import java.util.regex.Pattern;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class SharedCartFragment extends Fragment {
+public class SharedCartFragment extends Fragment implements SharedCartItemsAdapter.DeleteBtnListener {
 
     private SharedCartItemsAdapter sharedCartItemsAdapter;
     private GetSharedProductsViewModel getSharedProductsViewModel;
@@ -45,6 +45,7 @@ public class SharedCartFragment extends Fragment {
     private GetSharedCartViewModel getSharedCartViewModel;
     private AuthViewModel authViewModel;
 
+    private DeleteSharedCartViewModel deleteSharedCartViewModel;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,7 +54,8 @@ public class SharedCartFragment extends Fragment {
         addUserEmailViewModel = new ViewModelProvider(this).get(AddNewUserEmailToSharedCartViewModel.class);
         authViewModel = new ViewModelProvider(this).get(AuthViewModel.class);
         getSharedCartViewModel = new ViewModelProvider(this).get(GetSharedCartViewModel.class);
-        sharedCartItemsAdapter = new SharedCartItemsAdapter(authViewModel, getSharedCartViewModel);
+        deleteSharedCartViewModel = new ViewModelProvider(this).get(DeleteSharedCartViewModel.class);
+        sharedCartItemsAdapter = new SharedCartItemsAdapter(authViewModel, getSharedCartViewModel,this);
     }
 
     @Override
@@ -114,7 +116,7 @@ public class SharedCartFragment extends Fragment {
                                 Log.d("TAG", "Product ID: " + product.getProductID());
                             }
                             for (SharedProduct sharedProduct : sharedProducts) {
-                                Log.d("TAG", "SharedProduct ID: " + sharedProduct.getProductId());
+                                Log.d("TAG", "SharedProduct ID: " + sharedProduct);
                             }
                             for (int i = 0; i < products.size(); i++) {
                                 Product product = products.get(i);
@@ -181,5 +183,21 @@ public class SharedCartFragment extends Fragment {
 
     private String getUserEmail() {
         return authViewModel.getUserInfoLocally().getEmail();
+    }
+
+    @Override
+    public void onDeleteBtnClicked(String productId) {
+        Log.d("TAG", "onDeleteBtnClicked: "+productId);
+        deleteSharedCartViewModel.deleteSharedCartProduct(productId, new DeleteSharedCartViewModel.DeleteSharedProductCallback() {
+            @Override
+            public void onSuccess(String message) {
+                Toast.makeText(requireContext(),message,Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onError(String message) {
+
+            }
+        });
     }
 }

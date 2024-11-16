@@ -26,11 +26,14 @@ import java.util.Objects;
 public class SharedCartItemsAdapter extends ListAdapter<SharedCartItem,SharedCartItemsAdapter.ViewHolder> {
     private final AuthViewModel authViewModel;
     private final GetSharedCartViewModel getSharedCartViewModel;
+    private final DeleteBtnListener deleteBtnListener;
     public SharedCartItemsAdapter(AuthViewModel authViewModel,
-                                  GetSharedCartViewModel getSharedCartViewModel) {
+                                  GetSharedCartViewModel getSharedCartViewModel,
+                                  DeleteBtnListener deleteBtnListener) {
         super(new SharedCartItemsDiffUtil());
         this.authViewModel = authViewModel;
         this.getSharedCartViewModel = getSharedCartViewModel;
+        this.deleteBtnListener = deleteBtnListener;
     }
 
     @NonNull
@@ -50,6 +53,7 @@ public class SharedCartItemsAdapter extends ListAdapter<SharedCartItem,SharedCar
         holder.sharedProductOwner.setText("");
         holder.sharedProductQuantity.setText("");
 
+
         if (product.getProduct() != null) {
             holder.sharedProductName.setText(product.getProduct().getProductName());
             Glide.with(holder.itemView.getContext())
@@ -59,14 +63,13 @@ public class SharedCartItemsAdapter extends ListAdapter<SharedCartItem,SharedCar
 
         // Bind shared product details
         if (product.getSharedProduct() != null) {
-            Log.d("TAG", "onBindViewHolder: "+product.getSharedProduct().getQuantity());
-
             String ownerText = "Added by: " + product.getSharedProduct().getAddedBy();
             if (Objects.equals(getUserName(),product.getSharedProduct().getAddedBy())) {
                 ownerText = "Added by: You";
             }
             holder.sharedProductOwner.setText(ownerText);
             holder.sharedProductQuantity.setText(String.valueOf(product.getSharedProduct().getQuantity()));
+            deleteProduct(holder,product);
         }
         showEditOrderBox(holder.itemView);
         increaseOrderItemQuantity(holder.increaseOrderQuantityBtn, holder.sharedProductQuantity, product.getSharedProduct());
@@ -74,6 +77,12 @@ public class SharedCartItemsAdapter extends ListAdapter<SharedCartItem,SharedCar
 
 //        DetectQuantityUtil.increaseOrderItemQuantity("", null, holder.increaseOrderQuantityBtn,null, holder.sharedProductQuantity, 0.0);
 //        DetectQuantityUtil.decreaseOrderItemQuantity("", null, holder.decreaseOrderQuantityBtn, null, holder.sharedProductQuantity, 0.0);
+    }
+    private void deleteProduct(ViewHolder holder,SharedCartItem product){
+        holder.itemView.setOnClickListener(v->{
+            String sharedCartProductId = product.getSharedProduct().getSharedProductId();
+            deleteBtnListener.onDeleteBtnClicked(sharedCartProductId);
+        });
     }
     public void increaseOrderItemQuantity(ImageButton increaseOrderQuantityBtn,
                                           TextView orderQuantity,
@@ -155,5 +164,8 @@ public class SharedCartItemsAdapter extends ListAdapter<SharedCartItem,SharedCar
             // Add any other fields you want to track here, e.g., price, owner, etc.
 //
         }
+    }
+    public interface DeleteBtnListener{
+        void onDeleteBtnClicked(String productId);
     }
 }

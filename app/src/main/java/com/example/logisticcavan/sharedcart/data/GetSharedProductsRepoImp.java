@@ -10,6 +10,7 @@ import com.example.logisticcavan.sharedcart.domain.repo.GetSharedProductsRepo;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -65,21 +66,25 @@ public class GetSharedProductsRepoImp implements GetSharedProductsRepo {
                 emitter.onError(new Exception("Error fetching product IDs"));
                 return;
             }
-            List<SharedProduct> sharedProducts = snapshot.toObjects(SharedProduct.class);
-            for (SharedProduct sharedProduct:sharedProducts){
-                Log.d("TAG", "getSharedProductsIds: "+sharedProduct.getAddedBy());
-                Log.d("TAG", "getSharedProductsIds: "+sharedProduct.getProductId());
-                Log.d("TAG", "getSharedProductsIds: "+sharedProduct.getQuantity());
-            }
-            sharedProductWithSharedCart.setSharedProducts(sharedProducts);
+//            List<SharedProduct> sharedProducts = snapshot.toObjects(SharedProduct.class);
+            List<SharedProduct> sharedProducts = new ArrayList<>();
+//            for (SharedProduct sharedProduct:sharedProducts){
+//                Log.d("TAG", "getSharedProductsIds: "+sharedProduct.getAddedBy());
+//                Log.d("TAG", "getSharedProductsIds: "+sharedProduct.getProductId());
+//                Log.d("TAG", "getSharedProductsIds: "+sharedProduct.getQuantity());
+//            }
+
             List<String> productIds = new ArrayList<>();
             for (QueryDocumentSnapshot doc : snapshot) {
+                SharedProduct sharedProduct = doc.toObject(SharedProduct.class);
+                sharedProduct.setSharedProductId(doc.getId());
+                sharedProducts.add(sharedProduct);
                 String productId = doc.getString("productId");
                 if (productId != null) {
                     productIds.add(productId);
                 }
             }
-
+            sharedProductWithSharedCart.setSharedProducts(sharedProducts);
             if (!productIds.isEmpty()) {
                 getProductsById(productIds, sharedProductWithSharedCart, sharedCartList, emitter);
             }
