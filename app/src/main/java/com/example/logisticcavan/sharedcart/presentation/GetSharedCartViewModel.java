@@ -19,7 +19,7 @@ public class GetSharedCartViewModel extends ViewModel {
     public GetSharedCartViewModel(GetSharedCartUseCase getSharedCartUseCase) {
         this.getSharedCartUseCase = getSharedCartUseCase;
     }
-    public void GetSharedCart(SharedCartCallback sharedCartCallback){
+    public void getSharedCart(SharedCartCallback sharedCartCallback){
         compositeDisposable.add(getSharedCartUseCase.getSharedCart().subscribe(
                 sharedCartCallback::onSuccess,
                 error-> sharedCartCallback.onError(error.getMessage())

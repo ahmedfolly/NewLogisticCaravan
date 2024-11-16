@@ -68,6 +68,8 @@ public class GetSharedProductsRepoImp implements GetSharedProductsRepo {
             List<SharedProduct> sharedProducts = snapshot.toObjects(SharedProduct.class);
             for (SharedProduct sharedProduct:sharedProducts){
                 Log.d("TAG", "getSharedProductsIds: "+sharedProduct.getAddedBy());
+                Log.d("TAG", "getSharedProductsIds: "+sharedProduct.getProductId());
+                Log.d("TAG", "getSharedProductsIds: "+sharedProduct.getQuantity());
             }
             sharedProductWithSharedCart.setSharedProducts(sharedProducts);
             List<String> productIds = new ArrayList<>();

@@ -17,15 +17,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.logisticcavan.R;
 import com.example.logisticcavan.auth.presentation.AuthViewModel;
-import com.example.logisticcavan.cart.domain.models.CartItem;
-import com.example.logisticcavan.cart.presentaion.DetectQuantityUtil;
 import com.example.logisticcavan.sharedcart.domain.model.SharedCart;
 import com.example.logisticcavan.sharedcart.domain.model.SharedCartItem;
 import com.example.logisticcavan.sharedcart.domain.model.SharedProduct;
 
 import java.util.Objects;
-
-import javax.annotation.Nullable;
 
 public class SharedCartItemsAdapter extends ListAdapter<SharedCartItem,SharedCartItemsAdapter.ViewHolder> {
     private final AuthViewModel authViewModel;
@@ -49,18 +45,28 @@ public class SharedCartItemsAdapter extends ListAdapter<SharedCartItem,SharedCar
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         SharedCartItem product = getItem(position);
+        // Reset views to avoid leftover data from the previous item
+        holder.sharedProductName.setText("");
+        holder.sharedProductOwner.setText("");
+        holder.sharedProductQuantity.setText("");
+
         if (product.getProduct() != null) {
             holder.sharedProductName.setText(product.getProduct().getProductName());
             Glide.with(holder.itemView.getContext())
                     .load(product.getProduct().getProductImageLink())
                     .into(holder.sharedProductImage);
         }
+
+        // Bind shared product details
         if (product.getSharedProduct() != null) {
-            holder.sharedProductOwner.setText("Added by: "+product.getSharedProduct().getAddedBy());
+            Log.d("TAG", "onBindViewHolder: "+product.getSharedProduct().getQuantity());
+
+            String ownerText = "Added by: " + product.getSharedProduct().getAddedBy();
+            if (Objects.equals(getUserName(),product.getSharedProduct().getAddedBy())) {
+                ownerText = "Added by: You";
+            }
+            holder.sharedProductOwner.setText(ownerText);
             holder.sharedProductQuantity.setText(String.valueOf(product.getSharedProduct().getQuantity()));
-        }
-        if (Objects.equals(getUserName(), product.getSharedProduct().getAddedBy())){
-            holder.sharedProductOwner.setText("Added by: You");
         }
         showEditOrderBox(holder.itemView);
         increaseOrderItemQuantity(holder.increaseOrderQuantityBtn, holder.sharedProductQuantity, product.getSharedProduct());
@@ -94,7 +100,7 @@ public class SharedCartItemsAdapter extends ListAdapter<SharedCartItem,SharedCar
     }
     private void showEditOrderBox(View view){
         View editOrderBox = view.findViewById(R.id.edit_shared_order_box);
-        getSharedCartViewModel.GetSharedCart(new GetSharedCartViewModel.SharedCartCallback() {
+        getSharedCartViewModel.getSharedCart(new GetSharedCartViewModel.SharedCartCallback() {
             @Override
             public void onSuccess(SharedCart sharedCart) {
                 String adminEmail = sharedCart.getAdminId();
@@ -136,12 +142,18 @@ public class SharedCartItemsAdapter extends ListAdapter<SharedCartItem,SharedCar
 
         @Override
         public boolean areItemsTheSame(@NonNull SharedCartItem oldItem, @NonNull SharedCartItem newItem) {
-            return oldItem.getProduct().getProductID().equals(newItem.getProduct().getProductID());
+            return oldItem.getProduct().getProductName().equals(newItem.getProduct().getProductName());
         }
 
         @Override
         public boolean areContentsTheSame(@NonNull SharedCartItem oldItem, @NonNull SharedCartItem newItem) {
-            return oldItem == newItem;
+            // Check for content changes (e.g., quantity, productName, etc.)
+            if (!oldItem.getProduct().getProductID().equals(newItem.getProduct().getProductID())) {
+                return false; // If product names are different, contents have changed
+            }
+            return oldItem.getSharedProduct().getQuantity() == newItem.getSharedProduct().getQuantity(); // If quantity is different, contents have changed
+            // Add any other fields you want to track here, e.g., price, owner, etc.
+//
         }
     }
 }

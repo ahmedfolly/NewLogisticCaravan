@@ -20,7 +20,6 @@ import android.widget.Toast;
 
 import com.example.logisticcavan.R;
 import com.example.logisticcavan.auth.presentation.AuthViewModel;
-import com.example.logisticcavan.common.utils.Constant;
 import com.example.logisticcavan.products.getproducts.domain.Product;
 import com.example.logisticcavan.sharedcart.domain.model.SharedCart;
 import com.example.logisticcavan.sharedcart.domain.model.SharedCartItem;
@@ -40,12 +39,11 @@ import dagger.hilt.android.AndroidEntryPoint;
 @AndroidEntryPoint
 public class SharedCartFragment extends Fragment {
 
-    private RecyclerView sharedItemsContainer;
     private SharedCartItemsAdapter sharedCartItemsAdapter;
     private GetSharedProductsViewModel getSharedProductsViewModel;
     private AddNewUserEmailToSharedCartViewModel addUserEmailViewModel;
-    private AuthViewModel authViewModel;
     private GetSharedCartViewModel getSharedCartViewModel;
+    private AuthViewModel authViewModel;
 
 
     @Override
@@ -55,7 +53,7 @@ public class SharedCartFragment extends Fragment {
         addUserEmailViewModel = new ViewModelProvider(this).get(AddNewUserEmailToSharedCartViewModel.class);
         authViewModel = new ViewModelProvider(this).get(AuthViewModel.class);
         getSharedCartViewModel = new ViewModelProvider(this).get(GetSharedCartViewModel.class);
-        sharedCartItemsAdapter = new SharedCartItemsAdapter(authViewModel,getSharedCartViewModel);
+        sharedCartItemsAdapter = new SharedCartItemsAdapter(authViewModel, getSharedCartViewModel);
     }
 
     @Override
@@ -68,31 +66,63 @@ public class SharedCartFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        TextInputEditText userEmailPicker = view.findViewById(R.id.user_email_picker);
         getSharedItems();
         MaterialButton addUserEmailButton = view.findViewById(R.id.add_user_to_shared_cart);
-        addUserEmailButton.setOnClickListener(v -> addUserEmail());
+        addUserEmailButton.setOnClickListener(v -> addUserEmail(userEmailPicker));
+        doOnNotAdminUser(userEmailPicker, addUserEmailButton);
+    }
+
+    private void doOnNotAdminUser(TextInputEditText userEmailPicker, MaterialButton addUserEmailButton) {
+        getSharedCartViewModel.getSharedCart(new GetSharedCartViewModel.SharedCartCallback() {
+            @Override
+            public void onSuccess(SharedCart sharedCart) {
+                String adminId = sharedCart.getAdminId();
+                if (!adminId.equals(getUserEmail())) {
+                    userEmailPicker.setVisibility(View.GONE);
+                    addUserEmailButton.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+
+            }
+        });
     }
 
     private void getSharedItems() {
         getSharedProductsViewModel.fetchSharedProducts();
         getSharedProductsViewModel.getSharedProductsLiveData().observe(getViewLifecycleOwner(), myResult -> {
             List<SharedCartItem> sharedCartItems = new ArrayList<>();
-
             myResult.handle(
                     sharedProductsWithProducts -> {
-                        Log.d("TAG", "getSharedItems: "+sharedProductsWithProducts.size());
                         for (SharedProductWithSharedCart sharedProductWithSharedCart : sharedProductsWithProducts) {
                             List<Product> products = sharedProductWithSharedCart.getProducts();
                             List<SharedProduct> sharedProducts = sharedProductWithSharedCart.getSharedProducts();
-
+                            Log.d("TAG", "Products size: " + products.size() + ", SharedProducts size: " + sharedProducts.size());
                             // Assuming that each "shared cart" will have the same products and shared products together
-                            for (int i = 0; i < Math.max(products.size(), sharedProducts.size()); i++) {
-                                // Get the product and shared product by index
-                                Product product = i < products.size() ? products.get(i) : null;
-                                SharedProduct sharedProduct = i < sharedProducts.size() ? sharedProducts.get(i) : null;
+//                            for (int i = 0; i < Math.max(products.size(), sharedProducts.size()); i++) {
+//                                // Get the product and shared product by index
+//                                Product product = i < products.size() ? products.get(i) : null;
+//                                SharedProduct sharedProduct = i < sharedProducts.size() ? sharedProducts.get(i) : null;
+//
+//                                // Add the combined item to the list
+//                                sharedCartItems.add(new SharedCartItem(product, sharedProduct));
+//                            }
+                            for (Product product : products) {
+                                Log.d("TAG", "Product ID: " + product.getProductID());
+                            }
+                            for (SharedProduct sharedProduct : sharedProducts) {
+                                Log.d("TAG", "SharedProduct ID: " + sharedProduct.getProductId());
+                            }
+                            for (int i = 0; i < products.size(); i++) {
+                                Product product = products.get(i);
+                                SharedProduct sharedProduct = findSharedProductByProductId(sharedProducts, product.getProductID());
 
-                                // Add the combined item to the list
-                                sharedCartItems.add(new SharedCartItem(product, sharedProduct));
+                                if (sharedProduct != null) {
+                                    sharedCartItems.add(new SharedCartItem(product, sharedProduct));
+                                }
                             }
                         }
                         sharedCartItemsAdapter.submitList(sharedCartItems);
@@ -105,26 +135,37 @@ public class SharedCartFragment extends Fragment {
             );
         });
     }
+
+    private SharedProduct findSharedProductByProductId(List<SharedProduct> sharedProducts, String productId) {
+        for (SharedProduct sharedProduct : sharedProducts) {
+            if (sharedProduct.getProductId().equals(productId)) {
+                return sharedProduct;
+            }
+        }
+        return null;  // Return null if no match is found
+    }
+
     private void setupRecyclerView() {
-        sharedItemsContainer = requireView().findViewById(R.id.shared_items_container);
+        RecyclerView sharedItemsContainer = requireView().findViewById(R.id.shared_items_container);
         sharedItemsContainer.setHasFixedSize(true);
         sharedItemsContainer.setLayoutManager(new LinearLayoutManager(requireContext()));
         sharedItemsContainer.setAdapter(sharedCartItemsAdapter);
     }
-    private void addUserEmail(){
-        TextInputEditText userEmailPicker = requireView().findViewById(R.id.user_email_picker);
+
+    private void addUserEmail(TextInputEditText userEmailPicker) {
         String userEmail = Objects.requireNonNull(userEmailPicker.getText()).toString();
-        if (!TextUtils.isEmpty(userEmail)){
-            if (isValidEmail(userEmail)){
+        if (!TextUtils.isEmpty(userEmail)) {
+            if (isValidEmail(userEmail)) {
                 //here add user email to shared cart
                 addUserEmailViewModel.addUserToSharedCart(userEmail, result -> Toast.makeText(requireContext(), result, Toast.LENGTH_SHORT).show());
-            }else {
+            } else {
                 userEmailPicker.setError("Please enter a valid email");
             }
-        }else {
+        } else {
             userEmailPicker.setError("Please enter a valid email");
         }
     }
+
     public static boolean isValidEmail(String email) {
         if (email == null) {
             return false;
@@ -136,5 +177,9 @@ public class SharedCartFragment extends Fragment {
 
         // Return whether the email matches the regex pattern
         return matcher.matches();
+    }
+
+    private String getUserEmail() {
+        return authViewModel.getUserInfoLocally().getEmail();
     }
 }

@@ -21,10 +21,6 @@ public class Product implements Parcelable {
     private Long removalDate = 0L;
     private String statusExpiration = "";
 
-
-
-
-
     public Product() {
     }
 

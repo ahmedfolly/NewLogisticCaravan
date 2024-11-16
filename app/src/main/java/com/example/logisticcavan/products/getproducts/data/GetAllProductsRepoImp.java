@@ -35,7 +35,7 @@ public class GetAllProductsRepoImp implements GetProductsRepo {
                         } else {
                             assert value != null;
                             List<Product> products = value.toObjects(Product.class);
-                            setProductId(products, value);
+//                            setProductId(products, value);
                             emitter.onNext(MyResult.success(products));
                             Log.d("TAG", "getAllProducts: " + products.size());
                         }
@@ -70,17 +70,17 @@ public class GetAllProductsRepoImp implements GetProductsRepo {
         });
     }
 
-    private void setProductId(List<Product> products, QuerySnapshot value) {
-        List<DocumentSnapshot> documents = value.getDocuments();
-        if (products.size() == documents.size()) {
-            for (int i = 0; i < products.size(); i++) {
-                Product product = products.get(i);
-                String documentId = documents.get(i).getId();
-                Log.d("TAG", "setProductId: " + documentId);
-                product.setProductID(documentId);
-            }
-        } else {
-            Log.e("TAG", "Mismatch between products and document IDs: " + products.size() + " vs " + documents.size());
-        }
-    }
+//    private void setProductId(List<Product> products, QuerySnapshot value) {
+//        List<DocumentSnapshot> documents = value.getDocuments();
+//        if (products.size() == documents.size()) {
+//            for (int i = 0; i < products.size(); i++) {
+//                Product product = products.get(i);
+//                String documentId = documents.get(i).getId();
+//                Log.d("TAG", "setProductId: " + documentId);
+//                product.setProductID(documentId);
+//            }
+//        } else {
+//            Log.e("TAG", "Mismatch between products and document IDs: " + products.size() + " vs " + documents.size());
+//        }
+//    }
 }
