@@ -40,7 +40,9 @@ public class DetectQuantityUtil {
     }
     public static void calculateTotalPrice(TextView totalPriceTxt, int quantity, double price) {
         double totalPrice = quantity * price;
-        totalPriceTxt.setText(String.valueOf(totalPrice));
+        if (totalPriceTxt!=null){
+            totalPriceTxt.setText(String.valueOf(totalPrice));
+        }
     }
 //    public void updateQuantity(int id, int quantity){
 //        updateCartItemCallback.updateCartItem(id,quantity);

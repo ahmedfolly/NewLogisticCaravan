@@ -25,6 +25,9 @@
         <action
             android:id="@+id/action_homeFragment_to_caravanFragment"
             app:destination="@id/caravanFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_sharedCartFragment"
+            app:destination="@id/sharedCartFragment" />
 
 
     </fragment>
@@ -207,6 +210,11 @@
         android:name="com.example.logisticcavan.caravan.presentation.CaravanFragment"
         android:label="fragment_caravan"
         tools:layout="@layout/fragment_caravan" />
+    <fragment
+        android:id="@+id/sharedCartFragment"
+        android:name="com.example.logisticcavan.sharedcart.presentation.SharedCartFragment"
+        android:label="fragment_shared_cart"
+        tools:layout="@layout/fragment_shared_cart" />
 
 
 </navigation>

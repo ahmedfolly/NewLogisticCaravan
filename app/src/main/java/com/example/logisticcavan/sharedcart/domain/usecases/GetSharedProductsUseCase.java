@@ -14,7 +14,7 @@ public class GetSharedProductsUseCase {
         this.getSharedProductsRepo = getSharedProductsRepo;
     }
 
-    public Observable<MyResult<SharedProductWithSharedCart>> getSharedProducts() {
+    public Observable<MyResult<List<SharedProductWithSharedCart>>> getSharedProducts() {
         return getSharedProductsRepo.getSharedProducts();
     }
 }

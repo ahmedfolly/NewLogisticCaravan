@@ -6,6 +6,7 @@ import com.example.logisticcavan.common.utils.MyResult;
 import com.example.logisticcavan.products.getproducts.domain.GetProductsRepo;
 import com.example.logisticcavan.products.getproducts.domain.Product;
 import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -34,7 +35,6 @@ public class GetAllProductsRepoImp implements GetProductsRepo {
                         } else {
                             assert value != null;
                             List<Product> products = value.toObjects(Product.class);
-
                             setProductId(products, value);
                             emitter.onNext(MyResult.success(products));
                             Log.d("TAG", "getAllProducts: " + products.size());
@@ -71,10 +71,16 @@ public class GetAllProductsRepoImp implements GetProductsRepo {
     }
 
     private void setProductId(List<Product> products, QuerySnapshot value) {
-        for (int i = 0; i < products.size(); i++) {
-            Product product = products.get(i);
-            String documentId = value.getDocumentChanges().get(i).getDocument().getId();
-            product.setProductID(documentId);
+        List<DocumentSnapshot> documents = value.getDocuments();
+        if (products.size() == documents.size()) {
+            for (int i = 0; i < products.size(); i++) {
+                Product product = products.get(i);
+                String documentId = documents.get(i).getId();
+                Log.d("TAG", "setProductId: " + documentId);
+                product.setProductID(documentId);
+            }
+        } else {
+            Log.e("TAG", "Mismatch between products and document IDs: " + products.size() + " vs " + documents.size());
         }
     }
 }

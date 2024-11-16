@@ -2,6 +2,7 @@ package com.example.logisticcavan;
 
 import static androidx.navigation.fragment.FragmentKt.findNavController;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.os.Bundle;
 
@@ -229,6 +230,7 @@ AddOrderBottomSheet.AddToSharedCartCallback{
         });
     }
 
+    @SuppressLint("SetTextI18n")
     private void setupWarningDialog(CartItem cartItem) {
         String restaurantName = args.getRestaurant().getRestaurantName();
         Dialog dialog = new Dialog(requireContext());
@@ -291,8 +293,8 @@ AddOrderBottomSheet.AddToSharedCartCallback{
         sharedProduct.setQuantity(quantity);
         addToSharedCartViewModel.addToSharedCart(sharedProduct, new AddToSharedCartViewModel.AddToSharedCartCallback() {
             @Override
-            public void onSuccess(MyResult<Boolean> result) {
-                Log.d("TAG", "product added to shared cart ");
+            public void onSuccess(String result) {
+               Toast.makeText(requireContext(),result,Toast.LENGTH_SHORT).show();
             }
 
             @Override

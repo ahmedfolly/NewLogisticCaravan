@@ -31,7 +31,7 @@ public class GetSharedProductsRepoImp implements GetSharedProductsRepo {
     }
 
     @Override
-    public Observable<MyResult<SharedProductWithSharedCart>> getSharedProducts() {
+    public Observable<MyResult<List<SharedProductWithSharedCart>>> getSharedProducts() {
         return Observable.create(emitter -> {
             emitter.onNext(MyResult.loading());
             firebaseFirestore.collection("SharedCart")
@@ -42,27 +42,33 @@ public class GetSharedProductsRepoImp implements GetSharedProductsRepo {
                             return;
                         }
 
+                        List<SharedProductWithSharedCart> sharedCartList = new ArrayList<>();
+
                         for (DocumentChange doc : snapshot.getDocumentChanges()) {
                             String sharedCartId = doc.getDocument().getId();
-                            Log.d("TAG", "getSharedProducts: "+sharedCartId);
-                            getSharedProductsIds(sharedCartId, emitter);
+                            Log.d("TAG", "getSharedProducts: " + sharedCartId);
+                            // Fetch shared products for each shared cart
+                            getSharedProductsIds(sharedCartId, sharedCartList, emitter);
                         }
                     });
         });
     }
 
-    private void getSharedProductsIds(String sharedCartId,Emitter<MyResult<SharedProductWithSharedCart>> emitter) {
+    private void getSharedProductsIds(String sharedCartId,
+                                      List<SharedProductWithSharedCart> sharedCartList,
+                                      Emitter<MyResult<List<SharedProductWithSharedCart>>> emitter) {
         SharedProductWithSharedCart sharedProductWithSharedCart = new SharedProductWithSharedCart();
-
         DocumentReference cartRef = firebaseFirestore.collection("SharedCart").document(sharedCartId);
 
-        // Listener for product IDs in the Products subcollection of SharedCart
         cartRef.collection("SharedProducts").addSnapshotListener((snapshot, error) -> {
             if (error != null || snapshot == null) {
                 emitter.onError(new Exception("Error fetching product IDs"));
                 return;
             }
             List<SharedProduct> sharedProducts = snapshot.toObjects(SharedProduct.class);
+            for (SharedProduct sharedProduct:sharedProducts){
+                Log.d("TAG", "getSharedProductsIds: "+sharedProduct.getAddedBy());
+            }
             sharedProductWithSharedCart.setSharedProducts(sharedProducts);
             List<String> productIds = new ArrayList<>();
             for (QueryDocumentSnapshot doc : snapshot) {
@@ -73,12 +79,16 @@ public class GetSharedProductsRepoImp implements GetSharedProductsRepo {
             }
 
             if (!productIds.isEmpty()) {
-                getProductsById(productIds, sharedProductWithSharedCart, emitter);
+                getProductsById(productIds, sharedProductWithSharedCart, sharedCartList, emitter);
             }
         });
     }
 
-    private void getProductsById(List<String> productIds, SharedProductWithSharedCart sharedProductWithSharedCart, Emitter<MyResult<SharedProductWithSharedCart>> emitter) {
+    private void getProductsById(List<String> productIds,
+                                 SharedProductWithSharedCart sharedProductWithSharedCart,
+                                 List<SharedProductWithSharedCart> sharedCartList,
+                                 Emitter<MyResult<List<SharedProductWithSharedCart>>> emitter)
+    {
         firebaseFirestore.collection("Products")
                 .whereIn(FieldPath.documentId(), productIds)
                 .addSnapshotListener((snapshot, error) -> {
@@ -86,12 +96,23 @@ public class GetSharedProductsRepoImp implements GetSharedProductsRepo {
                         emitter.onError(new Exception("Error fetching product details"));
                         return;
                     }
-
                     List<Product> products = snapshot.toObjects(Product.class);
-                    sharedProductWithSharedCart.setProducts(products); // Assuming setProducts is a list setter
+                    for (Product product : products) {
+                        Log.d("TAG", "getProductsById: "+product.getProductName());
+                    }
+                    sharedProductWithSharedCart.setProducts(products);
 
-                    // Emit the updated data
-                    emitter.onNext(MyResult.success(sharedProductWithSharedCart));
+                    // Add the completed SharedProductWithSharedCart to the list only if it's not already present
+                    if (!sharedCartList.contains(sharedProductWithSharedCart)) {
+                        sharedCartList.add(sharedProductWithSharedCart);
+                    }
+                    for (SharedProductWithSharedCart sharedProductWithSharedCart1 :sharedCartList){
+                        for (Product product :sharedProductWithSharedCart1.getProducts()){
+                            Log.d("TAG", "getProductsById: "+product.getProductName());
+                        }
+                    }
+                    // Emit the entire list
+                    emitter.onNext(MyResult.success(new ArrayList<>(sharedCartList)));
                 });
     }
 
