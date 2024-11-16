@@ -144,6 +144,7 @@ public class HomeFragment extends BaseFragment implements CategoriesAdapter.OnIt
             });
         }
         getRecommendedProducts();
+        openSharedCartScreen();
     }
 
     private void getCategories(View view) {
@@ -357,6 +358,13 @@ public class HomeFragment extends BaseFragment implements CategoriesAdapter.OnIt
         snackbarView.setElevation(8);
         snackbarView.setLayoutParams(params);
         snackbar.show();
+    }
+    private void openSharedCartScreen(){
+       ImageView openSharedCart = requireView().findViewById(R.id.open_shared_cart);
+       openSharedCart.setOnClickListener(v->{
+           navController = Navigation.findNavController(v);
+           navController.navigate(R.id.action_homeFragment_to_sharedCartFragment);
+       });
     }
 
 

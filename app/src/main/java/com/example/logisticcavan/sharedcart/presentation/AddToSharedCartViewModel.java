@@ -23,12 +23,16 @@ public class AddToSharedCartViewModel extends ViewModel {
     }
     public void addToSharedCart( SharedProduct sharedProduct, AddToSharedCartCallback callback) {
         compositeDisposable.add(addToSharedCartUseCase.addToSharedCart(sharedProduct).subscribe(
-                callback::onSuccess,
+               result->{result.handle(
+                       callback::onSuccess,
+                       callback::onError,
+                       ()->{}
+               );},
                 callback::onError
         ));
     }
     public interface AddToSharedCartCallback{
-        void onSuccess(MyResult<Boolean> result);
+        void onSuccess(String result);
         void onError(Throwable throwable);
     }
 }
