@@ -102,22 +102,6 @@ public class SharedCartFragment extends Fragment implements SharedCartItemsAdapt
                         for (SharedProductWithSharedCart sharedProductWithSharedCart : sharedProductsWithProducts) {
                             List<Product> products = sharedProductWithSharedCart.getProducts();
                             List<SharedProduct> sharedProducts = sharedProductWithSharedCart.getSharedProducts();
-                            Log.d("TAG", "Products size: " + products.size() + ", SharedProducts size: " + sharedProducts.size());
-                            // Assuming that each "shared cart" will have the same products and shared products together
-//                            for (int i = 0; i < Math.max(products.size(), sharedProducts.size()); i++) {
-//                                // Get the product and shared product by index
-//                                Product product = i < products.size() ? products.get(i) : null;
-//                                SharedProduct sharedProduct = i < sharedProducts.size() ? sharedProducts.get(i) : null;
-//
-//                                // Add the combined item to the list
-//                                sharedCartItems.add(new SharedCartItem(product, sharedProduct));
-//                            }
-                            for (Product product : products) {
-                                Log.d("TAG", "Product ID: " + product.getProductID());
-                            }
-                            for (SharedProduct sharedProduct : sharedProducts) {
-                                Log.d("TAG", "SharedProduct ID: " + sharedProduct);
-                            }
                             for (int i = 0; i < products.size(); i++) {
                                 Product product = products.get(i);
                                 SharedProduct sharedProduct = findSharedProductByProductId(sharedProducts, product.getProductID());
@@ -187,7 +171,6 @@ public class SharedCartFragment extends Fragment implements SharedCartItemsAdapt
 
     @Override
     public void onDeleteBtnClicked(String productId) {
-        Log.d("TAG", "onDeleteBtnClicked: "+productId);
         deleteSharedCartViewModel.deleteSharedCartProduct(productId, new DeleteSharedCartViewModel.DeleteSharedProductCallback() {
             @Override
             public void onSuccess(String message) {
