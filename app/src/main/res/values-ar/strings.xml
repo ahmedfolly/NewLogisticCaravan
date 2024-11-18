@@ -11,4 +11,23 @@
     <string name="rating">تقييم</string>
     <string name="rating_restaurant_details">تقييمات</string>
     <string name="group_order">طلب مجموعة</string>
+    <string name="search_text">ابحث هنا</string>
+    <string name="caravan_items_text">منتجات الكارفان</string>
+    <string name="home_title">الرئيسية</string>
+    <string name="orders_item">طلباتي</string>
+    <string name="notifications_item">إشعاراتي</string>
+    <string name="profile_item">حسابي</string>
+    <string name="personal_info_txt">معلومات حسابي</string>
+    <string name="how_message">كيف يعمل التطبيق</string>
+    <string name="logout_text">تسجيل خروج</string>
+    <string name="first_name_text">الإسم الأول</string>
+    <string name="last_name_text">الإسم الأخير</string>
+    <string name="address_text">العنوان</string>
+    <string name="phone_num_text">رقم التلفون</string>
+    <string name="email_text">الإيميل</string>
+    <string name="change_password_text">تغيير كلمة السر</string>
+    <string name="shared_cart_fragment_title">طلبات مجموعة</string>
+    <string name="add_user_email_ed">إضافة مستخدم للمجموعة</string>
+    <string name="delete_shared_product_text">مسح</string>
+    <string name="add_user_email_btn_txt">إضافة</string>
 </resources>

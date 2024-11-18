@@ -22,7 +22,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Group cart"
+            android:text="@string/shared_cart_fragment_title"
             android:textSize="20sp"
             android:textColor="@color/black"
             android:gravity="center|start"
@@ -33,7 +33,7 @@
         android:layout_width="match_parent"
         android:layout_height="64dp"
         android:layout_margin="16dp"
-        android:hint="Add user email..."
+        android:hint="@string/add_user_email_ed"
         >
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
@@ -47,7 +47,7 @@
         android:backgroundTint="#244D60"
         android:layout_gravity="end"
         android:layout_marginEnd="16dp"
-        android:text="Add user"
+        android:text="@string/add_user_email_btn_txt"
         android:textColor="@color/white"
         android:textSize="15sp"
         android:textStyle="bold"

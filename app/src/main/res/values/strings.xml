@@ -10,4 +10,27 @@
     <string name="rating">Give rate</string>
     <string name="rating_restaurant_details">Rating</string>
     <string name="group_order">Group order</string>
+    <string name="search_text">Search here...</string>
+    <string name="caravan_items_text">Caravan</string>
+    <string name="home_title">Home</string>
+    <string name="orders_item">Orders</string>
+    <string name="notifications_item">Notifications</string>
+    <string name="profile_item">Profile</string>
+    <string name="personal_info_txt">Personal information</string>
+    <string name="how_message">How the Logistic Caravan works</string>
+    <string name="logout_text">Log Out</string>
+    <string name="first_name_text">First Name</string>
+    <string name="last_name_text">Last Name</string>
+    <string name="address_text">Address</string>
+    <string name="phone_num_text">Phone Number</string>
+    <string name="email_text">Email</string>
+    <string name="change_password_text">Change Password</string>
+    <string name="shared_cart_fragment_title">Group Cart</string>
+    <string name="add_user_email_ed">Add user email...</string>
+    <string name="delete_shared_product_text">Delete</string>
+    <string name="add_user_email_btn_txt">Add user</string>
+    <string name="start_new_cart_text">Start a new cart?</string>
+    <string name="start_new_cat_message">A new order will clear your cart with</string>
+    <string name="start">start</string>
+    <string name="cancel">cancel</string>
 </resources>

@@ -33,7 +33,7 @@
                     android:layout_height="50dp"
                     android:layout_weight="1"
                     android:background="@drawable/corner_border_black"
-                    android:hint="Search here..."
+                    android:hint="@string/search_text"
                     android:padding="8dp" />
                 <ImageView
                     android:layout_width="32dp"
@@ -42,28 +42,29 @@
                     android:src="@drawable/group_add_24px"
                     android:id="@+id/open_shared_cart" />
 
-                <RelativeLayout
+                <FrameLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="start|center">
+                    android:layout_height="wrap_content">
+
+                    <!-- Cart Icon -->
                     <ImageView
                         android:id="@+id/cart_icon"
                         android:layout_width="32dp"
                         android:layout_height="32dp"
-                        android:layout_centerInParent="true"
                         android:src="@drawable/cart_black" />
+
+                    <!-- Badge -->
                     <TextView
                         android:id="@+id/cart_count"
-                        android:layout_width="15dp"
-                        android:layout_height="15dp"
-                        android:layout_alignParentBottom="true"
-                        android:layout_toEndOf="@id/cart_icon"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_gravity="top|end"
                         android:background="@drawable/badge"
                         android:gravity="center"
-                        android:textColor="@color/white"
+                        android:textColor="@android:color/white"
                         android:textSize="10sp"
                         android:textStyle="bold" />
-                </RelativeLayout>
+                </FrameLayout>
 
                 <!--                <ImageView-->
                 <!--                    android:layout_width="32dp"-->
@@ -104,7 +105,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:text="Caravan Items"
+                    android:text="@string/caravan_items_text"
                     android:textColor="@color/black"
                     android:textSize="20sp"
                     android:textStyle="bold" />
