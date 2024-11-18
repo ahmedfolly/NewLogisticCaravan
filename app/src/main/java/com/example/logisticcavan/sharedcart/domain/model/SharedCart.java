@@ -8,6 +8,24 @@ public class SharedCart {
     String adminId = null;
     List<String> userIds = null;
     Timestamp createdAt = null;
+    String restaurantId = null;
+    String restaurantName=null;
+
+    public String getRestaurantName() {
+        return restaurantName;
+    }
+
+    public void setRestaurantName(String restaurantName) {
+        this.restaurantName = restaurantName;
+    }
+
+    public String getRestaurantId() {
+        return restaurantId;
+    }
+
+    public void setRestaurantId(String restaurantId) {
+        this.restaurantId = restaurantId;
+    }
 
     public String getAdminId() {
         return adminId;

@@ -36,7 +36,7 @@ public class AddToSharedCartRepoImp implements AddSharedCartItemRepo {
      * @noinspection unchecked
      */
     @Override
-    public Single<MyResult<String>> addToSharedCart(SharedProduct sharedProduct) {
+    public Single<MyResult<String>> addToSharedCart(SharedProduct sharedProduct,String restaurantId,String restaurantName) {
         return Single.create(
                 emitter -> {
                     firebaseFirestore.collection("SharedCart")
@@ -66,18 +66,27 @@ public class AddToSharedCartRepoImp implements AddSharedCartItemRepo {
                                                         .addOnFailureListener(emitter::onError);
                                             } else {
                                                 //here create new room
-                                                startNewSharedCartRoom(sharedProduct,emitter)
+                                                startNewSharedCartRoom(sharedProduct,emitter,restaurantId,restaurantName)
                                                         .addOnSuccessListener(eV -> {
                                                             emitter.onSuccess(MyResult.success("Group created"));
+                                                            Log.d("TAG", "addToSharedCart: safs");
                                                         })
-                                                        .addOnFailureListener(emitter::onError);
+                                                        .addOnFailureListener(e->{
+                                                            emitter.onError(e);
+                                                            Log.d("TAG", "addToSharedCart: "+e.getMessage());
+
+                                                        });
                                             }
                                         } else {
-                                            startNewSharedCartRoom(sharedProduct,emitter)
+                                            startNewSharedCartRoom(sharedProduct,emitter,restaurantId,restaurantName)
                                                     .addOnSuccessListener(eV -> {
                                                         emitter.onSuccess(MyResult.success("Group created"));
                                                     })
-                                                    .addOnFailureListener(emitter::onError);
+                                                    .addOnFailureListener(e->{
+                                                        emitter.onError(e);
+                                                        Log.d("TAG", "addToSharedCart: "+e.getMessage());
+
+                                                    });
                                         }
 
                                     }
@@ -87,20 +96,24 @@ public class AddToSharedCartRepoImp implements AddSharedCartItemRepo {
     }
 
     Task<DocumentReference> startNewSharedCartRoom(SharedProduct sharedProduct,
-                                                   SingleEmitter<MyResult<String>> emitter) {
+                                                   SingleEmitter<MyResult<String>> emitter,
+                                                   String restaurantId,
+                                                   String restaurantName) {
         return firebaseFirestore.collection("SharedCart")
-                .add(mapSharedCart())
+                .add(mapSharedCart(restaurantId,restaurantName))
                 .addOnSuccessListener(v -> {
                     String sharedCartDocId = v.getId();
                     addProductsToSharedCart(sharedCartDocId, sharedProduct,emitter);
                 });
     }
 
-    private Map<String, Object> mapSharedCart() {
+    private Map<String, Object> mapSharedCart(String restaurantId,String restaurantName) {
         Map<String, Object> map = new HashMap<>();
         map.put("adminId", userEmail());
         map.put("userIds", initialUsersList());
         map.put("createdAt", Timestamp.now());
+        map.put("restaurantId",restaurantId);
+        map.put("restaurantName",restaurantName);
         return map;
     }
 

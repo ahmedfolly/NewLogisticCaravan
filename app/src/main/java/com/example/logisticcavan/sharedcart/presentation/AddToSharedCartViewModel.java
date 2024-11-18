@@ -21,8 +21,8 @@ public class AddToSharedCartViewModel extends ViewModel {
     public AddToSharedCartViewModel(AddToSharedCartUseCase addToSharedCartUseCase) {
         this.addToSharedCartUseCase = addToSharedCartUseCase;
     }
-    public void addToSharedCart( SharedProduct sharedProduct, AddToSharedCartCallback callback) {
-        compositeDisposable.add(addToSharedCartUseCase.addToSharedCart(sharedProduct).subscribe(
+    public void addToSharedCart( SharedProduct sharedProduct,String restaurantId,String restaurantName, AddToSharedCartCallback callback) {
+        compositeDisposable.add(addToSharedCartUseCase.addToSharedCart(sharedProduct,restaurantId,restaurantName).subscribe(
                result->{result.handle(
                        callback::onSuccess,
                        callback::onError,

@@ -283,8 +283,6 @@ public class CartFragment extends Fragment implements ConfirmOrderBottomFragment
         restaurant.put("name", name);
         return restaurant;
     }
-
-
     private List<Map<String, Object>> createCartItems(List<CartItem> cartItems) {
         List<Map<String, Object>> carItemsList = new ArrayList<>();
         for (CartItem cartItem : cartItems) {

@@ -14,7 +14,7 @@ public class AddToSharedCartUseCase {
         this.sharedCartRepository = sharedCartRepository;
     }
 
-    public Single<MyResult<String>> addToSharedCart( SharedProduct sharedProduct) {
-        return sharedCartRepository.addToSharedCart(sharedProduct);
+    public Single<MyResult<String>> addToSharedCart( SharedProduct sharedProduct,String restaurantId,String restaurantName) {
+        return sharedCartRepository.addToSharedCart(sharedProduct,restaurantId,restaurantName);
     }
 }

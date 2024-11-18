@@ -32,7 +32,8 @@ public class GetSharedCartRepoImp implements GetSharedCartRepo {
                                    Log.d("TAG", "getAdminId: "+sharedCart.getAdminId());
                                    emitter.onSuccess(sharedCart);
                                }else {
-                                   emitter.onError(new Exception("No shared cart found"));
+                                   SharedCart sharedCart = new SharedCart();
+                                  emitter.onSuccess(sharedCart);
                                }
                             });
 

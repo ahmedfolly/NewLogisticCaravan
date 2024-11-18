@@ -37,6 +37,7 @@ public class AddOrderRepoImp implements AddOrderRepo {
         firestore.collection(ORDERS)
                 .add(getOrderDataToUpload(order))
                 .addOnSuccessListener(documentReference -> {
+
                     String orderId = documentReference.getId();
                     uploadOrderId(orderId).addOnSuccessListener(aVoid -> {
                         uploadRecommendations(order);

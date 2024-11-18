@@ -37,8 +37,10 @@ import com.example.logisticcavan.products.getproducts.presentation.GetProductsVi
 import com.example.logisticcavan.products.getproducts.presentation.RestaurantProductsAdapter;
 import com.example.logisticcavan.restaurants.domain.Restaurant;
 import com.example.logisticcavan.restaurants.presentation.GetRestaurantProductsViewModel;
+import com.example.logisticcavan.sharedcart.domain.model.SharedCart;
 import com.example.logisticcavan.sharedcart.domain.model.SharedProduct;
 import com.example.logisticcavan.sharedcart.presentation.AddToSharedCartViewModel;
+import com.example.logisticcavan.sharedcart.presentation.GetSharedCartViewModel;
 
 import java.util.List;
 import java.util.Objects;
@@ -62,6 +64,7 @@ AddOrderBottomSheet.AddToSharedCartCallback{
     private NavController navController;
     private AddToSharedCartViewModel addToSharedCartViewModel;
     private AuthViewModel authViewModel;
+    private GetSharedCartViewModel getSharedCartViewModel;
 
     public RestaurantDetailsFragment() {
         // Required empty public constructor
@@ -76,6 +79,7 @@ AddOrderBottomSheet.AddToSharedCartCallback{
         getProductsViewModel = new ViewModelProvider(this).get(GetProductsViewModel.class);
         cartViewModel = new ViewModelProvider(this).get(CartViewModel.class);
         addToSharedCartViewModel = new ViewModelProvider(this).get(AddToSharedCartViewModel.class);
+        getSharedCartViewModel = new ViewModelProvider(this).get(GetSharedCartViewModel.class);
         authViewModel = new ViewModelProvider(this).get(AuthViewModel.class);
     }
 
@@ -291,15 +295,52 @@ AddOrderBottomSheet.AddToSharedCartCallback{
         sharedProduct.setAddedBy(getUserName());
         sharedProduct.setProductId(productId);
         sharedProduct.setQuantity(quantity);
-        addToSharedCartViewModel.addToSharedCart(sharedProduct, new AddToSharedCartViewModel.AddToSharedCartCallback() {
+        getSharedCartViewModel.getSharedCart(new GetSharedCartViewModel.SharedCartCallback() {
             @Override
-            public void onSuccess(String result) {
-               Toast.makeText(requireContext(),result,Toast.LENGTH_SHORT).show();
+            public void onSuccess(SharedCart sharedCart) {
+                if (sharedCart.getRestaurantId() == null){
+                    Log.d("TAG", "onSuccess: "+sharedCart);
+                    addToSharedCartViewModel.addToSharedCart(sharedProduct,
+                            args.getRestaurant().getRestaurantId(),
+                            args.getRestaurant().getRestaurantName(),
+                            new AddToSharedCartViewModel.AddToSharedCartCallback() {
+                                @Override
+                                public void onSuccess(String result) {
+                                    Toast.makeText(requireContext(),result,Toast.LENGTH_SHORT).show();
+                                }
+
+                                @Override
+                                public void onError(Throwable throwable) {
+                                    Log.d("TAG", "there is an error in adding product to shared cart ");
+                                }
+                            });
+                }if (sharedCart.getRestaurantId()!=null){
+                    String restaurantId = sharedCart.getRestaurantId();
+                    if (restaurantId.equals(args.getRestaurant().getRestaurantId())){
+                        addToSharedCartViewModel.addToSharedCart(sharedProduct,
+                                args.getRestaurant().getRestaurantId(),
+                                args.getRestaurant().getRestaurantName(),
+                                new AddToSharedCartViewModel.AddToSharedCartCallback() {
+                                    @Override
+                                    public void onSuccess(String result) {
+                                        Toast.makeText(requireContext(),result,Toast.LENGTH_SHORT).show();
+                                    }
+
+                                    @Override
+                                    public void onError(Throwable throwable) {
+                                        Log.d("TAG", "there is an error in adding product to shared cart ");
+                                    }
+                                });
+                    }else{
+                        Toast.makeText(requireContext(),"you try to add product from another restaurant",Toast.LENGTH_SHORT).show();
+                    }
+                }
+
             }
 
             @Override
-            public void onError(Throwable throwable) {
-                Log.d("TAG", "there is an error in adding product to shared cart ");
+            public void onError(String errorMessage) {
+
             }
         });
     }

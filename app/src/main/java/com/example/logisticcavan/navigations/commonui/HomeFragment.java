@@ -41,6 +41,7 @@ import com.example.logisticcavan.products.getproducts.presentation.ProductsAdapt
 import com.example.logisticcavan.restaurants.presentation.GetRestaurantViewModel;
 import com.example.logisticcavan.restaurants.presentation.GetRestaurantsViewModel;
 import com.example.logisticcavan.restaurants.presentation.RestaurantsAdapter;
+import com.example.logisticcavan.sharedcart.presentation.GetSharedProductsViewModel;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
@@ -76,6 +77,7 @@ public class HomeFragment extends BaseFragment implements CategoriesAdapter.OnIt
     private RecommendationAdapter recommendationAdapter;
     private RecommendationViewModel recommendationViewModel;
     private RecyclerView recommendedContainer;
+    private GetSharedProductsViewModel getSharedProductsViewModel;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -92,6 +94,7 @@ public class HomeFragment extends BaseFragment implements CategoriesAdapter.OnIt
         combinedProductsWithRestaurantsViewModel = new ViewModelProvider(this).get(CombinedProductsWithRestaurantsViewModel.class);
         sharedViewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
         recommendationViewModel = new ViewModelProvider(this).get(RecommendationViewModel.class);
+        getSharedProductsViewModel = new ViewModelProvider(this).get(GetSharedProductsViewModel.class);
         recommendationAdapter = new RecommendationAdapter();
 //        PlaceOrderFragment.setOrderPlaceCallback(this);
     }
@@ -145,6 +148,7 @@ public class HomeFragment extends BaseFragment implements CategoriesAdapter.OnIt
         }
         getRecommendedProducts();
         openSharedCartScreen();
+        isSharedCartEmpty();
     }
 
     private void getCategories(View view) {
@@ -359,14 +363,32 @@ public class HomeFragment extends BaseFragment implements CategoriesAdapter.OnIt
         snackbarView.setLayoutParams(params);
         snackbar.show();
     }
-    private void openSharedCartScreen(){
-       ImageView openSharedCart = requireView().findViewById(R.id.open_shared_cart);
-       openSharedCart.setOnClickListener(v->{
-           navController = Navigation.findNavController(v);
-           navController.navigate(R.id.action_homeFragment_to_sharedCartFragment);
-       });
+
+    private void openSharedCartScreen() {
+        ImageView openSharedCart = requireView().findViewById(R.id.open_shared_cart);
+        openSharedCart.setOnClickListener(v -> {
+            navController = Navigation.findNavController(v);
+            navController.navigate(R.id.action_homeFragment_to_sharedCartFragment);
+        });
     }
 
+    private void isSharedCartEmpty() {
+        ImageView openSharedCart = requireView().findViewById(R.id.open_shared_cart);
+        getSharedProductsViewModel.fetchSharedProducts();
+        getSharedProductsViewModel.getSharedProductsLiveData().observe(getViewLifecycleOwner(), result -> {
+            result.handle(products -> {
+                        if (!products.isEmpty()) {
+                            openSharedCart.setVisibility(View.VISIBLE);
+                        }else{
+                            openSharedCart.setVisibility(View.GONE);
+                        }
+                    },
+                    error -> {
+                    },
+                    () -> {
+                    });
+        });
+    }
 
     public interface HomeFramentOpenedCallback {
         void onHomeFragmentOpened();

@@ -1,5 +1,6 @@
 package com.example.logisticcavan.sharedcart.presentation;
 
+import static androidx.navigation.fragment.FragmentKt.findNavController;
 import static com.example.logisticcavan.common.utils.Constant.EMAIL_REGEX;
 
 import android.os.Bundle;
@@ -8,6 +9,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.NavDirections;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,6 +23,7 @@ import android.widget.Toast;
 
 import com.example.logisticcavan.R;
 import com.example.logisticcavan.auth.presentation.AuthViewModel;
+import com.example.logisticcavan.navigations.commonui.MainActivity;
 import com.example.logisticcavan.products.getproducts.domain.Product;
 import com.example.logisticcavan.sharedcart.domain.model.SharedCart;
 import com.example.logisticcavan.sharedcart.domain.model.SharedCartItem;
@@ -44,6 +48,7 @@ public class SharedCartFragment extends Fragment implements SharedCartItemsAdapt
     private AddNewUserEmailToSharedCartViewModel addUserEmailViewModel;
     private GetSharedCartViewModel getSharedCartViewModel;
     private AuthViewModel authViewModel;
+    private NavController navController;
 
     private DeleteSharedCartViewModel deleteSharedCartViewModel;
 
@@ -73,6 +78,29 @@ public class SharedCartFragment extends Fragment implements SharedCartItemsAdapt
         MaterialButton addUserEmailButton = view.findViewById(R.id.add_user_to_shared_cart);
         addUserEmailButton.setOnClickListener(v -> addUserEmail(userEmailPicker));
         doOnNotAdminUser(userEmailPicker, addUserEmailButton);
+        navController = findNavController(this);
+        goForward();
+    }
+    private void goForward(){
+        MaterialButton moveToNext = requireView().findViewById(R.id.checkout_shared_order);
+        moveToNext.setOnClickListener(v -> {
+            SharedCartItem[] sharedCartItems = sharedCartItemsAdapter.getCurrentList().toArray(new SharedCartItem[0]);
+            getSharedCartViewModel.getSharedCart(new GetSharedCartViewModel.SharedCartCallback() {
+                @Override
+                public void onSuccess(SharedCart sharedCart) {
+                    String restaurantId = sharedCart.getRestaurantId();
+                    String restaurantName = sharedCart.getRestaurantName();
+                    NavDirections action = SharedCartFragmentDirections.actionSharedCartFragmentToProceedToSharedOrderFragment(sharedCartItems,restaurantName,restaurantId);
+                    navController.navigate(action);
+                }
+
+                @Override
+                public void onError(String errorMessage) {
+
+                }
+            });
+
+        });
     }
 
     private void doOnNotAdminUser(TextInputEditText userEmailPicker, MaterialButton addUserEmailButton) {
@@ -168,7 +196,14 @@ public class SharedCartFragment extends Fragment implements SharedCartItemsAdapt
     private String getUserEmail() {
         return authViewModel.getUserInfoLocally().getEmail();
     }
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (getActivity() instanceof MainActivity) {
+            MainActivity mainActivity = (MainActivity) getActivity();
+            mainActivity.disappearBottomNav();
+        }
+    }
     @Override
     public void onDeleteBtnClicked(String productId) {
         deleteSharedCartViewModel.deleteSharedCartProduct(productId, new DeleteSharedCartViewModel.DeleteSharedProductCallback() {

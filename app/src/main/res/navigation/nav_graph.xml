@@ -214,7 +214,30 @@
         android:id="@+id/sharedCartFragment"
         android:name="com.example.logisticcavan.sharedcart.presentation.SharedCartFragment"
         android:label="fragment_shared_cart"
-        tools:layout="@layout/fragment_shared_cart" />
+        tools:layout="@layout/fragment_shared_cart" >
+        <action
+            android:id="@+id/action_sharedCartFragment_to_proceedToSharedOrderFragment"
+            app:destination="@id/proceedToSharedOrderFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/proceedToSharedOrderFragment"
+        android:name="com.example.logisticcavan.sharedcart.presentation.ProceedToSharedOrderFragment"
+        android:label="fragment_proceed_to_shared_order"
+        tools:layout="@layout/fragment_proceed_to_shared_order" >
+
+        <argument
+            android:name="shared_products"
+            app:argType="com.example.logisticcavan.sharedcart.domain.model.SharedCartItem[]" />
+        <argument
+            android:name="restaurant_name"
+            app:argType="string" />
+        <argument
+            android:name="restaurant_id"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_proceedToSharedOrderFragment_to_trakOrderFragment"
+            app:destination="@id/trakOrderFragment" />
+    </fragment>
 
 
 </navigation>

@@ -7,5 +7,5 @@ import com.example.logisticcavan.sharedcart.domain.model.SharedProduct;
 import io.reactivex.rxjava3.core.Single;
 
 public interface AddSharedCartItemRepo {
-    Single<MyResult<String>> addToSharedCart( SharedProduct sharedProduct);
+    Single<MyResult<String>> addToSharedCart( SharedProduct sharedProduct,String restaurantId,String restaurantName);
 }
