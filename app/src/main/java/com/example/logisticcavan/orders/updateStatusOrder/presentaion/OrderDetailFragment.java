@@ -14,7 +14,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.example.logisticcavan.auth.domain.entity.UserInfo;
 import com.example.logisticcavan.common.base.BaseFragment;
 import com.example.logisticcavan.databinding.FragmentOrderDetailBinding;
 import com.example.logisticcavan.orders.getOrders.courier.presentaion.ItemListener;
@@ -24,6 +26,7 @@ import com.example.logisticcavan.orders.getOrders.domain.Order;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.inject.Inject;
 
@@ -52,6 +55,9 @@ public class OrderDetailFragment extends BaseFragment implements ItemListener {
         super.onViewCreated(view, savedInstanceState);
         navController = Navigation.findNavController(view);
         Order order =   OrderDetailFragmentArgs.fromBundle(requireArguments()).getOrder();
+        showProgressDialog();
+        List<String> stringList = order.getCustomers();
+        getCustomers(stringList);
         setUpUiData(order);
         setUpClickListeners();
     }
@@ -130,5 +136,37 @@ public class OrderDetailFragment extends BaseFragment implements ItemListener {
     public void onItemClick(String status) {
      Log.e("TAG", "onItemClick: "+status );
       updateOrderStatusViewModel.updateOrderStatus(orderId,status);
+    }
+
+    private void getCustomers(List<String> userIds) {
+        List<UserInfo> users = new ArrayList<>();
+        AtomicInteger remainingTasks = new AtomicInteger(userIds.size());
+        for (String email : userIds) {
+            updateOrderStatusViewModel.getUserRemotely(email)
+                    .thenAccept(userInfo -> {
+                        users.add(userInfo);
+                        if (remainingTasks.decrementAndGet() == 0) {
+                            requireActivity().runOnUiThread(() -> {
+                                dismissProgressDialog();
+                                setUpRecycler(users);
+                                for (UserInfo userInfo1 : users) {
+                                    Log.d("TAG", "onViewCreated: " + userInfo1.getName());
+                                }
+                            });
+                        }
+                    })
+                    .exceptionally(ex -> {
+                        dismissProgressDialog();
+                        Log.e("User Fetch Error", "Error fetching user data", ex);
+                        return null;
+                    });
+        }
+    }
+
+    private void setUpRecycler(List<UserInfo> users) {
+        UsersInfoAdapter adapter = new UsersInfoAdapter(users);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false);
+        binding.recyclerView.setLayoutManager(layoutManager);
+        binding.recyclerView.setAdapter(adapter);
     }
 }
