@@ -36,6 +36,8 @@ public class Order implements Parcelable {
     private Map<String,String> restaurant;
     private Map<String,Object> generalDetails;
 
+    private List<String> customers;
+
     protected Order(Parcel in) {
         dateCreated = in.readString();
         from = in.readString();
@@ -72,6 +74,8 @@ public class Order implements Parcelable {
         generalDetails = new HashMap<>();
         in.readMap(generalDetails, Object.class.getClassLoader());
 
+        customers = new ArrayList<>();
+        in.readList(customers, Map.class.getClassLoader());
     }
 
     public static final Creator<Order> CREATOR = new Creator<Order>() {
@@ -249,10 +253,19 @@ public class Order implements Parcelable {
         this.totalCost = totalCost;
     }
 
+    public List<String> getCustomers() {
+        return customers;
+    }
+
+    public void setCustomers(List<String> customers) {
+        this.customers = customers;
+    }
+
     @Override
     public int describeContents() {
         return 0;
     }
+
 
     @Override
     public void writeToParcel(@NonNull Parcel parcel, int i) {
@@ -277,5 +290,6 @@ public class Order implements Parcelable {
         parcel.writeMap(customer);
         parcel.writeMap(restaurant);
         parcel.writeMap(generalDetails);
+        parcel.writeList(customers);
     }
 }

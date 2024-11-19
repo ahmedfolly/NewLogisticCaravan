@@ -14,36 +14,42 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+
 import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.subjects.BehaviorSubject;
 
-/** @noinspection ALL*/
+/**
+ * @noinspection ALL
+ */
 public class AddOrderRepoImp implements AddOrderRepo {
     private final FirebaseFirestore firestore;
     private final FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private final BehaviorSubject<MyResult<String>> subject = BehaviorSubject.create();
+
     public AddOrderRepoImp(FirebaseFirestore firestore) {
         this.firestore = firestore;
     }
+
     @Override
     public Observable<MyResult<String>> addOrder(Order order) {
         subject.onNext(MyResult.loading());
         firestore.collection(ORDERS)
                 .add(getOrderDataToUpload(order))
                 .addOnSuccessListener(documentReference -> {
-
                     String orderId = documentReference.getId();
                     uploadOrderId(orderId).addOnSuccessListener(aVoid -> {
                         uploadRecommendations(order);
                         Log.d("TAG", "addOrder: " + orderId);
-                        addOrderToCurrentUser(orderId);
-                        subject.onNext(MyResult.success("Uploaded successfully"));
+                        addOrderToCurrentUser(orderId,getUserEmail());
+                        subject.onNext(MyResult.success(orderId));
                     }).addOnFailureListener(e -> {
                         subject.onNext(MyResult.error(e));
                     });
@@ -54,6 +60,19 @@ public class AddOrderRepoImp implements AddOrderRepo {
 
         return subject.hide();
     }
+
+    @Override
+    public Single<String> addOrderIdToUser(String orderId,List<String> userEmails) {
+        return Single.create(
+                emitter->{
+                    for (String email : userEmails){
+                        addOrderToCurrentUser(orderId,email);
+                    }
+                    emitter.onSuccess("Uploaded to all users");
+                }
+        );
+    }
+
     private Task<Void> uploadOrderId(String id) {
         DocumentReference orderRef = firestore.collection(ORDERS).document(id);
         return orderRef.get().continueWithTask(task -> {
@@ -71,11 +90,12 @@ public class AddOrderRepoImp implements AddOrderRepo {
             return Tasks.forException(new Exception("Failed to update order ID"));
         });
     }
-    public void addOrderToCurrentUser(String orderId) {
+
+    public void addOrderToCurrentUser(String orderId,String userEmail) {
         Map<String, String> orderIdMap = new HashMap<>();
         orderIdMap.put("orderId", orderId);
         firestore.collection("users")
-                .document(Objects.requireNonNull(Objects.requireNonNull(mAuth.getCurrentUser()).getEmail()))
+                .document(userEmail)
                 .collection("Orders")
                 .add(orderIdMap)
                 .addOnSuccessListener(v -> {
@@ -84,7 +104,9 @@ public class AddOrderRepoImp implements AddOrderRepo {
                 .addOnFailureListener(e -> {
                     Log.d("TAG", "addOrderToCurrentUser: " + e.getMessage());
                 });
+
     }
+
     private Map<String, Object> getOrderDataToUpload(Order order) {
         Map<String, Object> orderDataToUpload = new HashMap<>();
         orderDataToUpload.put("cartItems", order.getCartItems());
@@ -94,8 +116,10 @@ public class AddOrderRepoImp implements AddOrderRepo {
         orderDataToUpload.put("restaurant", order.getRestaurant());
         orderDataToUpload.put("generalDetails", order.getGeneralDetails());
         orderDataToUpload.put("location", order.getLocation());
+        orderDataToUpload.put("customers", order.getCustomers());
         return orderDataToUpload;
     }
+
     private List<Map<String, Object>> getCategoriesFromOrderedItems(List<Map<String, Object>> cartItemsMap) {
         Map<String, Integer> frequencyMap = new HashMap<>();
         for (Map<String, Object> cartItem : cartItemsMap) {
@@ -114,6 +138,7 @@ public class AddOrderRepoImp implements AddOrderRepo {
         }
         return recommendations;
     }
+
     private void uploadRecommendations(Order order) {
         List<Map<String, Object>> cartItemsList = order.getCartItems();
         List<Map<String, Object>> localList = getCategoriesFromOrderedItems(cartItemsList);
@@ -172,6 +197,7 @@ public class AddOrderRepoImp implements AddOrderRepo {
             }
         });
     }
+
     private String getUserEmail() {
         return Objects.requireNonNull(mAuth.getCurrentUser()).getEmail();
     }

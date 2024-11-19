@@ -237,6 +237,9 @@
         <action
             android:id="@+id/action_proceedToSharedOrderFragment_to_trakOrderFragment"
             app:destination="@id/trakOrderFragment" />
+        <argument
+            android:name="user_ids"
+            app:argType="string[]" />
     </fragment>
 
 

@@ -23,6 +23,7 @@ import dagger.hilt.components.SingletonComponent;
 @Module
 @InstallIn(SingletonComponent.class)
 public class OrderDi {
+
     @Provides
     public GetOrdersIdsUseCase provideGetOrdersIdsUseCase(GetOrdersOfCurrUser getOrdersOfCurrUser) {
         return new GetOrdersIdsUseCase(getOrdersOfCurrUser);

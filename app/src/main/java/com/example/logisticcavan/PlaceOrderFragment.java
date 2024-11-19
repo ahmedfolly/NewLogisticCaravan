@@ -106,7 +106,7 @@ public class PlaceOrderFragment extends Fragment {
                 .handle(cartItems -> addOrderViewModel.addOrder(order,
                         new AddOrderViewModel.UploadOrderCallback() {
             @Override
-            public void onSuccess(String message) {
+            public void onSuccess(String orderId) {
                 Log.d("TAG", "uploadOrder: uploaded");
                 progressBar.setVisibility(View.GONE);
                 cartViewModel.emptyCart(new CartViewModel.EmptyCartResultCallback() {

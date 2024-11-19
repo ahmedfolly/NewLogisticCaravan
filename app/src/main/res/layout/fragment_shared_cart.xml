@@ -33,12 +33,14 @@
         android:layout_width="match_parent"
         android:layout_height="64dp"
         android:layout_margin="16dp"
-        android:hint="@string/add_user_email_ed"
+        android:id="@+id/user_email_layout"
         >
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/user_email_picker"/>
+            android:id="@+id/user_email_picker"
+            android:visibility="gone"
+            android:hint="@string/add_user_email_ed"/>
     </com.google.android.material.textfield.TextInputLayout>
     <com.google.android.material.button.MaterialButton
         android:layout_width="wrap_content"
@@ -51,6 +53,7 @@
         android:textColor="@color/white"
         android:textSize="15sp"
         android:textStyle="bold"
+        android:visibility="gone"
         android:id="@+id/add_user_to_shared_cart"
         app:shapeAppearanceOverlay="@style/CustomShapeAppearance"/>
     <androidx.recyclerview.widget.RecyclerView

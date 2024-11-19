@@ -31,6 +31,7 @@ import com.example.logisticcavan.sharedcart.domain.model.SharedProduct;
 import com.example.logisticcavan.sharedcart.domain.model.SharedProductWithSharedCart;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,15 +75,16 @@ public class SharedCartFragment extends Fragment implements SharedCartItemsAdapt
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         TextInputEditText userEmailPicker = view.findViewById(R.id.user_email_picker);
+        MaterialButton moveToNext = requireView().findViewById(R.id.checkout_shared_order);
+        TextInputLayout userEmailLayout = requireView().findViewById(R.id.user_email_layout);
         getSharedItems();
         MaterialButton addUserEmailButton = view.findViewById(R.id.add_user_to_shared_cart);
         addUserEmailButton.setOnClickListener(v -> addUserEmail(userEmailPicker));
-        doOnNotAdminUser(userEmailPicker, addUserEmailButton);
+        doOnNotAdminUser(userEmailPicker, addUserEmailButton,moveToNext,userEmailLayout);
         navController = findNavController(this);
-        goForward();
+        goForward(moveToNext);
     }
-    private void goForward(){
-        MaterialButton moveToNext = requireView().findViewById(R.id.checkout_shared_order);
+    private void goForward(MaterialButton moveToNext){
         moveToNext.setOnClickListener(v -> {
             SharedCartItem[] sharedCartItems = sharedCartItemsAdapter.getCurrentList().toArray(new SharedCartItem[0]);
             getSharedCartViewModel.getSharedCart(new GetSharedCartViewModel.SharedCartCallback() {
@@ -90,7 +92,8 @@ public class SharedCartFragment extends Fragment implements SharedCartItemsAdapt
                 public void onSuccess(SharedCart sharedCart) {
                     String restaurantId = sharedCart.getRestaurantId();
                     String restaurantName = sharedCart.getRestaurantName();
-                    NavDirections action = SharedCartFragmentDirections.actionSharedCartFragmentToProceedToSharedOrderFragment(sharedCartItems,restaurantName,restaurantId);
+                    String[] customers = sharedCart.getUserIds().toArray(new String[0]);
+                    NavDirections action = SharedCartFragmentDirections.actionSharedCartFragmentToProceedToSharedOrderFragment(sharedCartItems,restaurantName,restaurantId,customers);
                     navController.navigate(action);
                 }
 
@@ -103,7 +106,8 @@ public class SharedCartFragment extends Fragment implements SharedCartItemsAdapt
         });
     }
 
-    private void doOnNotAdminUser(TextInputEditText userEmailPicker, MaterialButton addUserEmailButton) {
+    private void doOnNotAdminUser(TextInputEditText userEmailPicker, MaterialButton addUserEmailButton,MaterialButton checkout,
+                                  TextInputLayout textInputLayout) {
         getSharedCartViewModel.getSharedCart(new GetSharedCartViewModel.SharedCartCallback() {
             @Override
             public void onSuccess(SharedCart sharedCart) {
@@ -111,6 +115,14 @@ public class SharedCartFragment extends Fragment implements SharedCartItemsAdapt
                 if (!adminId.equals(getUserEmail())) {
                     userEmailPicker.setVisibility(View.GONE);
                     addUserEmailButton.setVisibility(View.GONE);
+                    checkout.setVisibility(View.GONE);
+                    textInputLayout.setVisibility(View.GONE);
+                }else {
+                    userEmailPicker.setVisibility(View.VISIBLE);
+                    addUserEmailButton.setVisibility(View.VISIBLE);
+                    checkout.setVisibility(View.VISIBLE);
+                    textInputLayout.setVisibility(View.VISIBLE);
+
                 }
             }
 
@@ -172,6 +184,7 @@ public class SharedCartFragment extends Fragment implements SharedCartItemsAdapt
             if (isValidEmail(userEmail)) {
                 //here add user email to shared cart
                 addUserEmailViewModel.addUserToSharedCart(userEmail, result -> Toast.makeText(requireContext(), result, Toast.LENGTH_SHORT).show());
+                userEmailPicker.setText("");
             } else {
                 userEmailPicker.setError("Please enter a valid email");
             }

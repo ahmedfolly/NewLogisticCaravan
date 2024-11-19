@@ -68,6 +68,7 @@ public class AddUserToSharedCartRepoImp implements AddUserToSharedCartRepo {
                             if (!oldUserIds.contains(userEmail)) {
                                 // Add the email to the userIds list
                                 oldUserIds.add(userEmail);
+                                emitter.onSuccess("User email added successfully");
                                 updateDocumentUserIds(document, oldUserIds);  // Update the document with the new userIds list
                             } else {
                                 System.out.println("User email already exists");

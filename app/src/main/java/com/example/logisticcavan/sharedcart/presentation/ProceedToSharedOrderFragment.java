@@ -20,6 +20,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.logisticcavan.R;
+import com.example.logisticcavan.auth.domain.entity.UserInfo;
 import com.example.logisticcavan.auth.presentation.AuthViewModel;
 import com.example.logisticcavan.common.utils.Constant;
 import com.example.logisticcavan.navigations.commonui.MainActivity;
@@ -29,12 +30,17 @@ import com.example.logisticcavan.sharedcart.domain.model.SharedCartItem;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.radiobutton.MaterialRadioButton;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.firestore.auth.User;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
@@ -44,6 +50,7 @@ public class ProceedToSharedOrderFragment extends Fragment {
     private AuthViewModel authViewModel;
     private AddOrderViewModel addOrderViewModel;
     private TextInputEditText villaNumInput;
+    private ProceedToSharedOrderFragmentArgs args;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -63,7 +70,7 @@ public class ProceedToSharedOrderFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         villaNumInput = requireView().findViewById(R.id.villa_number_input_sharedOrder);
-        ProceedToSharedOrderFragmentArgs args = ProceedToSharedOrderFragmentArgs.fromBundle(getArguments());
+        args = ProceedToSharedOrderFragmentArgs.fromBundle(getArguments());
         SharedCartItem[] sharedCartItems = args.getSharedProducts();
         MaterialButton placeOrderButton = view.findViewById(R.id.place_shared_order_btn);
         RadioGroup radioGroup = view.findViewById(R.id.payment_methods_group);
@@ -77,9 +84,20 @@ public class ProceedToSharedOrderFragment extends Fragment {
                     getPaymentMethod(radioGroup, cashOnDeliveryBtn, cardBtn, applePay));
             addOrderViewModel.addOrder(order, new AddOrderViewModel.UploadOrderCallback() {
                 @Override
-                public void onSuccess(String message) {
-                    NavDirections directions = ProceedToSharedOrderFragmentDirections.actionProceedToSharedOrderFragmentToTrakOrderFragment(Constant.flagFromPlaceOrderScreen, "", "", "");
-                    findNavController(requireView()).navigate(directions);
+                public void onSuccess(String orderId) {
+                    addOrderViewModel.addOrderIdToUser(orderId, Arrays.asList(args.getUserIds()), new AddOrderViewModel.UploadOrderToUser() {
+                        @Override
+                        public void onSuccess(String message) {
+                            NavDirections directions = ProceedToSharedOrderFragmentDirections.actionProceedToSharedOrderFragmentToTrakOrderFragment(Constant.flagFromPlaceOrderScreen, "", "", "");
+                            findNavController(requireView()).navigate(directions);
+                        }
+
+                        @Override
+                        public void onError(String message) {
+
+                        }
+                    });
+
                 }
 
                 @Override
@@ -94,6 +112,33 @@ public class ProceedToSharedOrderFragment extends Fragment {
             });
         });
 
+//        List<UserInfo> users = new ArrayList<>();
+//        AtomicInteger remainingTasks = new AtomicInteger(args.getUserIds().length);  // Keep track of remaining tasks
+//
+//// Start async fetching for each user
+//        for (String email : args.getUserIds()) {
+//            authViewModel.getUserRemotely(email)
+//                    .thenAccept(userInfo -> {
+//                        // Append the userInfo to the list
+//                        users.add(userInfo);
+//
+//                        // Decrease the remaining tasks count
+//                        if (remainingTasks.decrementAndGet() == 0) {
+//                            // Once all tasks are completed, update the adapter
+//                            requireActivity().runOnUiThread(() -> {
+//                                // Assuming 'adapter' is your RecyclerView adapter or similar
+//                              for (UserInfo userInfo1:users){
+//                                  Log.d("TAG", "onViewCreated: "+userInfo1.getName());
+//                              }
+//                            });
+//                        }
+//                    })
+//                    .exceptionally(ex -> {
+//                        // Handle errors if any
+//                        Log.e("User Fetch Error", "Error fetching user data", ex);
+//                        return null;
+//                    });
+//        }
     }
 
     private String getPaymentMethod(RadioGroup radioGroup, MaterialRadioButton cashOnDeliveryBtn, MaterialRadioButton cardBtn, MaterialRadioButton applePay) {
@@ -120,6 +165,7 @@ public class ProceedToSharedOrderFragment extends Fragment {
         order.setCustomer(createUserMap());
         order.setRestaurant(createRestaurant(restaurantId, restaurantName));
         order.setGeneralDetails(createGeneralDetails(paymentMethod, 0.0));
+        order.setCustomers(Arrays.asList(args.getUserIds()));
         return order;
     }
 
@@ -144,6 +190,12 @@ public class ProceedToSharedOrderFragment extends Fragment {
         userMap.put("id", getUserId());
         userMap.put("name", getUserName());
         return userMap;
+    }
+
+    private List<String> getUserEmails(List<String> emails) {
+        Map<String, Object> usersEmailsToUpload = new HashMap<>();
+        usersEmailsToUpload.put("customers", emails);
+        return new ArrayList<>(emails);
     }
 
     private Map<String, String> createDeliveryTime(String date, String time) {
