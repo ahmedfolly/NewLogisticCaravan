@@ -41,6 +41,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Ahmed Kamel"
+        android:visibility="gone"
         android:textColor="#2F4D8B"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"

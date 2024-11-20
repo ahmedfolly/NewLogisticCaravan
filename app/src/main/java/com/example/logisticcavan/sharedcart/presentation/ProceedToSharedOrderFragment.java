@@ -77,7 +77,6 @@ public class ProceedToSharedOrderFragment extends Fragment {
                             NavDirections directions = ProceedToSharedOrderFragmentDirections.actionProceedToSharedOrderFragmentToTrakOrderFragment(Constant.flagFromPlaceOrderScreen, "", "", "");
                             findNavController(requireView()).navigate(directions);
                         }
-
                         @Override
                         public void onError(String message) {
 

@@ -1,5 +1,6 @@
 package com.example.logisticcavan.orders.updateStatusOrder.di;
 
+import com.example.logisticcavan.auth.domain.useCase.GetUserInfoRemotelyUseCase;
 import com.example.logisticcavan.orders.updateStatusOrder.data.UpdateOrderStatusRepo;
 import com.example.logisticcavan.orders.updateStatusOrder.domain.UpdateOrderStatusUseCase;
 import com.example.logisticcavan.orders.updateStatusOrder.presentaion.UpdateOrderStatusViewModel;
@@ -18,8 +19,8 @@ public class Di {
 
     @Provides
     @Singleton
-    UpdateOrderStatusViewModel provideUpdateOrderStatusViewModel(UpdateOrderStatusUseCase updateOrderStatusUseCase){
-        return new UpdateOrderStatusViewModel(updateOrderStatusUseCase);
+    UpdateOrderStatusViewModel provideUpdateOrderStatusViewModel(UpdateOrderStatusUseCase updateOrderStatusUseCase, GetUserInfoRemotelyUseCase getUserInfoRemotelyUseCase){
+        return new UpdateOrderStatusViewModel(updateOrderStatusUseCase,getUserInfoRemotelyUseCase);
     }
 
 

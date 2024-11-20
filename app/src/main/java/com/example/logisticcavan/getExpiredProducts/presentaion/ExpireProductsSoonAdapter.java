@@ -1,5 +1,6 @@
 package com.example.logisticcavan.getExpiredProducts.presentaion;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +20,7 @@ import java.util.List;
 
 public class ExpireProductsSoonAdapter extends RecyclerView.Adapter<ExpireProductsSoonAdapter.ProductsVH> {
     List<Product> products;
-
+    Context context;
     public ExpireProductsSoonAdapter(List<Product> products) {
         this.products = products;
     }

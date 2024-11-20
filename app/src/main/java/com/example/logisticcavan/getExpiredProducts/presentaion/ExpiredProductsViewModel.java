@@ -79,16 +79,18 @@ class ExpiredProductsViewModel extends ViewModel {
         _expiredProducts.setValue(filteredProducts);
     }
 
+
     private boolean willExpireSoon(Product product) {
         long expirationDate = product.getExpirationData();
-
         long currentTime = System.currentTimeMillis();
+
        if (currentTime >= expirationDate){
            Log.e("TAG" , "itr");
            return  false;
        }
-        long oneDayInMillis = 24 * 60 * 60 * 1000;
 
+
+        long oneDayInMillis = 24 * 60 * 60 * 1000;
         long day1 = currentTime + oneDayInMillis ;
         long day2 = currentTime + (oneDayInMillis * 2);
         long day3 = currentTime + (oneDayInMillis * 3);
@@ -101,7 +103,6 @@ class ExpiredProductsViewModel extends ViewModel {
         Log.e("TAG", "day3: " + day3);
         Log.e("TAG", "day4: " + day4);
         Log.e("TAG", "day5: " + day5);
-
         long  rangeStart = expirationDate - (5 * oneDayInMillis) ;
         long  rangeEnd = expirationDate - oneDayInMillis ;
 
