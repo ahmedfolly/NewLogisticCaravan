@@ -58,7 +58,7 @@
                 android:layout_height="50dp"
                 android:layout_weight="1"
                 android:background="@drawable/corner_border_black"
-                android:hint="Search here..."
+                android:hint="@string/search_here"
                 android:padding="8dp" />
 
             <ImageView
@@ -121,7 +121,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="14dp"
-                    android:text="Active "
+                    android:text="@string/active"
 
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -156,7 +156,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="14dp"
-                    android:text="Shiped "
+                    android:text="@string/shiped"
 
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -193,7 +193,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="14dp"
-                    android:text="Delivered "
+                    android:text="@string/delivered"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -228,7 +228,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="14dp"
-                    android:text="Expired "
+                    android:text="@string/expired"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -281,7 +281,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                android:text="Scheduled Active Orders"
+                android:text="@string/scheduled_active_orders"
                 android:textColor="#ECD211"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -292,7 +292,7 @@
                 android:id="@+id/textView19"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Get your order details below"
+                android:text="@string/get_your_order_details_below"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView18" />
 

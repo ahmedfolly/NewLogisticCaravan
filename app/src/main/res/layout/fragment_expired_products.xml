@@ -70,7 +70,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="Product ID"
+                        android:text="@string/product_id"
                         tools:layout_editor_absoluteY="10dp" />
 
                     <TextView
@@ -79,7 +79,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="Expiration Date" />
+                        android:text="@string/expiration_date" />
 
                     <TextView
                         android:id="@+id/removalDate"
@@ -87,7 +87,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="Removal Date" />
+                        android:text="@string/removal_date" />
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -110,7 +110,7 @@
                 android:id="@+id/noExpiredProducts"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="No Data"
+                android:text="@string/no_data"
                 android:textColor="@color/black"
                 android:textSize="16dp"
                 android:textStyle="bold"
@@ -178,7 +178,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/margin_large"
-                        android:text="Alerts"
+                        android:text="@string/alerts"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
                 </LinearLayout>
@@ -203,7 +203,7 @@
                 android:id="@+id/noAlert"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="No Data"
+                android:text="@string/no_data"
                 android:textColor="@color/black"
                 android:textSize="16dp"
                 android:textStyle="bold"

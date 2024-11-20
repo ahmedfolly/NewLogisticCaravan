@@ -16,6 +16,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.example.logisticcavan.R;
 import com.example.logisticcavan.auth.domain.entity.UserInfo;
 import com.example.logisticcavan.common.base.BaseFragment;
 import com.example.logisticcavan.databinding.FragmentOrderDetailBinding;
@@ -114,27 +115,26 @@ public class OrderDetailFragment extends BaseFragment implements ItemListener {
      String text = "";
       switch (orderStatus){
           case PENDING:
-              text = "Start delivery";
+              text = getString(R.string.start_delivery1);
       break;
           case DELIVERED: {
-              text = "Update Status";
+              text = getString(R.string.update_status);
           break;
       }
           case SHIPPED: {
-              text = "Shipped";
+              text = getString(R.string.shipped);
               binding.startDelivery.setEnabled(false);
               break;
           }
 
           default:
-           text ="Start delivery";
+              text = getString(R.string.start_delivery1);
       }
     binding.startDelivery.setText(text);
     }
 
     @Override
     public void onItemClick(String status) {
-     Log.e("TAG", "onItemClick: "+status );
       updateOrderStatusViewModel.updateOrderStatus(orderId,status);
     }
 

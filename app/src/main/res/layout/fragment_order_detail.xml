@@ -76,7 +76,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                android:text="Customers"
+                android:text="@string/customers"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -95,7 +95,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                android:text="Delivery Address"
+                android:text="@string/delivery_address"
                 android:textSize="18sp"
                 android:textStyle="bold" />
             <androidx.cardview.widget.CardView
@@ -117,7 +117,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="12dp"
                         android:layout_marginTop="12dp"
-                        android:text="Delivery Address"
+                        android:text="@string/delivery_address2"
                         android:textSize="14sp"
                         android:textStyle="bold"
 
@@ -136,7 +136,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="12dp"
                         android:layout_marginTop="8dp"
-                        android:text="Delivery Time"
+                        android:text="@string/delivery_time"
 
                         android:textSize="14sp"
                         android:textStyle="bold" />
@@ -199,7 +199,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                android:text="Items"
+                android:text="@string/items"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -225,7 +225,7 @@
                         android:id="@+id/textVfiuew7"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Your items"
+                        android:text="@string/your_items"
                         android:textColor="#094F6F"
                         android:textSize="18sp"
                         android:textStyle="bold" />
@@ -255,7 +255,7 @@
                     android:backgroundTint="#E55763"
                     android:gravity="center"
                     android:padding="12dp"
-                    android:text="Start delivery"
+                    android:text="@string/start_delivery"
                     android:textColor="@color/white"
                     android:textSize="20sp"
                     android:textStyle="bold"
