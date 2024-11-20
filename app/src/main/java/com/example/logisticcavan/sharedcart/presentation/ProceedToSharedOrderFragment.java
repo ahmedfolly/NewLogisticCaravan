@@ -3,45 +3,32 @@ package com.example.logisticcavan.sharedcart.presentation;
 import static androidx.navigation.Navigation.findNavController;
 
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavDirections;
-
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
-import android.widget.Toast;
-
 import com.example.logisticcavan.R;
-import com.example.logisticcavan.auth.domain.entity.UserInfo;
 import com.example.logisticcavan.auth.presentation.AuthViewModel;
 import com.example.logisticcavan.common.utils.Constant;
-import com.example.logisticcavan.navigations.commonui.MainActivity;
 import com.example.logisticcavan.orders.addorder.presentation.AddOrderViewModel;
 import com.example.logisticcavan.orders.getOrders.domain.Order;
 import com.example.logisticcavan.sharedcart.domain.model.SharedCartItem;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.radiobutton.MaterialRadioButton;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.firebase.firestore.auth.User;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.atomic.AtomicInteger;
-
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
@@ -62,7 +49,6 @@ public class ProceedToSharedOrderFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_proceed_to_shared_order, container, false);
     }
 
