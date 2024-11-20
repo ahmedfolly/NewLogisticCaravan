@@ -2,17 +2,20 @@ package com.example.logisticcavan.sharedcart;
 
 import com.example.logisticcavan.sharedcart.data.AddToSharedCartRepoImp;
 import com.example.logisticcavan.sharedcart.data.AddUserToSharedCartRepoImp;
+import com.example.logisticcavan.sharedcart.data.DeleteSharedCartRepoImp;
 import com.example.logisticcavan.sharedcart.data.DeleteSharedProductRepoImp;
 import com.example.logisticcavan.sharedcart.data.GetSharedCartRepoImp;
 import com.example.logisticcavan.sharedcart.data.GetSharedProductsRepoImp;
 import com.example.logisticcavan.sharedcart.domain.repo.AddSharedCartItemRepo;
 import com.example.logisticcavan.sharedcart.domain.repo.AddUserToSharedCartRepo;
+import com.example.logisticcavan.sharedcart.domain.repo.DeleteSharedCartRepo;
 import com.example.logisticcavan.sharedcart.domain.repo.DeleteSharedProductRepo;
 import com.example.logisticcavan.sharedcart.domain.repo.GetSharedCartRepo;
 import com.example.logisticcavan.sharedcart.domain.repo.GetSharedProductsRepo;
 import com.example.logisticcavan.sharedcart.domain.usecases.AddToSharedCartUseCase;
 import com.example.logisticcavan.sharedcart.domain.usecases.AddUserToSharedCartUseCase;
 import com.example.logisticcavan.sharedcart.domain.usecases.DeleteSharedCartProductUseCase;
+import com.example.logisticcavan.sharedcart.domain.usecases.DeleteSharedCartUseCase;
 import com.example.logisticcavan.sharedcart.domain.usecases.GetSharedCartUseCase;
 import com.example.logisticcavan.sharedcart.domain.usecases.GetSharedProductsUseCase;
 import com.google.firebase.auth.FirebaseAuth;
@@ -27,6 +30,13 @@ import dagger.hilt.android.components.ViewModelComponent;
 @InstallIn(ViewModelComponent.class)
 public class SharedCartDI {
 
+    @Provides
+    public DeleteSharedCartUseCase provideDeleteSharedCartUseCase(DeleteSharedCartRepo deleteSharedCartRepo){
+        return new DeleteSharedCartUseCase(deleteSharedCartRepo);
+    }
+    @Provides DeleteSharedCartRepo provideDeleteSharedCartRepository(FirebaseFirestore firestore){
+        return new DeleteSharedCartRepoImp(firestore);
+    }
     @Provides
     public DeleteSharedCartProductUseCase provideDeleteSharedCartProductUseCase(DeleteSharedProductRepo deleteSharedProductRepo){
         return new DeleteSharedCartProductUseCase(deleteSharedProductRepo);

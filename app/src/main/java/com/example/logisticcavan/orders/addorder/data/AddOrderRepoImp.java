@@ -66,7 +66,9 @@ public class AddOrderRepoImp implements AddOrderRepo {
         return Single.create(
                 emitter->{
                     for (String email : userEmails){
-                        addOrderToCurrentUser(orderId,email);
+                       if (!email.equals(getUserEmail())){
+                           addOrderToCurrentUser(orderId,email);
+                       }
                     }
                     emitter.onSuccess("Uploaded to all users");
                 }

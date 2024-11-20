@@ -53,6 +53,7 @@ public class UserOrdersFragment extends Fragment {
         getUserOrders();
     }
     private void getUserOrders(){
+        ordersOfCurrUserViewModel.fetchOrders();
         ordersOfCurrUserViewModel.getOrdersLiveData().observe(getViewLifecycleOwner(),ordersResult->{
             ordersResult.handle(ordersList->{
                 Log.d("TAG", "getUserOrders: "+ordersList.size());

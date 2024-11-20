@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import com.example.logisticcavan.R;
@@ -38,12 +39,14 @@ public class ProceedToSharedOrderFragment extends Fragment {
     private AddOrderViewModel addOrderViewModel;
     private TextInputEditText villaNumInput;
     private ProceedToSharedOrderFragmentArgs args;
+    private DeleteSharedCartViewModel deleteSharedCartViewModel;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         authViewModel = new ViewModelProvider(this).get(AuthViewModel.class);
         addOrderViewModel = new ViewModelProvider(this).get(AddOrderViewModel.class);
+        deleteSharedCartViewModel = new ViewModelProvider(this).get(DeleteSharedCartViewModel.class);
     }
 
     @Override
@@ -58,10 +61,12 @@ public class ProceedToSharedOrderFragment extends Fragment {
         villaNumInput = requireView().findViewById(R.id.villa_number_input_sharedOrder);
         args = ProceedToSharedOrderFragmentArgs.fromBundle(getArguments());
         SharedCartItem[] sharedCartItems = args.getSharedProducts();
+
         MaterialButton placeOrderButton = view.findViewById(R.id.place_shared_order_btn);
         RadioGroup radioGroup = view.findViewById(R.id.payment_methods_group);
         MaterialRadioButton cashOnDeliveryBtn = view.findViewById(R.id.cash_on_delivery_radio_button);
         MaterialRadioButton cardBtn = view.findViewById(R.id.credit_card_radio_button);
+        ProgressBar progressBar = view.findViewById(R.id.upload_shared_order_progress);
 
         MaterialRadioButton applePay = view.findViewById(R.id.apple_pay_radio_button);
 
@@ -71,18 +76,27 @@ public class ProceedToSharedOrderFragment extends Fragment {
             addOrderViewModel.addOrder(order, new AddOrderViewModel.UploadOrderCallback() {
                 @Override
                 public void onSuccess(String orderId) {
+                    Log.d("TAG", "onSuccess triggerd ");
                     addOrderViewModel.addOrderIdToUser(orderId, Arrays.asList(args.getUserIds()), new AddOrderViewModel.UploadOrderToUser() {
                         @Override
                         public void onSuccess(String message) {
-                            NavDirections directions = ProceedToSharedOrderFragmentDirections.actionProceedToSharedOrderFragmentToTrakOrderFragment(Constant.flagFromPlaceOrderScreen, "", "", "");
-                            findNavController(requireView()).navigate(directions);
+                            deleteSharedCartViewModel.deleteSharedCart(args.getSharedCart().getSharedCartId(), new DeleteSharedCartViewModel.DeleteSharedCartCallback() {
+                                @Override
+                                public void onSuccess(String message) {
+                                    NavDirections directions = ProceedToSharedOrderFragmentDirections.actionProceedToSharedOrderFragmentToTrakOrderFragment(Constant.flagFromPlaceOrderScreen, "", "", "");
+                                    findNavController(requireView()).navigate(directions);
+                                }
+                                @Override
+                                public void onError(String message) {
+
+                                }
+                            });
                         }
                         @Override
                         public void onError(String message) {
 
                         }
                     });
-
                 }
 
                 @Override
@@ -92,7 +106,7 @@ public class ProceedToSharedOrderFragment extends Fragment {
 
                 @Override
                 public void onLoading() {
-
+                    progressBar.setVisibility(View.VISIBLE);
                 }
             });
         });
