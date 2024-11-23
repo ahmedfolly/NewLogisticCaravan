@@ -173,7 +173,16 @@
                             android:textAlignment="textStart"
                             android:textColor="@android:color/transparent" />
                     </LinearLayout>
-
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/selected_time"
+                        android:textSize="15sp"
+                        android:layout_margin="8dp"
+                        android:drawableStart="@drawable/baseline_access_time_24"
+                        android:drawablePadding="8dp"
+                        android:text="1293890"
+                        android:visibility="gone"/>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 

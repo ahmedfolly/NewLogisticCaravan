@@ -9,6 +9,7 @@
         <item>Pearl island</item>
     </string-array>
     <string-array name="schedule_list">
-    <item>Scheduled time</item>
-</string-array>
+        <item>Arrive now</item>
+        <item>Scheduled time</item>
+    </string-array>
 </resources>
