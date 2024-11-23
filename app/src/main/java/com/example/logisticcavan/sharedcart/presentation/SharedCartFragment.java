@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,7 +50,7 @@ public class SharedCartFragment extends Fragment implements SharedCartItemsAdapt
     private AuthViewModel authViewModel;
     private NavController navController;
 
-    private DeleteSharedCartViewModel deleteSharedCartViewModel;
+    private DeleteSharedProductViewModel deleteSharedCartViewModel;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -60,7 +59,7 @@ public class SharedCartFragment extends Fragment implements SharedCartItemsAdapt
         addUserEmailViewModel = new ViewModelProvider(this).get(AddNewUserEmailToSharedCartViewModel.class);
         authViewModel = new ViewModelProvider(this).get(AuthViewModel.class);
         getSharedCartViewModel = new ViewModelProvider(this).get(GetSharedCartViewModel.class);
-        deleteSharedCartViewModel = new ViewModelProvider(this).get(DeleteSharedCartViewModel.class);
+        deleteSharedCartViewModel = new ViewModelProvider(this).get(DeleteSharedProductViewModel.class);
         sharedCartItemsAdapter = new SharedCartItemsAdapter(authViewModel, getSharedCartViewModel,this);
     }
 
@@ -93,7 +92,12 @@ public class SharedCartFragment extends Fragment implements SharedCartItemsAdapt
                     String restaurantId = sharedCart.getRestaurantId();
                     String restaurantName = sharedCart.getRestaurantName();
                     String[] customers = sharedCart.getUserIds().toArray(new String[0]);
-                    NavDirections action = SharedCartFragmentDirections.actionSharedCartFragmentToProceedToSharedOrderFragment(sharedCartItems,restaurantName,restaurantId,customers);
+                    NavDirections action = SharedCartFragmentDirections
+                            .actionSharedCartFragmentToProceedToSharedOrderFragment(sharedCartItems,
+                                    restaurantName,
+                                    restaurantId,
+                                    customers,
+                                    sharedCart);
                     navController.navigate(action);
                 }
 
@@ -219,7 +223,7 @@ public class SharedCartFragment extends Fragment implements SharedCartItemsAdapt
     }
     @Override
     public void onDeleteBtnClicked(String productId) {
-        deleteSharedCartViewModel.deleteSharedCartProduct(productId, new DeleteSharedCartViewModel.DeleteSharedProductCallback() {
+        deleteSharedCartViewModel.deleteSharedCartProduct(productId, new DeleteSharedProductViewModel.DeleteSharedProductCallback() {
             @Override
             public void onSuccess(String message) {
                 Toast.makeText(requireContext(),message,Toast.LENGTH_SHORT).show();

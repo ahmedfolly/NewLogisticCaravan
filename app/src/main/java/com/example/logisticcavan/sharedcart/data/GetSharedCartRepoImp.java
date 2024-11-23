@@ -29,7 +29,8 @@ public class GetSharedCartRepoImp implements GetSharedCartRepo {
                             .addOnSuccessListener(v->{
                                if (!v.isEmpty()){
                                    SharedCart sharedCart = v.toObjects(SharedCart.class).get(0);
-                                   Log.d("TAG", "getAdminId: "+sharedCart.getAdminId());
+                                   sharedCart.setSharedCartId(v.getDocuments().get(0).getId());
+                                   Log.d("TAG", "getSharedCartObject: "+sharedCart.getSharedCartId());
                                    emitter.onSuccess(sharedCart);
                                }else {
                                    SharedCart sharedCart = new SharedCart();

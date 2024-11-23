@@ -2,8 +2,7 @@ package com.example.logisticcavan.sharedcart.presentation;
 
 import androidx.lifecycle.ViewModel;
 
-import com.example.logisticcavan.cart.domain.usecases.DeleteCartItemByIdUseCase;
-import com.example.logisticcavan.sharedcart.domain.usecases.DeleteSharedCartProductUseCase;
+import com.example.logisticcavan.sharedcart.domain.usecases.DeleteSharedCartUseCase;
 
 import javax.inject.Inject;
 
@@ -12,20 +11,30 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable;
 
 @HiltViewModel
 public class DeleteSharedCartViewModel extends ViewModel {
-    private final DeleteSharedCartProductUseCase deleteSharedCartProductUseCase;
+    private final DeleteSharedCartUseCase deleteSharedCartUseCase;
     private final CompositeDisposable disposable = new CompositeDisposable();
     @Inject
-    DeleteSharedCartViewModel(DeleteSharedCartProductUseCase deleteSharedCartProductUseCase){
-        this.deleteSharedCartProductUseCase = deleteSharedCartProductUseCase;
+    public DeleteSharedCartViewModel(DeleteSharedCartUseCase deleteSharedCartUseCase) {
+        this.deleteSharedCartUseCase = deleteSharedCartUseCase;
     }
-
-    public void deleteSharedCartProduct(String productId,DeleteSharedProductCallback deleteSharedProductCallback){
-        disposable.add(deleteSharedCartProductUseCase.deleteSharedProduct(productId).subscribe(
-                deleteSharedProductCallback::onSuccess
+    public void deleteSharedCart(String sharedProductId,DeleteSharedCartCallback deleteSharedProductCallback){
+        disposable.add(deleteSharedCartUseCase.deleteSharedCart(sharedProductId).subscribe(
+                result->{
+                    if (result)
+                        deleteSharedProductCallback.onSuccess("Shared Cart Deleted");
+                    else
+                        deleteSharedProductCallback.onSuccess("There is a problem in deleting shared cart");
+                }
         ));
     }
-    public interface DeleteSharedProductCallback{
+    public interface DeleteSharedCartCallback{
         void onSuccess(String message);
         void onError(String message);
+    }
+
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+        disposable.clear();
     }
 }

@@ -2,6 +2,7 @@ package com.example.logisticcavan;
 
 import static androidx.navigation.fragment.FragmentKt.findNavController;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,13 +17,18 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+
+import com.example.logisticcavan.auth.presentation.AuthViewModel;
 import com.example.logisticcavan.cart.presentaion.CartViewModel;
 import com.example.logisticcavan.common.utils.Constant;
 import com.example.logisticcavan.orders.addorder.presentation.AddOrderViewModel;
 import com.example.logisticcavan.orders.getOrders.domain.Order;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.radiobutton.MaterialRadioButton;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -35,6 +41,7 @@ public class PlaceOrderFragment extends Fragment {
     private AddOrderViewModel addOrderViewModel;
     private PlaceOrderFragmentArgs data;
     private ProgressBar progressBar;
+    private AuthViewModel authViewModel;
 
     private static OrderPlaceCallback orderPlaceCallback;
     NavController navController;
@@ -47,7 +54,7 @@ public class PlaceOrderFragment extends Fragment {
         super.onCreate(savedInstanceState);
         cartViewModel = new ViewModelProvider(this).get(CartViewModel.class);
         addOrderViewModel = new ViewModelProvider(this).get(AddOrderViewModel.class);
-
+        authViewModel = new ViewModelProvider(this).get(AuthViewModel.class);
     }
 
     @Override
@@ -57,6 +64,7 @@ public class PlaceOrderFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_place_order, container, false);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -93,6 +101,9 @@ public class PlaceOrderFragment extends Fragment {
                     paymentMethod = "Apple pay";
                 }
                 order.setGeneralDetails(createGeneralDetails(paymentMethod, totalPrice));
+                List<String> customers = new ArrayList<>();
+                customers.add(getUserEmail());
+                order.setCustomers(customers);
                 uploadOrder(order);
             }else {
                 applePay.setError("Please select a payment method");
@@ -151,5 +162,8 @@ public class PlaceOrderFragment extends Fragment {
         void onSuccess();
         void onError();
         void onLoading();
+    }
+    private String getUserEmail(){
+        return authViewModel.getUserInfoLocally().getEmail();
     }
 }

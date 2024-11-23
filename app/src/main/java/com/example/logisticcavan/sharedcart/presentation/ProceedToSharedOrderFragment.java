@@ -3,45 +3,33 @@ package com.example.logisticcavan.sharedcart.presentation;
 import static androidx.navigation.Navigation.findNavController;
 
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavDirections;
-
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
-import android.widget.Toast;
-
 import com.example.logisticcavan.R;
-import com.example.logisticcavan.auth.domain.entity.UserInfo;
 import com.example.logisticcavan.auth.presentation.AuthViewModel;
 import com.example.logisticcavan.common.utils.Constant;
-import com.example.logisticcavan.navigations.commonui.MainActivity;
 import com.example.logisticcavan.orders.addorder.presentation.AddOrderViewModel;
 import com.example.logisticcavan.orders.getOrders.domain.Order;
 import com.example.logisticcavan.sharedcart.domain.model.SharedCartItem;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.radiobutton.MaterialRadioButton;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.firebase.firestore.auth.User;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.atomic.AtomicInteger;
-
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
@@ -51,18 +39,19 @@ public class ProceedToSharedOrderFragment extends Fragment {
     private AddOrderViewModel addOrderViewModel;
     private TextInputEditText villaNumInput;
     private ProceedToSharedOrderFragmentArgs args;
+    private DeleteSharedCartViewModel deleteSharedCartViewModel;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         authViewModel = new ViewModelProvider(this).get(AuthViewModel.class);
         addOrderViewModel = new ViewModelProvider(this).get(AddOrderViewModel.class);
+        deleteSharedCartViewModel = new ViewModelProvider(this).get(DeleteSharedCartViewModel.class);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_proceed_to_shared_order, container, false);
     }
 
@@ -72,10 +61,12 @@ public class ProceedToSharedOrderFragment extends Fragment {
         villaNumInput = requireView().findViewById(R.id.villa_number_input_sharedOrder);
         args = ProceedToSharedOrderFragmentArgs.fromBundle(getArguments());
         SharedCartItem[] sharedCartItems = args.getSharedProducts();
+
         MaterialButton placeOrderButton = view.findViewById(R.id.place_shared_order_btn);
         RadioGroup radioGroup = view.findViewById(R.id.payment_methods_group);
         MaterialRadioButton cashOnDeliveryBtn = view.findViewById(R.id.cash_on_delivery_radio_button);
         MaterialRadioButton cardBtn = view.findViewById(R.id.credit_card_radio_button);
+        ProgressBar progressBar = view.findViewById(R.id.upload_shared_order_progress);
 
         MaterialRadioButton applePay = view.findViewById(R.id.apple_pay_radio_button);
 
@@ -85,18 +76,27 @@ public class ProceedToSharedOrderFragment extends Fragment {
             addOrderViewModel.addOrder(order, new AddOrderViewModel.UploadOrderCallback() {
                 @Override
                 public void onSuccess(String orderId) {
+                    Log.d("TAG", "onSuccess triggerd ");
                     addOrderViewModel.addOrderIdToUser(orderId, Arrays.asList(args.getUserIds()), new AddOrderViewModel.UploadOrderToUser() {
                         @Override
                         public void onSuccess(String message) {
-                            NavDirections directions = ProceedToSharedOrderFragmentDirections.actionProceedToSharedOrderFragmentToTrakOrderFragment(Constant.flagFromPlaceOrderScreen, "", "", "");
-                            findNavController(requireView()).navigate(directions);
+                            deleteSharedCartViewModel.deleteSharedCart(args.getSharedCart().getSharedCartId(), new DeleteSharedCartViewModel.DeleteSharedCartCallback() {
+                                @Override
+                                public void onSuccess(String message) {
+                                    NavDirections directions = ProceedToSharedOrderFragmentDirections.actionProceedToSharedOrderFragmentToTrakOrderFragment(Constant.flagFromPlaceOrderScreen, "", "", "");
+                                    findNavController(requireView()).navigate(directions);
+                                }
+                                @Override
+                                public void onError(String message) {
+
+                                }
+                            });
                         }
                         @Override
                         public void onError(String message) {
 
                         }
                     });
-
                 }
 
                 @Override
@@ -106,7 +106,7 @@ public class ProceedToSharedOrderFragment extends Fragment {
 
                 @Override
                 public void onLoading() {
-
+                    progressBar.setVisibility(View.VISIBLE);
                 }
             });
         });

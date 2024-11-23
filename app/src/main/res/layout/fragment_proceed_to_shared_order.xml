@@ -28,6 +28,15 @@
             android:gravity="center|start"
             android:layout_margin="4dp"/>
     </LinearLayout>
+    <ProgressBar
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:indeterminate="true"
+        android:progressTint="#244D60"
+        android:layout_gravity="center"
+        android:id="@+id/upload_shared_order_progress"/>
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">

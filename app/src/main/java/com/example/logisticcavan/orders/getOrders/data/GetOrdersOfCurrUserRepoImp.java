@@ -43,11 +43,9 @@ public class GetOrdersOfCurrUserRepoImp implements GetOrdersOfCurrUser {
                             emitter.onNext(MyResult.error(e));
                             emitter.onComplete();
                         }
+                        Log.d("GetOrders", "SnapshotListener triggered");
                         assert v != null;
                         List<Order> orders = v.toObjects(Order.class);
-                        for (Order order : orders) {
-                            Log.d("TAG", "ordersOfCurrUser: " + order.getCourier().get("name"));
-                        }
                         emitter.onNext(MyResult.success(orders));
                     });
 
@@ -67,6 +65,8 @@ public class GetOrdersOfCurrUserRepoImp implements GetOrdersOfCurrUser {
                             emitter.onComplete();
                             return;
                         }
+                        assert v != null;
+                        Log.d("GetOrders", "SnapshotListener triggered");
                         for (DocumentSnapshot documentSnapshot : v.getDocuments()){
                             String orderId = documentSnapshot.getString("orderId");
                             orderIds.add(orderId);

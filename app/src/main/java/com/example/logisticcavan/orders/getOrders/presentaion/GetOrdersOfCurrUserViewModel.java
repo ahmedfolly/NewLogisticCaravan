@@ -24,7 +24,6 @@ public class GetOrdersOfCurrUserViewModel extends ViewModel {
                                         GetOrdersIdsUseCase getOrdersIdsUseCase) {
         this.getOrdersOfCurrUserUseCase = getOrdersOfCurrUserUseCase;
         this.getOrdersIdsUseCase = getOrdersIdsUseCase;
-        fetchOrders();
     }
 
     public LiveData<MyResult<List<Order>>> getOrdersLiveData() {
