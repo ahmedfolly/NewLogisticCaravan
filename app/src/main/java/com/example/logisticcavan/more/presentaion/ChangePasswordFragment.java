@@ -18,6 +18,7 @@ import com.example.logisticcavan.R;
 import com.example.logisticcavan.auth.data.LocalStorageRepository;
 import com.example.logisticcavan.common.base.BaseFragment;
 import com.example.logisticcavan.databinding.FragmentChangePasswordBinding;
+import com.example.logisticcavan.navigations.commonui.MainActivity;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.concurrent.CompletableFuture;
@@ -127,6 +128,14 @@ public class ChangePasswordFragment extends BaseFragment {
             }
         });
 
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (getActivity() instanceof MainActivity) {
+            MainActivity mainActivity = (MainActivity) getActivity();
+            mainActivity.disappearBottomNav();
+        }
     }
 
 }

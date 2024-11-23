@@ -26,8 +26,8 @@ import com.example.logisticcavan.sharedcart.domain.model.SharedProduct;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 public class AddOrderBottomSheet extends BottomSheetDialogFragment {
-    private AddToCartCallback addToCartCallback;
-    private AddToSharedCartCallback addToSharedCartCallback;
+    private final AddToCartCallback addToCartCallback;
+    private final AddToSharedCartCallback addToSharedCartCallback;
 
     public AddOrderBottomSheet(AddToCartCallback addToCartCallback,AddToSharedCartCallback addToSharedCartCallback) {
         this.addToCartCallback = addToCartCallback;
@@ -73,7 +73,7 @@ public class AddOrderBottomSheet extends BottomSheetDialogFragment {
         DetectQuantityUtil.decreaseOrderItemQuantity("order", null, decreaseOrderQuantityBtn, totalPriceTxt, orderQuantity, price);
         addToCart(view, product, orderQuantity, totalPriceTxt);
 
-        addProductToSharedCart(product.getProductID(), orderQuantity);
+        addProductToSharedCart(product,product.getProductID(), orderQuantity);
     }
 
     private void addToCart(View view, Product product, TextView quantityText, TextView totalPriceTxt) {
@@ -85,12 +85,12 @@ public class AddOrderBottomSheet extends BottomSheetDialogFragment {
             dismiss();
         });
     }
-    private void addProductToSharedCart( String productId, TextView quantityText) {
+    private void addProductToSharedCart( Product product,String productId, TextView quantityText) {
         ImageView addToSharedCartBtn = requireView().findViewById(R.id.add_to_group_order);
         addToSharedCartBtn.setOnClickListener(v -> {
             int quantity = Integer.parseInt(quantityText.getText().toString());
 
-            addToSharedCartCallback.addToSharedCart(productId, quantity);
+            addToSharedCartCallback.addToSharedCart(product,productId, quantity);
             dismiss();
         });
     }
@@ -98,6 +98,6 @@ public class AddOrderBottomSheet extends BottomSheetDialogFragment {
         void addToCart(Product product, int quantity, double price);
     }
    public interface AddToSharedCartCallback{
-        void addToSharedCart(String productId, int quantity);
+        void addToSharedCart(Product product,String productId, int quantity);
    }
 }

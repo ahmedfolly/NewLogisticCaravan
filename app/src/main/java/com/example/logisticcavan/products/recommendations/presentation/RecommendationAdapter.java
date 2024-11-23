@@ -19,8 +19,10 @@ import com.example.logisticcavan.products.getproducts.domain.Product;
 import java.util.Objects;
 
 public class RecommendationAdapter extends ListAdapter<Product, RecommendationAdapter.RecommendationVH> {
-    public RecommendationAdapter() {
+    private RecommendedProductListener recommendedProductListener;
+    public RecommendationAdapter(RecommendedProductListener recommendedProductListener) {
         super(new RecommendedProductDiffUtil());
+        this.recommendedProductListener = recommendedProductListener;
     }
 
     @NonNull
@@ -35,6 +37,9 @@ public class RecommendationAdapter extends ListAdapter<Product, RecommendationAd
         Product product = getItem(position);
         holder.productName.setText(product.getProductName());
         Glide.with(holder.itemView.getContext()).load(product.getProductImageLink()).into(holder.productImage);
+        holder.itemView.setOnClickListener(v->{
+            recommendedProductListener.onProductClicked(product);
+        });
     }
 
     public static class RecommendationVH extends RecyclerView.ViewHolder {
@@ -60,5 +65,8 @@ public class RecommendationAdapter extends ListAdapter<Product, RecommendationAd
         public boolean areContentsTheSame(@NonNull Product oldItem, @NonNull Product newItem) {
             return oldItem == newItem;
         }
+    }
+    public interface RecommendedProductListener {
+        void onProductClicked(Product product);
     }
 }

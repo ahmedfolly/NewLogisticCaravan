@@ -84,22 +84,17 @@
 
     </RelativeLayout>
    <TextView
-       app:drawableStartCompat="@drawable/group_add_24px"
        android:layout_width="wrap_content"
-       android:drawablePadding="8dp"
+       android:minWidth="64dp"
        android:layout_height="wrap_content"
        android:background="@drawable/text_background"
        android:text="@string/group_order"
        android:textStyle="bold"
        android:id="@+id/group_order_detail"
-       android:textSize="18sp"
+       android:textSize="15sp"
        android:textColor="@color/black"
+       android:gravity="center"
        android:layout_margin="16dp"/>
-<!--    <androidx.recyclerview.widget.RecyclerView-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        tools:listitem="@layout/category_item"-->
-<!--        android:id="@+id/categories_container_detail"/>-->
 
     <ProgressBar
         android:layout_width="wrap_content"

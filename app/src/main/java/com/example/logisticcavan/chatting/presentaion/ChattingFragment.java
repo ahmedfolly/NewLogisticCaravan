@@ -110,7 +110,6 @@ public class ChattingFragment extends BaseFragment {
 
     private void updateUi(boolean isVisible) {
         binding.progressBar.setVisibility(View.GONE);
-
         if (isVisible) {
             binding.noMessages.setVisibility(View.GONE);
             binding.messages.setVisibility(View.VISIBLE);

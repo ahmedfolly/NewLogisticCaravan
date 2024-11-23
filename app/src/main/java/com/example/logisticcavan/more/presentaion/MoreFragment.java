@@ -17,6 +17,7 @@ import androidx.navigation.Navigation;
 import com.example.logisticcavan.R;
 import com.example.logisticcavan.auth.presentation.AuthActivity;
 import com.example.logisticcavan.databinding.FragmentMoreBinding;
+import com.example.logisticcavan.navigations.commonui.MainActivity;
 import com.google.firebase.auth.FirebaseAuth;
 
 import javax.inject.Inject;
@@ -72,5 +73,4 @@ public class MoreFragment extends Fragment {
         startActivity(new Intent(getActivity(), AuthActivity.class));
         getActivity().finish();
     }
-
 }

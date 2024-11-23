@@ -20,8 +20,17 @@ public class Product implements Parcelable {
     private Long expirationData = 0L;
     private Long removalDate = 0L;
     private String statusExpiration = "";
+    private String productOwner;
 
     public Product() {
+    }
+
+    public String getProductOwner() {
+        return productOwner;
+    }
+
+    public void setProductOwner(String productOwner) {
+        this.productOwner = productOwner;
     }
 
     protected Product(Parcel in) {

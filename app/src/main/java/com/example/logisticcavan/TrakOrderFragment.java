@@ -79,7 +79,8 @@ public class TrakOrderFragment extends Fragment {
             setProgressSmoothly(100);
             changeBackground(shippedImage,1250);
             statusDesc.setText(R.string.shipped_text);
-        }if (flag.equals(Constant.DELIVERED)){
+        }
+        if (flag.equals(Constant.DELIVERED)){
             rateText.setVisibility(View.VISIBLE);
             rateText.setOnClickListener(v->{
                 String restaurantId = args.getRestaurantId();
@@ -104,7 +105,7 @@ public class TrakOrderFragment extends Fragment {
             navController.navigate(action);
         });
 
-        onBackBtnPressed();
+        onBackBtnPressed(flag);
     }
 
     private void changeBackground(ImageView imageView,int duration){
@@ -138,14 +139,14 @@ public class TrakOrderFragment extends Fragment {
         View snackbarView = snackbar.getView();
 
         //setup snackbar view
-        setupSnackbarSiew(snackbar, customSnackView, snackbarView);
+        setupSnackbarView(snackbar, customSnackView, snackbarView);
         //setup snackbar text
         setupSnackbarText(message, customSnackView);
         //setup snackbar settings
         setupSnackbarSettings(snackbar, snackbarView);
     }
 
-    private void setupSnackbarSiew(Snackbar snackbar, View customSnackView, View snackbarView) {
+    private void setupSnackbarView(Snackbar snackbar, View customSnackView, View snackbarView) {
         @SuppressLint("RestrictedApi")
         Snackbar.SnackbarLayout snackbarLayout = (Snackbar.SnackbarLayout) snackbarView;
         snackbarLayout.addView(customSnackView, 0);
@@ -167,15 +168,17 @@ public class TrakOrderFragment extends Fragment {
         snackbar.show();
     }
 
-    void onBackBtnPressed(){
+    void onBackBtnPressed(String flag){
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                // Get the NavController
                 NavController navController =findNavController(requireView());
-
-                // Navigate to the specific destination
-                navController.navigate(R.id.action_trakOrderFragment_to_homeFragment); // Replace with your target destination ID
+                if (flag.equals(Constant.flagFromPlaceOrderScreen)){
+                  navController.navigate(R.id.action_trakOrderFragment_to_homeFragment); // Replace with your target destination ID
+              }
+                else{
+                    navController.popBackStack();
+                }
             }
         });
     }

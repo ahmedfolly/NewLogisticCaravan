@@ -3,6 +3,7 @@ package com.example.logisticcavan.restaurants.domain;
 import com.example.logisticcavan.common.utils.MyResult;
 
 import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.Single;
 
 public class GetRestaurantUseCase {
     private final GetRestaurantDataRepo repo;
@@ -11,7 +12,7 @@ public class GetRestaurantUseCase {
         this.repo = repo;
     }
 
-    public Observable<MyResult<Restaurant>> execute(String restaurantId){
+    public Single<Restaurant> execute(String restaurantId){
         return repo.getRestaurant(restaurantId);
     }
 }

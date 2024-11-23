@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.logisticcavan.common.utils.MyResult;
+import com.example.logisticcavan.restaurants.domain.GetRestaurantUseCase;
 import com.example.logisticcavan.restaurants.domain.GetRestaurantsByIdsUseCase;
 import com.example.logisticcavan.restaurants.domain.Restaurant;
 
@@ -26,6 +27,7 @@ public class GetRestaurantViewModel extends ViewModel {
     @Inject
     public GetRestaurantViewModel( GetRestaurantsByIdsUseCase getRestaurantsByIds) {
         this.getRestaurantsByIds = getRestaurantsByIds;
+
     }
 
     public LiveData<MyResult<List<Restaurant>>> getRestaurant() {
@@ -37,7 +39,6 @@ public class GetRestaurantViewModel extends ViewModel {
             _restaurantLiveData.postValue(MyResult.error(new Exception(error.getMessage())));
         }));
     }
-
     @Override
     protected void onCleared() {
         super.onCleared();

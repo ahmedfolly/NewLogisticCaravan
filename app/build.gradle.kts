@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.logisticcavan"
-        minSdk = 26
+        minSdk = 31
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -74,6 +74,9 @@ dependencies {
     implementation (libs.emptyrecyclerview)
 
     implementation (libs.andratingbar)
+
+    implementation (libs.androidx.core.splashscreen)
+
 
     implementation (libs.room)  // Room runtime
     annotationProcessor(libs.room.compiler) // To generate Room Database classes)

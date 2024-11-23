@@ -1,10 +1,12 @@
 package com.example.logisticcavan.navigations.commonui;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
@@ -13,10 +15,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -25,7 +29,10 @@ import android.widget.Toast;
 
 import com.example.logisticcavan.R;
 import com.example.logisticcavan.SharedViewModel;
+import com.example.logisticcavan.auth.presentation.AuthViewModel;
+import com.example.logisticcavan.cart.domain.models.CartItem;
 import com.example.logisticcavan.cart.presentaion.CartViewModel;
+import com.example.logisticcavan.cart.presentaion.ui.AddOrderBottomSheet;
 import com.example.logisticcavan.products.recommendations.presentation.RecommendationAdapter;
 import com.example.logisticcavan.products.recommendations.presentation.RecommendationViewModel;
 import com.example.logisticcavan.restaurants.presentation.CombinedProductsWithRestaurantsViewModel;
@@ -41,16 +48,24 @@ import com.example.logisticcavan.products.getproducts.presentation.ProductsAdapt
 import com.example.logisticcavan.restaurants.presentation.GetRestaurantViewModel;
 import com.example.logisticcavan.restaurants.presentation.GetRestaurantsViewModel;
 import com.example.logisticcavan.restaurants.presentation.RestaurantsAdapter;
+import com.example.logisticcavan.sharedcart.domain.model.SharedCart;
+import com.example.logisticcavan.sharedcart.domain.model.SharedProduct;
+import com.example.logisticcavan.sharedcart.presentation.AddToSharedCartViewModel;
+import com.example.logisticcavan.sharedcart.presentation.GetSharedCartViewModel;
 import com.example.logisticcavan.sharedcart.presentation.GetSharedProductsViewModel;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class HomeFragment extends BaseFragment implements CategoriesAdapter.OnItemSelected {
+public class HomeFragment extends BaseFragment implements CategoriesAdapter.OnItemSelected,
+        RecommendationAdapter.RecommendedProductListener,
+        AddOrderBottomSheet.AddToCartCallback,
+        AddOrderBottomSheet.AddToSharedCartCallback{
     private OffersViewModel offersViewModel;
     private GetProductsViewModel productsViewModel;
     private GetCategoryProductsViewModel categoryProductsViewModel;
@@ -66,19 +81,23 @@ public class HomeFragment extends BaseFragment implements CategoriesAdapter.OnIt
     private CombinedProductsWithRestaurantsViewModel combinedProductsWithRestaurantsViewModel;
     private GetRestaurantsViewModel getRestaurantsViewModel;
     private FrameLayout parent;
-    ImageView openCartScreen, caravanItems;
+    ImageView openCartScreen;
+    private CardView caravanItems;
     private CartViewModel cartViewModel;
 
     private SharedViewModel sharedViewModel;
 
-    private HomeFramentOpenedCallback homeFramentOpenedCallback;
+    private HomeFragmentOpenedCallback homeFramentOpenedCallback;
 
     private boolean isRatingSubmitted = false;
     private RecommendationAdapter recommendationAdapter;
     private RecommendationViewModel recommendationViewModel;
     private RecyclerView recommendedContainer;
     private GetSharedProductsViewModel getSharedProductsViewModel;
+    private AuthViewModel authViewModel;
 
+    private GetSharedCartViewModel getSharedCartViewModel;
+    private AddToSharedCartViewModel addToSharedCartViewModel;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,7 +114,10 @@ public class HomeFragment extends BaseFragment implements CategoriesAdapter.OnIt
         sharedViewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
         recommendationViewModel = new ViewModelProvider(this).get(RecommendationViewModel.class);
         getSharedProductsViewModel = new ViewModelProvider(this).get(GetSharedProductsViewModel.class);
-        recommendationAdapter = new RecommendationAdapter();
+        authViewModel = new ViewModelProvider(this).get(AuthViewModel.class);
+        getSharedCartViewModel = new ViewModelProvider(this).get(GetSharedCartViewModel.class);
+        addToSharedCartViewModel = new ViewModelProvider(this).get(AddToSharedCartViewModel.class);
+        recommendationAdapter = new RecommendationAdapter(this);
 //        PlaceOrderFragment.setOrderPlaceCallback(this);
     }
 
@@ -330,12 +352,16 @@ public class HomeFragment extends BaseFragment implements CategoriesAdapter.OnIt
     }
 
     private void getRecommendedProducts() {
+        ProgressBar progressBar = requireView().findViewById(R.id.on_recommendations_loading);
         recommendationViewModel.getProducts().observe(getViewLifecycleOwner(), result -> {
             result.handle(products -> {
                 recommendationAdapter.submitList(products);
                 setupRecommendedContainer(products);
+                progressBar.setVisibility(View.GONE);
             }, error -> {
+                progressBar.setVisibility(View.GONE);
             }, () -> {
+                progressBar.setVisibility(View.VISIBLE);
             });
         });
 
@@ -390,7 +416,178 @@ public class HomeFragment extends BaseFragment implements CategoriesAdapter.OnIt
         });
     }
 
-    public interface HomeFramentOpenedCallback {
+    @Override
+    public void onProductClicked(Product product) {
+        AddOrderBottomSheet bottomSheetDialogFragment = new AddOrderBottomSheet(this,this);
+        bottomSheetDialogFragment.setArguments(sendArgs(product));
+        bottomSheetDialogFragment.show(getParentFragmentManager(), bottomSheetDialogFragment.getTag());
+        bottomSheetDialogFragment.setCancelable(true);
+    }
+    private Bundle sendArgs(Product product) {
+        Bundle bundle = new Bundle();
+//        bundle.putParcelable("restaurant", args.getRestaurant());
+        bundle.putParcelable("product", product);
+        return bundle;
+    }
+
+    @Override
+    public void addToCart(Product product, int quantity, double price) {
+        CartItem cartItem = getCartItem(product, quantity, price);
+        //adding to cart operation.
+        cartViewModel.getRestaurantIdOfFirstItem(product.getResId(), new CartViewModel.GetRestaurantIdCallback() {
+            @Override
+            public void onSuccess(boolean isExist) {
+                Log.d("TAG", "resId  " + isExist);
+                if (isExist) {
+                    Log.d("TAG", "item found ");
+                    addCartItemToCart(cartItem);
+                } else {
+                    cartViewModel.getCartCount(new CartViewModel.CartCountCallback() {
+                        @Override
+                        public void onSuccess(int count) {
+                            Log.d("TAG", "main get cart count " + count);
+                            if (count == 0) {
+                                Log.d("TAG", "main  add item to empty database ");
+                                addCartItemToCart(cartItem);
+                            } else {
+                                setupWarningDialog(cartItem);
+                            }
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+
+                        }
+                    });
+
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+        });
+    }
+    private void addCartItemToCart(CartItem cartItem) {
+
+        cartViewModel.addToCart(cartItem, new CartViewModel.AddToCartResultCallback() {
+            @Override
+            public void onSuccess(boolean isAdded) {
+                Log.d("TAG", "tracking is added: from dialog ");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Toast.makeText(getContext(), "Error adding to cart" + e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+    @SuppressLint("SetTextI18n")
+    private void setupWarningDialog(CartItem cartItem) {
+        Dialog dialog = new Dialog(requireContext());
+        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawableResource(R.drawable.curved_borders);
+        dialog.setContentView(R.layout.warn_add_to_cart_dialog);
+        TextView dialogMessage = dialog.findViewById(R.id.dialog_message);
+        dialogMessage.setText("A new order will clear your cart");
+        Button continueBtn = dialog.findViewById(R.id.continue_btn);
+        Button cancelBtn = dialog.findViewById(R.id.cancel_btn);
+        dialog.show();
+        cancelBtn.setOnClickListener(v -> {
+            dialog.dismiss();
+        });
+        continueBtn.setOnClickListener(v -> {
+            cartViewModel.emptyCart(new CartViewModel.EmptyCartResultCallback() {
+                @Override
+                public void onSuccess(boolean isDeleted) {
+                    Log.d("TAG", "tracking is deleted: from dialog ");
+                    addCartItemToCart(cartItem);
+                    dialog.dismiss();
+                }
+
+                @Override
+                public void onError(Throwable e) {
+                    dialog.dismiss();
+                    Toast.makeText(getContext(), "Error deleting cart " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+            dialog.dismiss();
+        });
+    }
+    private CartItem getCartItem(Product product, int quantity, double price) {
+        CartItem cartItem = new CartItem();
+        cartItem.setRestaurantId(product.getResId());
+        cartItem.setProductName(product.getProductName());
+        cartItem.setProductImageLink(product.getProductImageLink());
+        cartItem.setPrice(price);
+        cartItem.setQuantity(quantity);
+        cartItem.setRestaurantName(product.getProductOwner());
+        cartItem.setProductId(product.getProductID());
+        cartItem.setCategoryName(product.getProductCategory());
+        return cartItem;
+    }
+
+    @Override
+    public void addToSharedCart(Product product,String productId, int quantity) {
+        SharedProduct sharedProduct = new SharedProduct();
+        sharedProduct.setAddedBy(getUserName());
+        sharedProduct.setProductId(productId);
+        sharedProduct.setQuantity(quantity);
+        getSharedCartViewModel.getSharedCart(new GetSharedCartViewModel.SharedCartCallback() {
+            @Override
+            public void onSuccess(SharedCart sharedCart) {
+                if (sharedCart.getRestaurantId() == null){
+                    Log.d("TAG", "onSuccess: "+sharedCart);
+                    addToSharedCartViewModel.addToSharedCart(sharedProduct,
+                            product.getResId(),
+                            product.getProductOwner(),
+                            new AddToSharedCartViewModel.AddToSharedCartCallback() {
+                                @Override
+                                public void onSuccess(String result) {
+                                    Toast.makeText(requireContext(),result,Toast.LENGTH_SHORT).show();
+                                }
+
+                                @Override
+                                public void onError(Throwable throwable) {
+                                    Log.d("TAG", "there is an error in adding product to shared cart ");
+                                }
+                            });
+                }if (sharedCart.getRestaurantId()!=null){
+                    String restaurantId = sharedCart.getRestaurantId();
+                    if (restaurantId.equals(product.getResId())){
+                        addToSharedCartViewModel.addToSharedCart(sharedProduct,
+                                product.getResId(),
+                                product.getProductOwner(),
+                                new AddToSharedCartViewModel.AddToSharedCartCallback() {
+                                    @Override
+                                    public void onSuccess(String result) {
+                                        Toast.makeText(requireContext(),result,Toast.LENGTH_SHORT).show();
+                                    }
+
+                                    @Override
+                                    public void onError(Throwable throwable) {
+                                        Log.d("TAG", "there is an error in adding product to shared cart ");
+                                    }
+                                });
+                    }else{
+                        Toast.makeText(requireContext(),"you try to add product from another restaurant",Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+
+            }
+        });
+
+    }
+
+    private String getUserName(){
+        return authViewModel.getUserInfoLocally().getName();
+    }
+    public interface HomeFragmentOpenedCallback {
         void onHomeFragmentOpened();
     }
 
