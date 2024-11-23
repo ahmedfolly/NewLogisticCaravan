@@ -28,8 +28,8 @@ import dagger.hilt.android.AndroidEntryPoint;
 @AndroidEntryPoint
 
 public class SignUpFragment extends BaseFragment {
-    private static final String TAG = "SignUpFragment";
 
+    private static final String TAG = "SignUpFragment";
     String firstName, lastName, address, phone, name, email, password, confirmPassword;    @Inject
     AuthViewModel authViewModel;
 
@@ -59,7 +59,6 @@ public class SignUpFragment extends BaseFragment {
 
         binding.signIn.setOnClickListener(view -> {
             navController.navigate(R.id.action_signUpFragment_to_loginFragment);
-
         });
 
         binding.signUp.setOnClickListener(view -> {
@@ -116,72 +115,51 @@ public class SignUpFragment extends BaseFragment {
         password = binding.editPassword.getText().toString().trim();
         confirmPassword = binding.editPasswordConfirme.getText().toString().trim();
 
-        // Validate First Name
         if (firstName.isEmpty()) {
-            binding.textInputFirstName.setError("First name is required");
+            binding.textInputFirstName.setError(getString(R.string.first_name_required));
             return false;
-        } else {
-            binding.textInputFirstName.setError(null);
         }
 
-        // Validate Last Name
         if (lastName.isEmpty()) {
-            binding.textInputLayoutLastName.setError("Last name is required");
+            binding.textInputLayoutLastName.setError(getString(R.string.last_name_required));
             return false;
-        } else {
-            binding.textInputLayoutLastName.setError(null);
         }
 
-        // Validate Address
         if (address.isEmpty()) {
-            binding.textInputLayoutAdress.setError("Address is required");
+            binding.textInputLayoutAdress.setError(getString(R.string.address_required));
             return false;
-        } else {
-            binding.textInputLayoutAdress.setError(null);
         }
 
-        // Validate Phone
         if (phone.isEmpty()) {
-            binding.textInputLayoutPhone.setError("Phone number is required");
+            binding.textInputLayoutPhone.setError(getString(R.string.phone_required));
             return false;
         } else if (!android.util.Patterns.PHONE.matcher(phone).matches()) {
-            binding.textInputLayoutPhone.setError("Enter a valid phone number");
+            binding.textInputLayoutPhone.setError(getString(R.string.invalid_phone));
             return false;
-        } else {
-            binding.textInputLayoutPhone.setError(null);
         }
 
-        // Validate Email
         if (email.isEmpty()) {
-            binding.textInputLayoutEmail.setError("Email is required");
+            binding.textInputLayoutEmail.setError(getString(R.string.email_required));
             return false;
         } else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            binding.textInputLayoutEmail.setError("Enter a valid email");
+            binding.textInputLayoutEmail.setError(getString(R.string.invalid_email));
             return false;
-        } else {
-            binding.textInputLayoutEmail.setError(null);
         }
 
-        // Validate Password
         if (password.isEmpty()) {
-            binding.textInputLayoutPassword.setError("Password is required");
+            binding.textInputLayoutPassword.setError(getString(R.string.password_required));
             return false;
         } else if (password.length() < 6) {
-            binding.textInputLayoutPassword.setError("Password must be at least 6 characters");
+            binding.textInputLayoutPassword.setError(getString(R.string.password_length));
             return false;
-        } else {
-            binding.textInputLayoutPassword.setError(null);
         }
 
-        // Validate Confirm Password
         if (confirmPassword.isEmpty()) {
-            binding.textInputLayoutConfirmPassworde.setError("Please confirm your password");
+            binding.textInputLayoutConfirmPassworde.setError(getString(R.string.confirm_password_required));
             return false;
         } else if (!confirmPassword.equals(password)) {
-            binding.textInputLayoutConfirmPassworde.setError("Passwords do not match");
+            binding.textInputLayoutConfirmPassworde.setError(getString(R.string.password_mismatch));
             return false;
-        } else {
-            binding.textInputLayoutConfirmPassworde.setError(null);
         }
 
         return true;

@@ -93,15 +93,12 @@ public class LoginFragment extends BaseFragment {
     }
 
     private void resultOfRetrievingUserInfo(CompletableFuture<UserInfo> result) {
-        Log.d("TAG", "resultOfRetrievingUserInfo: 13  ");
         result.thenAccept(userInfo -> {
             authViewModel.storeUserInfoLocally(userInfo);
             navigateBasedOnUser(userInfo.getType());
-            Log.d("TAG", "resultOfRetrievingUserInfo: "+userInfo.getType());
             dismissProgressDialog();
 
         }).exceptionally(ex -> {
-            Log.d("TAG", "resultOfRetrievingUserInfo: "+ex.getMessage());
             dismissProgressDialog();
 
             showError(binding.getRoot(), ex.getMessage());
@@ -109,8 +106,6 @@ public class LoginFragment extends BaseFragment {
             return null;
 
         });
-       Log.d("TAG", "resultOfRetrievingUserInfo: 12 ");
-
     }
 
     private RegistrationData getRegistrationData(String email, String password) {
@@ -125,10 +120,10 @@ public class LoginFragment extends BaseFragment {
 
         // Email validation
         if (email.isEmpty()) {
-            binding.textInputLayoutEmail.setError("Email is required");
+            binding.textInputLayoutEmail.setError(getString(R.string.email_required));
             return false;
         } else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            binding.textInputLayoutEmail.setError("Enter a valid email");
+            binding.textInputLayoutEmail.setError(getString(R.string.invalid_email));
             return false;
         } else {
             binding.textInputLayoutEmail.setError(null);
@@ -136,10 +131,10 @@ public class LoginFragment extends BaseFragment {
 
         // Password validation
         if (password.isEmpty()) {
-            binding.textInputLayoutPassword.setError("Password is required");
+            binding.textInputLayoutPassword.setError(getString(R.string.password_required));
             return false;
         } else if (password.length() < 6) {
-            binding.textInputLayoutPassword.setError("Password must be at least 6 characters");
+            binding.textInputLayoutPassword.setError(getString(R.string.password_length));
             return false;
         } else {
             binding.textInputLayoutPassword.setError(null);

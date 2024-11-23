@@ -147,19 +147,21 @@ public class CourierHomeFragment extends BaseFragment  implements OnOrderItemCli
 
     private void changeTexts(View view) {
         if (view.getId() == R.id.active_orders) {
-            binding.textView18.setText("Scheduled Active Orders");
+            binding.textView18.setText(getString(R.string.scheduled_active_orders));
             binding.textView18.setTextColor(Color.parseColor("#ECD211"));
 
         } else if (view.getId() == R.id.shipped_orders) {
-            binding.textView18.setText("Shipped Orders");
+            binding.textView18.setText(getString(R.string.shipped_orders));
             binding.textView18.setTextColor(Color.parseColor("#E55763"));
         } else if (view.getId() == R.id.delivered_orders) {
-            binding.textView18.setText("Delivered Orders");
+            binding.textView18.setText(getString(R.string.delivered_orders));
             binding.textView18.setTextColor(Color.parseColor("#5AD058"));
         }else {
 
         }
     }
+
+
 
     private void deliveredClicked(View view) {
         changeTexts(view);
