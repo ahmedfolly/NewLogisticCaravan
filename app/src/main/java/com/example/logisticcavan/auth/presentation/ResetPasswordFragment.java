@@ -80,10 +80,10 @@ public class ResetPasswordFragment extends BaseFragment {
 
         // Email validation
         if (email.isEmpty()) {
-            binding.textInputLayoutEmail.setError("Email is required");
+            binding.textInputLayoutEmail.setError(getString(R.string.email_required));
             return false;
         } else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            binding.textInputLayoutEmail.setError("Enter a valid email");
+            binding.textInputLayoutEmail.setError(getString(R.string.invalid_email));
             return false;
         } else {
             binding.textInputLayoutEmail.setError(null);

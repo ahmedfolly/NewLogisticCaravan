@@ -105,7 +105,7 @@ class ExpiredProductsViewModel extends ViewModel {
         Log.e("TAG", "day5: " + day5);
         long  rangeStart = expirationDate - (5 * oneDayInMillis) ;
         long  rangeEnd = expirationDate - oneDayInMillis ;
-
+ 
 //        Log.e("TAG", "currentTime: " + stringDate(currentTime));
 //        Log.e("TAG", "expirationDate: " + stringDate(expirationDate));
 //        Log.e("TAG", "rangeEnd: " + stringDate(rangeEnd));

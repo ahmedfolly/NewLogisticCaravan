@@ -3,17 +3,17 @@
 
     <item
         android:id="@+id/courierHomeFragment"
-        android:title="Orders"
+        android:title="@string/orders"
         android:icon="@drawable/icon_orders"/>
 
     <item
         android:id="@+id/notificationFragment"
-        android:title="Notifications"
+        android:title="@string/notifications"
         android:icon="@drawable/notifications_24px"/>
 
     <item
         android:id="@+id/moreFragment"
-        android:title="More"
+        android:title="@string/more"
         android:icon="@drawable/icon_more"/>
 
 

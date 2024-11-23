@@ -10,7 +10,7 @@
     <string name="courier_name">عامل التوصيل</string>
     <string name="rating">تقييم</string>
     <string name="rating_restaurant_details">تقييمات</string>
-    <string name="group_order">قائمة الطعام</string>
+    <string name="group_order">طلب مجموعة</string>
     <string name="search_text">ابحث هنا</string>
     <string name="caravan_items_text">منتجات الكارفان</string>
     <string name="home_title">الرئيسية</string>
@@ -54,6 +54,4 @@
     <string name="no_data">No Data</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
-    <string name="add">إضافة</string>
-    <string name="currency">ر.س</string>
 </resources>
