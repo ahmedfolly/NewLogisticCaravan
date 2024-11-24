@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
@@ -171,6 +172,12 @@ public class HomeFragment extends BaseFragment implements CategoriesAdapter.OnIt
         getRecommendedProducts();
         openSharedCartScreen();
         isSharedCartEmpty();
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                requireActivity().finish();
+            }
+        });
     }
 
     private void getCategories(View view) {
@@ -355,6 +362,9 @@ public class HomeFragment extends BaseFragment implements CategoriesAdapter.OnIt
         ProgressBar progressBar = requireView().findViewById(R.id.on_recommendations_loading);
         recommendationViewModel.getProducts().observe(getViewLifecycleOwner(), result -> {
             result.handle(products -> {
+                if (products.isEmpty()){
+                    progressBar.setVisibility(View.GONE);
+                }
                 recommendationAdapter.submitList(products);
                 setupRecommendedContainer(products);
                 progressBar.setVisibility(View.GONE);

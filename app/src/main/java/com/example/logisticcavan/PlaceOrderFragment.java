@@ -89,6 +89,8 @@ public class PlaceOrderFragment extends Fragment {
         MaterialRadioButton cardBtn = view.findViewById(R.id.credit_card_radio_button);
         MaterialRadioButton applePay = view.findViewById(R.id.apple_pay_radio_button);
         cartViewModel.getCartItems();
+        String date = data.getDate();
+        String time = data.getTime();
         placeOrderBtn.setOnClickListener(v -> {
             String paymentMethod = "";
             int id = radioGroup.getCheckedRadioButtonId();
@@ -104,6 +106,17 @@ public class PlaceOrderFragment extends Fragment {
                 List<String> customers = new ArrayList<>();
                 customers.add(getUserEmail());
                 order.setCustomers(customers);
+                if (date != null && time != null){
+                    Map<String, String> deliveryTime = new HashMap<>();
+                    deliveryTime.put("date", date);
+                    deliveryTime.put("time", time);
+                    order.setDeliveryTime(deliveryTime);
+                }else{
+                    Map<String, String> deliveryTime = new HashMap<>();
+                    deliveryTime.put("date", "now");
+                    deliveryTime.put("time", "now");
+                    order.setDeliveryTime(deliveryTime);
+                }
                 uploadOrder(order);
             }else {
                 applePay.setError("Please select a payment method");

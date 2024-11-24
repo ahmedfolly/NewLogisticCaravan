@@ -67,6 +67,7 @@ public class CartFragment extends Fragment implements ConfirmOrderBottomFragment
     String title = "";
     NavController navController;
 
+    private Map<String,Object> deliveryTimeMap;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,6 +76,7 @@ public class CartFragment extends Fragment implements ConfirmOrderBottomFragment
         authViewModel = new ViewModelProvider(this).get(AuthViewModel.class);
         cartsAdapter = new CartItemsAdapter(this);
         DetectQuantityUtil.setUpdateCartItemCallback(this);
+        deliveryTimeMap = new HashMap<>();
     }
 
     @Override
@@ -102,6 +104,9 @@ public class CartFragment extends Fragment implements ConfirmOrderBottomFragment
         navController = findNavController(this);
         checkoutBtn.setOnClickListener(v -> {
             String villaNum = Objects.requireNonNull(villaNumberEd.getText()).toString();
+            if (!deliveryTimeMap.isEmpty()){
+                Log.d("TAG", "onViewCreated: "+deliveryTimeMap.get("time"));
+            }
             if (!TextUtils.isEmpty(villaNum)) {
                 cartViewModel.fetchTotalPrice();
                 cartViewModel.getTotalPriceData().observe(getViewLifecycleOwner(), price -> {
@@ -114,7 +119,20 @@ public class CartFragment extends Fragment implements ConfirmOrderBottomFragment
                                             createLocationMap(beachSpinner.getSelectedItem().toString(), villaNum),
                                             createUserMap(getUserId(), getUserName()),
                                             createRestaurant(cartItems.get(0).getRestaurantId(), cartItems.get(0).getRestaurantName()));
-                                    NavDirections action = CartFragmentDirections.actionCartFragmentToPlaceOrderFragment(order, beachSpinner.getSelectedItem().toString(), villaNum, price.floatValue());
+                                    NavDirections action ;
+                                    if (!deliveryTimeMap.isEmpty()){
+                                         action = CartFragmentDirections.actionCartFragmentToPlaceOrderFragment(order,
+                                                beachSpinner.getSelectedItem().toString(),
+                                                villaNum, price.floatValue(),
+                                                Objects.requireNonNull(deliveryTimeMap.get("time")).toString(),
+                                                Objects.requireNonNull(deliveryTimeMap.get("date")).toString());
+                                    }else{
+                                        action = CartFragmentDirections.actionCartFragmentToPlaceOrderFragment(order,
+                                                beachSpinner.getSelectedItem().toString(),
+                                                villaNum, price.floatValue(),
+                                                null,
+                                                null);
+                                    }
                                     navController.navigate(action);
                                 },
                                 error -> {
@@ -287,6 +305,10 @@ public class CartFragment extends Fragment implements ConfirmOrderBottomFragment
                                 // Display the selected date and time
                                 String dateTime = "Selected Date: " + selectedDay + "/" + (selectedMonth + 1) + "/" + selectedYear +
                                         "\nSelected Time: " + String.format("%02d:%02d", selectedHour, selectedMinute);
+                                String dateTime1 = selectedDay + "/" + (selectedMonth + 1) + "/" + selectedYear;
+                                String time = String.format("%02d:%02d", selectedHour, selectedMinute);
+                                deliveryTimeMap.put("date", dateTime1);
+                                deliveryTimeMap.put("time", time);
                                 textViewDateTime.setText(dateTime);
                             }, hour, minute, true);
                     timePickerDialog.show();

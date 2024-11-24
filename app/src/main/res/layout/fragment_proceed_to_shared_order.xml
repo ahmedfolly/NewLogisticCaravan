@@ -129,8 +129,6 @@
                     android:background="@drawable/food_item_backgound"
                     android:gravity="center"
                     android:orientation="horizontal">
-
-
                     <Spinner
                         android:id="@+id/delievery_window_spinner"
                         android:layout_width="match_parent"
@@ -138,8 +136,18 @@
                         android:entries="@array/schedule_list"
                         android:textAlignment="textStart"
                         android:textColor="@android:color/transparent" />
-                </LinearLayout>
 
+                </LinearLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/selected_time"
+                    android:textSize="15sp"
+                    android:layout_margin="8dp"
+                    android:drawableStart="@drawable/baseline_access_time_24"
+                    android:drawablePadding="8dp"
+                    android:text="1293890"
+                    android:visibility="gone"/>
             </LinearLayout>
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"

@@ -2,6 +2,8 @@ package com.example.logisticcavan.sharedcart.presentation;
 
 import static androidx.navigation.Navigation.findNavController;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -12,9 +14,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.TextView;
+
 import com.example.logisticcavan.R;
 import com.example.logisticcavan.auth.presentation.AuthViewModel;
 import com.example.logisticcavan.common.utils.Constant;
@@ -26,6 +31,7 @@ import com.google.android.material.radiobutton.MaterialRadioButton;
 import com.google.android.material.textfield.TextInputEditText;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,6 +46,7 @@ public class ProceedToSharedOrderFragment extends Fragment {
     private TextInputEditText villaNumInput;
     private ProceedToSharedOrderFragmentArgs args;
     private DeleteSharedCartViewModel deleteSharedCartViewModel;
+    private Map<String, String> deliveryTime;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,6 +54,7 @@ public class ProceedToSharedOrderFragment extends Fragment {
         authViewModel = new ViewModelProvider(this).get(AuthViewModel.class);
         addOrderViewModel = new ViewModelProvider(this).get(AddOrderViewModel.class);
         deleteSharedCartViewModel = new ViewModelProvider(this).get(DeleteSharedCartViewModel.class);
+        deliveryTime = new HashMap<>();
     }
 
     @Override
@@ -73,6 +81,13 @@ public class ProceedToSharedOrderFragment extends Fragment {
         placeOrderButton.setOnClickListener(v -> {
             Order order = createOrderToUpload(sharedCartItems, args.getRestaurantId(), args.getRestaurantName(),
                     getPaymentMethod(radioGroup, cashOnDeliveryBtn, cardBtn, applePay));
+            if (!deliveryTime.isEmpty()){
+                order.setDeliveryTime(deliveryTime);
+            }else{
+                deliveryTime.put("date","now");
+                deliveryTime.put("time","now");
+                order.setDeliveryTime(deliveryTime);
+            }
             addOrderViewModel.addOrder(order, new AddOrderViewModel.UploadOrderCallback() {
                 @Override
                 public void onSuccess(String orderId) {
@@ -110,6 +125,8 @@ public class ProceedToSharedOrderFragment extends Fragment {
                 }
             });
         });
+        Spinner timeSpinner = view.findViewById(R.id.delievery_window_spinner);
+        detectTime(timeSpinner);
 
 //        List<UserInfo> users = new ArrayList<>();
 //        AtomicInteger remainingTasks = new AtomicInteger(args.getUserIds().length);  // Keep track of remaining tasks
@@ -166,6 +183,57 @@ public class ProceedToSharedOrderFragment extends Fragment {
         order.setGeneralDetails(createGeneralDetails(paymentMethod, 0.0));
         order.setCustomers(Arrays.asList(args.getUserIds()));
         return order;
+    }
+
+    private void detectTime(Spinner arriveTimeSpinner){
+        String[] scheduleList = getResources().getStringArray(R.array.schedule_list);
+        TextView timeTxt = requireView().findViewById(R.id.selected_time);
+        arriveTimeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String selectedItem = scheduleList[i];
+                if (selectedItem.equals("Scheduled time")){
+                    timeTxt.setVisibility(View.VISIBLE);
+                    pickDateTime(timeTxt);
+                }else{
+                    timeTxt.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+    }
+    private void pickDateTime(TextView textViewDateTime) {
+        // Get the current date and time
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        int minute = calendar.get(Calendar.MINUTE);
+
+        // Show DatePickerDialog first
+        DatePickerDialog datePickerDialog = new DatePickerDialog(requireContext(),
+                (view, selectedYear, selectedMonth, selectedDay) -> {
+                    // After date is picked, show TimePickerDialog
+                    TimePickerDialog timePickerDialog = new TimePickerDialog(requireContext(),
+                            (timeView, selectedHour, selectedMinute) -> {
+                                // Display the selected date and time
+                                String dateTime = "Selected Date: " + selectedDay + "/" + (selectedMonth + 1) + "/" + selectedYear +
+                                        "\nSelected Time: " + String.format("%02d:%02d", selectedHour, selectedMinute);
+                                String dateToUpload = selectedDay + "/" + (selectedMonth + 1) + "/" + selectedYear;
+                                String timeToUpload = String.format("%02d:%02d", selectedHour, selectedMinute);
+                                deliveryTime.put("date", dateToUpload);
+                                deliveryTime.put("time", timeToUpload);
+                                textViewDateTime.setText(dateTime);
+                            }, hour, minute, true);
+                    timePickerDialog.show();
+                }, year, month, day);
+
+        datePickerDialog.show();
     }
 
     private String getDurrahPeach() {
