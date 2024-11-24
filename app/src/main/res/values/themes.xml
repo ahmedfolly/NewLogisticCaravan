@@ -7,8 +7,7 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="fontFamily">@font/cairo_bold</item>
         <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>
-        <item name="android:windowSplashScreenBackground">@color/white</item>
-        <item name="android:windowSplashScreenAnimationDuration">1000</item>
+
     </style>
     <style name="SpinnerTheme" parent="android:Widget.Spinner">
         <item name="android:background">@drawable/spinner_background</item>
