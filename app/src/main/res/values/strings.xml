@@ -101,6 +101,9 @@
     <string name="change_password">Change Password</string>
     <string name="old_password">Old Password</string>
     <string name="new_password">New Password</string>
+    <string name="product">Product</string>
+    <string name="status_product_is_still_on_shelf">Product is still on shelf</string>
+    <string name="product_has_been_removed">Product has been removed</string>
 
 >>>>>>> 940f4f09e3346fa43ebc572154e27b1d63a6e80c
 </resources>

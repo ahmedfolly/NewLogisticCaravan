@@ -1,5 +1,6 @@
 package com.example.logisticcavan.getExpiredProducts.presentaion;
 
+import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.logisticcavan.R;
 import com.example.logisticcavan.products.getproducts.domain.Product;
 
@@ -21,11 +25,13 @@ import java.util.List;
 
 public class ExpiredProductsAdapter extends RecyclerView.Adapter<ExpiredProductsAdapter.ProductsVH> {
     List<Product> products;
+    Context context;
 private  ProductListener productListener;
 
-    public ExpiredProductsAdapter(List<Product> products, ProductListener productListener) {
+    public ExpiredProductsAdapter(List<Product> products, ProductListener productListener , Context context) {
         this.products = products;
         this.productListener = productListener;
+        this.context = context;
     }
 
     @NonNull
@@ -38,11 +44,13 @@ private  ProductListener productListener;
     @Override
     public void onBindViewHolder(@NonNull ExpiredProductsAdapter.ProductsVH holder, int position) {
         Product product = products.get(position);
-        holder.productID.setText(product.getProductID());
-        Log.e("TAG", "getExpirationData: " + product.getExpirationData());
+        Glide.with(holder.itemView)
+                .load(product.getProductImageLink())
+                .apply(RequestOptions.bitmapTransform(new RoundedCorners(18)))
+                .into(holder.productImage);
+        Log.e("TAG", "getProductImageLink: " + product.getProductImageLink());
         holder.expirationDate.setText(stringDate(product.getExpirationData()));
         updateStatus(holder, product);
-
         holder.itemView.setOnClickListener(view -> {
             productListener.onProductClick(product);
         });
@@ -50,13 +58,11 @@ private  ProductListener productListener;
 
     private void updateStatus(@NonNull ProductsVH holder, Product product) {
         if (product.getRemovalDate() == 0L){
-            holder.status.setText("Status: Product is still on shelf");
-            Log.e("TAG","updateStatus: Product is still on shelf" );
+            holder.status.setText(context.getString(R.string.status_product_is_still_on_shelf));
         }else {
-            Log.e("TAG","Status: Product has been removed" );
             holder.removalDate.setText(stringDate(product.getRemovalDate()));
-//            holder.itemView.setEnabled(false);
-            holder.status.setText("Status: Product has been removed");
+            holder.itemView.setEnabled(false);
+            holder.status.setText(context.getString(R.string.product_has_been_removed));
         }
 
     }
@@ -67,14 +73,14 @@ private  ProductListener productListener;
     }
 
     public class ProductsVH extends RecyclerView.ViewHolder {
-        TextView productID;
+        ImageView productImage;
         TextView expirationDate;
         TextView removalDate;
         TextView status;
 
         public ProductsVH(@NonNull View itemView) {
             super(itemView);
-            productID = itemView.findViewById(R.id.productID);
+            productImage = itemView.findViewById(R.id.image);
             expirationDate = itemView.findViewById(R.id.expirationDate);
             removalDate = itemView.findViewById(R.id.removalDate);
             status = itemView.findViewById(R.id.status);

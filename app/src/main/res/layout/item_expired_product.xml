@@ -10,14 +10,14 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <TextView
-            android:id="@+id/productID"
-            android:layout_width="0dp"
-            android:gravity="center"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:text="Product ID"
-            tools:layout_editor_absoluteY="10dp" />
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_margin="8dp"
+            android:scaleType="fitXY"
+            android:id="@+id/image"
+            />
+
 
         <TextView
             android:id="@+id/expirationDate"
@@ -26,14 +26,16 @@
             android:gravity="center"
             android:layout_height="wrap_content"
             android:text="04/06/2024 "
-            tools:layout_editor_absoluteX="89dp"
-            tools:layout_editor_absoluteY="128dp" />
+            android:layout_gravity="center"
+            />
 
         <TextView
             android:id="@+id/removalDate"
             android:layout_width="0dp"
             android:gravity="center"
             android:layout_weight="1"
+            android:layout_gravity="center"
+
             android:layout_height="wrap_content"
             android:text="-----"
             />

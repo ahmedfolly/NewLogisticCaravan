@@ -70,7 +70,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="@string/product_id"
+                        android:text="@string/product"
                         tools:layout_editor_absoluteY="10dp" />
 
                     <TextView
