@@ -71,7 +71,7 @@ public class ExpiredProductsFragment extends Fragment implements  ExpiredProduct
     }
 
     private void updateUiExpiredProducts (List<Product> products) {
-        expiredProductsAdapter = new ExpiredProductsAdapter(products,this);
+        expiredProductsAdapter = new ExpiredProductsAdapter(products,this,requireActivity());
         binding.recyclerView.setAdapter(expiredProductsAdapter);
         binding.recyclerView.setVisibility(View.VISIBLE);
     }
