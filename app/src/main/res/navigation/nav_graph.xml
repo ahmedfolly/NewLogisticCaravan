@@ -21,13 +21,26 @@
             app:popExitAnim="@anim/fadeout"/>
         <action
             android:id="@+id/action_homeFragment_to_restaurantDetailsFragment"
-            app:destination="@id/restaurantDetailsFragment" />
+            app:destination="@id/restaurantDetailsFragment"
+            app:popEnterAnim="@anim/fadein"
+            app:enterAnim="@anim/fadein"
+            app:exitAnim="@anim/fadeout"
+            app:popExitAnim="@anim/fadeout"/>
         <action
             android:id="@+id/action_homeFragment_to_caravanFragment"
-            app:destination="@id/caravanFragment" />
+            app:destination="@id/caravanFragment"
+            app:popEnterAnim="@anim/fadein"
+            app:enterAnim="@anim/fadein"
+            app:exitAnim="@anim/fadeout"
+            app:popExitAnim="@anim/fadeout"
+            />
         <action
             android:id="@+id/action_homeFragment_to_sharedCartFragment"
-            app:destination="@id/sharedCartFragment" />
+            app:destination="@id/sharedCartFragment"
+            app:popEnterAnim="@anim/fadein"
+            app:enterAnim="@anim/fadein"
+            app:exitAnim="@anim/fadeout"
+            app:popExitAnim="@anim/fadeout"/>
 
 
     </fragment>
@@ -64,7 +77,11 @@
             app:argType="com.example.logisticcavan.restaurants.domain.Restaurant" />
         <action
             android:id="@+id/action_restaurantDetailsFragment_to_ratingsFragment"
-            app:destination="@id/ratingsFragment" />
+            app:destination="@id/ratingsFragment"
+            app:popEnterAnim="@anim/fadein"
+            app:enterAnim="@anim/fadein"
+            app:exitAnim="@anim/fadeout"
+            app:popExitAnim="@anim/fadeout"/>
     </fragment>
     <fragment
         android:id="@+id/placeOrderFragment"
@@ -111,7 +128,11 @@
             app:argType="string" />
         <action
             android:id="@+id/action_trakOrderFragment_to_ratingFragment"
-            app:destination="@id/ratingFragment" />
+            app:destination="@id/ratingFragment"
+            app:popEnterAnim="@anim/fadein"
+            app:enterAnim="@anim/fadein"
+            app:exitAnim="@anim/fadeout"
+            app:popExitAnim="@anim/fadeout"/>
         <action
             android:id="@+id/action_trakOrderFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
@@ -123,7 +144,11 @@
             app:argType="string" />
         <action
             android:id="@+id/action_trakOrderFragment_to_chattingFragment"
-            app:destination="@id/chattingFragment" />
+            app:destination="@id/chattingFragment"
+            app:popEnterAnim="@anim/fadein"
+            app:enterAnim="@anim/fadein"
+            app:exitAnim="@anim/fadeout"
+            app:popExitAnim="@anim/fadeout"/>
         <argument
             android:name="courierName"
             app:argType="string" />
@@ -135,7 +160,12 @@
         tools:layout="@layout/fragment_user_orders" >
         <action
             android:id="@+id/action_userOrdersFragment_to_trakOrderFragment"
-            app:destination="@id/trakOrderFragment" />
+            app:destination="@id/trakOrderFragment"
+            app:popEnterAnim="@anim/fadein"
+            app:enterAnim="@anim/fadein"
+            app:exitAnim="@anim/fadeout"
+            app:popExitAnim="@anim/fadeout"
+            />
     </fragment>
     <fragment
         android:id="@+id/ratingFragment"
@@ -217,7 +247,11 @@
         tools:layout="@layout/fragment_shared_cart" >
         <action
             android:id="@+id/action_sharedCartFragment_to_proceedToSharedOrderFragment"
-            app:destination="@id/proceedToSharedOrderFragment" />
+            app:destination="@id/proceedToSharedOrderFragment"
+            app:popEnterAnim="@anim/fadein"
+            app:enterAnim="@anim/fadein"
+            app:exitAnim="@anim/fadeout"
+            app:popExitAnim="@anim/fadeout"/>
     </fragment>
     <fragment
         android:id="@+id/proceedToSharedOrderFragment"

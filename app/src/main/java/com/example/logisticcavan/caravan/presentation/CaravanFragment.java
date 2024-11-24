@@ -27,6 +27,7 @@ import com.example.logisticcavan.cart.domain.models.CartItem;
 import com.example.logisticcavan.cart.presentaion.CartViewModel;
 import com.example.logisticcavan.cart.presentaion.ui.AddOrderBottomSheet;
 import com.example.logisticcavan.databinding.FragmentCaravanBinding;
+import com.example.logisticcavan.navigations.commonui.MainActivity;
 import com.example.logisticcavan.products.getproducts.domain.Product;
 import com.example.logisticcavan.products.getproducts.presentation.RestaurantProductsAdapter;
 import com.example.logisticcavan.restaurants.domain.Restaurant;
@@ -310,9 +311,16 @@ public class CaravanFragment extends Fragment implements RestaurantProductsAdapt
         return productList;
     }
 
-    
     @Override
-    public void addToSharedCart(String productId, int quantity) {
+    public void onResume() {
+        super.onResume();
+        if (requireActivity() instanceof MainActivity){
+            ((MainActivity) requireActivity()).disappearBottomNav();
+        }
+    }
+
+    @Override
+    public void addToSharedCart(Product product,String productId, int quantity) {
 
     }
 

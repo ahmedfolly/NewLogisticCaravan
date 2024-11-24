@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.Single;
 
 public class GetRestaurantRepoImp implements GetRestaurantDataRepo {
     private final FirebaseFirestore firestore;
@@ -23,19 +24,18 @@ public class GetRestaurantRepoImp implements GetRestaurantDataRepo {
     }
 
     @Override
-    public Observable<MyResult<Restaurant>> getRestaurant(String restaurantId) {
-        return Observable.create(emitter -> {
-            emitter.onNext(MyResult.loading());
+    public Single<Restaurant> getRestaurant(String restaurantId) {
+        return Single.create(emitter -> {
             firestore.collection("Sellers").document(restaurantId).get().addOnSuccessListener(documentSnapshot -> {
                 if (documentSnapshot.exists()) {
                     Restaurant restaurant = documentSnapshot.toObject(Restaurant.class);
                     if (restaurant != null) {
                         restaurant.setRestaurantId(documentSnapshot.getId());
-                        emitter.onNext(MyResult.success(restaurant));
+                        emitter.onSuccess(restaurant);
                     }
                 }
             }).addOnFailureListener(e -> {
-                emitter.onNext(MyResult.error(e));
+
             });
         });
     }

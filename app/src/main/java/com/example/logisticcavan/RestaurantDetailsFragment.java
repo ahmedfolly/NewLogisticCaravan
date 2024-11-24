@@ -123,7 +123,6 @@ AddOrderBottomSheet.AddToSharedCartCallback{
             navController.navigate(action);
         });
     }
-
     void getRestaurantProducts(String restaurantId) {
         getRestaurantProductsViewModel.getRestaurantProducts(restaurantId);
         getRestaurantProductsViewModel.getProductsLiveData().observe(getViewLifecycleOwner(), productsIdsResult -> {
@@ -141,13 +140,11 @@ AddOrderBottomSheet.AddToSharedCartCallback{
             );
         });
     }
-
     void setupProductsContainer() {
         productsContainer.setHasFixedSize(true);
         productsContainer.setLayoutManager(new LinearLayoutManager(requireContext()));
         productsContainer.setAdapter(restaurantProductsAdapter);
     }
-
     void getProductsFromIds(List<String> productsIds) {
         getProductsViewModel.fetchProducts(productsIds);
         getProductsViewModel.getProductsLiveData().observe(getViewLifecycleOwner(), productsResult -> {
@@ -162,14 +159,12 @@ AddOrderBottomSheet.AddToSharedCartCallback{
             );
         });
     }
-
     private Bundle sendArgs(Product product) {
         Bundle bundle = new Bundle();
         bundle.putParcelable("restaurant", args.getRestaurant());
         bundle.putParcelable("product", product);
         return bundle;
     }
-
     @Override
     public void onFoodItemClick(Product product) {
         AddOrderBottomSheet bottomSheetDialogFragment = new AddOrderBottomSheet(this,this);
@@ -177,8 +172,6 @@ AddOrderBottomSheet.AddToSharedCartCallback{
         bottomSheetDialogFragment.show(getParentFragmentManager(), bottomSheetDialogFragment.getTag());
         bottomSheetDialogFragment.setCancelable(true);
     }
-
-
     @Override
     public void addToCart(Product product, int quantity, double price) {
         CartItem cartItem = getCartItem(product, quantity, price);
@@ -218,7 +211,6 @@ AddOrderBottomSheet.AddToSharedCartCallback{
             }
         });
     }
-
     private void addCartItemToCart(CartItem cartItem) {
 
         cartViewModel.addToCart(cartItem, new CartViewModel.AddToCartResultCallback() {
@@ -233,7 +225,6 @@ AddOrderBottomSheet.AddToSharedCartCallback{
             }
         });
     }
-
     @SuppressLint("SetTextI18n")
     private void setupWarningDialog(CartItem cartItem) {
         String restaurantName = args.getRestaurant().getRestaurantName();
@@ -266,7 +257,6 @@ AddOrderBottomSheet.AddToSharedCartCallback{
             dialog.dismiss();
         });
     }
-
     private CartItem getCartItem(Product product, int quantity, double price) {
         CartItem cartItem = new CartItem();
         cartItem.setRestaurantId(args.getRestaurant().getRestaurantId());
@@ -279,7 +269,6 @@ AddOrderBottomSheet.AddToSharedCartCallback{
         cartItem.setCategoryName(product.getProductCategory());
         return cartItem;
     }
-
     @Override
     public void onResume() {
         super.onResume();
@@ -288,9 +277,8 @@ AddOrderBottomSheet.AddToSharedCartCallback{
             mainActivity.disappearBottomNav();
         }
     }
-
     @Override
-    public void addToSharedCart(String productId, int quantity) {
+    public void addToSharedCart(Product product,String productId, int quantity) {
         SharedProduct sharedProduct = new SharedProduct();
         sharedProduct.setAddedBy(getUserName());
         sharedProduct.setProductId(productId);

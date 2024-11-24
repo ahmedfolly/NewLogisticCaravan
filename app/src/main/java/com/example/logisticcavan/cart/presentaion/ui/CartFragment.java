@@ -2,6 +2,8 @@ package com.example.logisticcavan.cart.presentaion.ui;
 
 import static androidx.navigation.fragment.FragmentKt.findNavController;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
 
@@ -20,6 +22,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -41,6 +44,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -124,6 +128,7 @@ public class CartFragment extends Fragment implements ConfirmOrderBottomFragment
                 villaNumberEd.setError("Villa number is required");
             }
         });
+        detectTime(deliveryWindowSpinner);
     }
 
     @Override
@@ -243,7 +248,52 @@ public class CartFragment extends Fragment implements ConfirmOrderBottomFragment
         cartViewModel.deleteItemById(id);
     }
 
+    private void detectTime(Spinner arriveTimeSpinner){
+        String[] scheduleList = getResources().getStringArray(R.array.schedule_list);
+        TextView timeTxt = requireView().findViewById(R.id.selected_time);
+        arriveTimeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String selectedItem = scheduleList[i];
+                if (selectedItem.equals("Scheduled time")){
+                    timeTxt.setVisibility(View.VISIBLE);
+                    pickDateTime(timeTxt);
+                }else{
+                    timeTxt.setVisibility(View.GONE);
+                }
+            }
 
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+    }
+    private void pickDateTime(TextView textViewDateTime) {
+        // Get the current date and time
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        int minute = calendar.get(Calendar.MINUTE);
+
+        // Show DatePickerDialog first
+        DatePickerDialog datePickerDialog = new DatePickerDialog(requireContext(),
+                (view, selectedYear, selectedMonth, selectedDay) -> {
+                    // After date is picked, show TimePickerDialog
+                    TimePickerDialog timePickerDialog = new TimePickerDialog(requireContext(),
+                            (timeView, selectedHour, selectedMinute) -> {
+                                // Display the selected date and time
+                                String dateTime = "Selected Date: " + selectedDay + "/" + (selectedMonth + 1) + "/" + selectedYear +
+                                        "\nSelected Time: " + String.format("%02d:%02d", selectedHour, selectedMinute);
+                                textViewDateTime.setText(dateTime);
+                            }, hour, minute, true);
+                    timePickerDialog.show();
+                }, year, month, day);
+
+        datePickerDialog.show();
+    }
     public interface CartFragmentOpenedCallback {
         void onCartFragmentOpened();
     }

@@ -13,6 +13,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import com.example.logisticcavan.R;
 import com.example.logisticcavan.navigations.commonui.MainActivity;
@@ -53,14 +55,24 @@ public class UserOrdersFragment extends Fragment {
         getUserOrders();
     }
     private void getUserOrders(){
+        ImageView emptyOrders = requireView().findViewById(R.id.empty_orders);
+        ProgressBar onOrderLoading = requireView().findViewById(R.id.on_order_loading);
         ordersOfCurrUserViewModel.fetchOrders();
         ordersOfCurrUserViewModel.getOrdersLiveData().observe(getViewLifecycleOwner(),ordersResult->{
             ordersResult.handle(ordersList->{
-                Log.d("TAG", "getUserOrders: "+ordersList.size());
-
-                userOrdersAdapter = new UserOrdersAdapter(ordersList);
-                setUserOrdersContainer();
-            }, error->{}, ()->{});
+                if (ordersList.isEmpty()){
+                   emptyOrders.setVisibility(View.VISIBLE);
+                    onOrderLoading.setVisibility(View.GONE);
+                }else
+                {
+                    userOrdersAdapter = new UserOrdersAdapter(ordersList);
+                    setUserOrdersContainer();
+                    emptyOrders.setVisibility(View.GONE);
+                    onOrderLoading.setVisibility(View.GONE);
+                }
+            }, error->{}, ()->{
+                onOrderLoading.setVisibility(View.VISIBLE);
+            });
         });
     }
     private void setUserOrdersContainer(){

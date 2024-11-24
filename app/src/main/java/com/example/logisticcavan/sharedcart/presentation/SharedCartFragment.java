@@ -82,6 +82,8 @@ public class SharedCartFragment extends Fragment implements SharedCartItemsAdapt
         doOnNotAdminUser(userEmailPicker, addUserEmailButton,moveToNext,userEmailLayout);
         navController = findNavController(this);
         goForward(moveToNext);
+        //on back pressed
+        view.findViewById(R.id.back_from_shared_cart).setOnClickListener(v -> navController.popBackStack());
     }
     private void goForward(MaterialButton moveToNext){
         moveToNext.setOnClickListener(v -> {
@@ -109,7 +111,6 @@ public class SharedCartFragment extends Fragment implements SharedCartItemsAdapt
 
         });
     }
-
     private void doOnNotAdminUser(TextInputEditText userEmailPicker, MaterialButton addUserEmailButton,MaterialButton checkout,
                                   TextInputLayout textInputLayout) {
         getSharedCartViewModel.getSharedCart(new GetSharedCartViewModel.SharedCartCallback() {
@@ -136,7 +137,6 @@ public class SharedCartFragment extends Fragment implements SharedCartItemsAdapt
             }
         });
     }
-
     private void getSharedItems() {
         getSharedProductsViewModel.fetchSharedProducts();
         getSharedProductsViewModel.getSharedProductsLiveData().observe(getViewLifecycleOwner(), myResult -> {
@@ -165,7 +165,6 @@ public class SharedCartFragment extends Fragment implements SharedCartItemsAdapt
             );
         });
     }
-
     private SharedProduct findSharedProductByProductId(List<SharedProduct> sharedProducts, String productId) {
         for (SharedProduct sharedProduct : sharedProducts) {
             if (sharedProduct.getProductId().equals(productId)) {
@@ -174,14 +173,12 @@ public class SharedCartFragment extends Fragment implements SharedCartItemsAdapt
         }
         return null;  // Return null if no match is found
     }
-
     private void setupRecyclerView() {
         RecyclerView sharedItemsContainer = requireView().findViewById(R.id.shared_items_container);
         sharedItemsContainer.setHasFixedSize(true);
         sharedItemsContainer.setLayoutManager(new LinearLayoutManager(requireContext()));
         sharedItemsContainer.setAdapter(sharedCartItemsAdapter);
     }
-
     private void addUserEmail(TextInputEditText userEmailPicker) {
         String userEmail = Objects.requireNonNull(userEmailPicker.getText()).toString();
         if (!TextUtils.isEmpty(userEmail)) {
@@ -196,7 +193,6 @@ public class SharedCartFragment extends Fragment implements SharedCartItemsAdapt
             userEmailPicker.setError("Please enter a valid email");
         }
     }
-
     public static boolean isValidEmail(String email) {
         if (email == null) {
             return false;
@@ -209,7 +205,6 @@ public class SharedCartFragment extends Fragment implements SharedCartItemsAdapt
         // Return whether the email matches the regex pattern
         return matcher.matches();
     }
-
     private String getUserEmail() {
         return authViewModel.getUserInfoLocally().getEmail();
     }
@@ -235,4 +230,5 @@ public class SharedCartFragment extends Fragment implements SharedCartItemsAdapt
             }
         });
     }
+
 }

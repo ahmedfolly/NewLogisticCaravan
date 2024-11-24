@@ -101,11 +101,9 @@
     <string name="change_password">تغيير كلمة المرور</string>
     <string name="old_password">كلمة المرور القديمة</string>
     <string name="new_password">كلمة المرور الجديدة</string>
-    <string name="product">الصنف</string>
-    <string name="status_product_is_still_on_shelf">المنتج لا يزال على الرف
-</string>
-    <string name="product_has_been_removed">تمت إزالة المنتج
-</string>
+    <string name="product">المنتج</string>
+    <string name="status_product_is_still_on_shelf">المنتج مازال هلى الرف</string>
+    <string name="product_has_been_removed">تم رفع المنتج من الرف</string>
 
 
 </resources>

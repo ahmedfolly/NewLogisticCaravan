@@ -11,7 +11,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#FFFFFF"
-        android:paddingTop="24dp"
         >
 
 
@@ -178,7 +177,7 @@
                 android:layout_width="0dp"
                 android:background="@drawable/corner_med_four"
                 android:backgroundTint="@color/light_gray"
-
+                android:hint="Type your message here..."
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1"
