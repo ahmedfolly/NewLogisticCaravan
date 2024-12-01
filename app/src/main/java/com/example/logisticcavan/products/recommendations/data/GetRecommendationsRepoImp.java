@@ -9,14 +9,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
-
 import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.ObservableEmitter;
 
 public class GetRecommendationsRepoImp implements GetRecommendationsRepo {
     private final FirebaseFirestore firebaseFirestore;
@@ -32,8 +29,7 @@ public class GetRecommendationsRepoImp implements GetRecommendationsRepo {
     public Observable<MyResult<List<Product>>> getRecommendations() {
         return Observable.create(emitter -> {
             emitter.onNext(MyResult.loading());
-            getTopCategories(topCategories ->
-                    {
+            getTopCategories(emitter,topCategories -> {
                         if (topCategories != null) {
                             firebaseFirestore.collection("Products")
                                     .whereIn("productCategory", topCategories)
@@ -42,24 +38,32 @@ public class GetRecommendationsRepoImp implements GetRecommendationsRepo {
                                             emitter.onNext(MyResult.error(e));
                                             emitter.onComplete();
                                         } else {
-                                            assert v != null;
-                                            List<Product> products = v.toObjects(Product.class);
-                                            Log.d("TAG", "getRecommendations: " + products.size());
-                                            emitter.onNext(MyResult.success(products));
+                                            if (v == null) {
+                                                emitter.onNext(MyResult.success(new ArrayList<>()));
+                                                emitter.onComplete();
+                                            }
+                                            else{
+                                                List<Product> products = v.toObjects(Product.class);
+                                                Log.d("TAG", "getRecommendations: " + products.size());
+                                                emitter.onNext(MyResult.success(products));
+                                            }
                                         }
                                     });
-                        } else {
+                        }
+                        else {
                             emitter.onNext(MyResult.success(new ArrayList<>()));
                         }
-                    }
-            );
+                    });
         });
     }
 
-    public void getTopCategories(TopCategoriesCallback callback) {
+    /** @noinspection ClassEscapesDefinedScope*/
+    public void getTopCategories(ObservableEmitter<MyResult<List<Product>>> emitter, TopCategoriesCallback callback) {
         List<String> topCategoriesNames = new ArrayList<>();
         rawRecommendations(rawRecommendations -> {
             if (rawRecommendations == null) {
+                Log.d("TAG", "getTopCategories: ");
+                emitter.onNext(MyResult.success(new ArrayList<>()));
                 return;
             }
             List<Map<String, Object>> sortedRecommendations = sortlist(rawRecommendations);
@@ -73,6 +77,7 @@ public class GetRecommendationsRepoImp implements GetRecommendationsRepo {
         });
     }
 
+    /** @noinspection DataFlowIssue*/
     private List<Map<String, Object>> sortlist(List<Map<String, Object>> rawRecommendations) {
         if (!rawRecommendations.isEmpty()) {
             rawRecommendations.sort((m1, m2) -> {
@@ -85,6 +90,7 @@ public class GetRecommendationsRepoImp implements GetRecommendationsRepo {
         return new ArrayList<>();
     }
 
+    /** @noinspection unchecked*/
     private void rawRecommendations(RawRecommendationsCallback callback) {
         firebaseFirestore.collection("users")
                 .document(userEmail())

@@ -32,9 +32,11 @@
             android:layout_height="wrap_content"
             android:id="@+id/food_gradients_details_id"
             android:textSize="12sp"
+            android:maxLines="2"
+            android:ellipsize="end"
             android:textAlignment="viewStart"
             android:textColor="@color/grey_color"
-            android:text="asdfowpe fweio jfsajkf wojf j"/>
+            />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

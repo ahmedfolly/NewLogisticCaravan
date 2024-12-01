@@ -364,6 +364,7 @@ public class HomeFragment extends BaseFragment implements CategoriesAdapter.OnIt
             result.handle(products -> {
                 if (products.isEmpty()){
                     progressBar.setVisibility(View.GONE);
+                    Log.d("TAG", "getRecommendedProducts: empty");
                 }
                 recommendationAdapter.submitList(products);
                 setupRecommendedContainer(products);
@@ -371,6 +372,7 @@ public class HomeFragment extends BaseFragment implements CategoriesAdapter.OnIt
             }, error -> {
                 progressBar.setVisibility(View.GONE);
             }, () -> {
+                Log.d("TAG", "getRecommendedProducts: loading");
                 progressBar.setVisibility(View.VISIBLE);
             });
         });

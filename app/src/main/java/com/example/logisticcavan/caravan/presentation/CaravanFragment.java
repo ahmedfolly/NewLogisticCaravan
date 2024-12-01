@@ -72,7 +72,7 @@ public class CaravanFragment extends Fragment implements RestaurantProductsAdapt
     private void observeViewModel() {
         viewModel.products.observe(getViewLifecycleOwner(), products -> {
             if (products != null) {
-                restaurantProductsAdapter = new RestaurantProductsAdapter(getParentFragmentManager(), this);
+                restaurantProductsAdapter = new RestaurantProductsAdapter(this);
                 filterByCategory(GROCERY, products);
                 binding.progressBar.setVisibility(View.GONE);
             } else {

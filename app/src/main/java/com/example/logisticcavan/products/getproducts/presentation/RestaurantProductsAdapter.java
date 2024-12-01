@@ -23,13 +23,11 @@ import com.example.logisticcavan.cart.presentaion.ui.AddOrderBottomSheet;
 import com.example.logisticcavan.products.getproducts.domain.Product;
 
 public class RestaurantProductsAdapter extends ListAdapter<Product, RestaurantProductsAdapter.ProductViewHolder> {
-    private FragmentManager fragmentManager;
     private FoodItemClickListener foodItemClickListener;
 
 
-    public RestaurantProductsAdapter(FragmentManager fragmentManager, FoodItemClickListener foodItemClickListener) {
+    public RestaurantProductsAdapter( FoodItemClickListener foodItemClickListener) {
         super(new RestaurantProductsDiffUtil());
-        this.fragmentManager = fragmentManager;
         this.foodItemClickListener = foodItemClickListener;
     }
 
@@ -48,6 +46,7 @@ public class RestaurantProductsAdapter extends ListAdapter<Product, RestaurantPr
                 .load(product.getProductImageLink())
                 .apply(RequestOptions.bitmapTransform(new RoundedCorners(18)))
                 .into(holder.productImage);
+        holder.productGradients.setText(product.getFoodDesc());
 //        holder.productGradients.setText(product.getProductGradients());
         holder.itemView.setOnClickListener(v->{
             foodItemClickListener.onFoodItemClick(product);

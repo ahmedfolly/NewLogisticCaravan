@@ -75,7 +75,7 @@ AddOrderBottomSheet.AddToSharedCartCallback{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getRestaurantProductsViewModel = new ViewModelProvider(this).get(GetRestaurantProductsViewModel.class);
-        restaurantProductsAdapter = new RestaurantProductsAdapter(getParentFragmentManager(), this);
+        restaurantProductsAdapter = new RestaurantProductsAdapter( this);
         getProductsViewModel = new ViewModelProvider(this).get(GetProductsViewModel.class);
         cartViewModel = new ViewModelProvider(this).get(CartViewModel.class);
         addToSharedCartViewModel = new ViewModelProvider(this).get(AddToSharedCartViewModel.class);
